@@ -11,9 +11,10 @@ This document provides comprehensive information for maintaining and updating th
 5. [Data Flow](#data-flow)
 6. [Dependencies](#dependencies)
 7. [Styling Guidelines](#styling-guidelines)
-8. [Maintenance Tasks](#maintenance-tasks)
-9. [Common Issues and Solutions](#common-issues-and-solutions)
-10. [Performance Monitoring](#performance-monitoring)
+8. [Internationalization](#internationalization)
+9. [Maintenance Tasks](#maintenance-tasks)
+10. [Common Issues and Solutions](#common-issues-and-solutions)
+11. [Performance Monitoring](#performance-monitoring)
 
 ## Project Overview
 
@@ -27,6 +28,8 @@ The Resort Quote Generator is a web application built for Asteria Mũi Né Resor
 - **Export Functionality**: DOM-to-image and jsPDF
 - **Date Handling**: date-fns with Vietnamese locale
 - **Performance Monitoring**: Vercel Speed Insights
+- **Internationalization**: Custom translation context with English and Vietnamese support
+- **Icons and Graphics**: Lucide React icons and hand-crafted SVG assets
 
 ## Directory Structure
 
@@ -42,12 +45,21 @@ resort-quote/
 │   ├── simple-quote-export.tsx # Export functionality
 │   ├── resort-header.tsx # Page header
 │   ├── resort-footer.tsx # Page footer
+│   ├── language-switcher.tsx # Language selection component
 │   ├── ui/               # UI components from shadcn/ui
 ├── lib/                  # Utility functions
-│   └── export-helpers.ts # Helper functions for export
+│   ├── export-helpers.ts # Helper functions for export
+│   ├── translation-context.tsx # Translation context provider
+│   └── translations/     # Translation files
+│       ├── index.ts      # Translation exports
+│       ├── en.ts         # English translations
+│       └── vi.ts         # Vietnamese translations
 ├── public/               # Static assets
 │   ├── favicon.svg       # Favicon vector image
 │   ├── logo.svg          # Resort logo
+│   └── flags/            # SVG flag icons for language switcher
+│       ├── en.svg        # English flag (UK)
+│       └── vi.svg        # Vietnamese flag
 ├── scripts/              # Utility scripts
 │   └── generate-favicon.js # Script to generate favicon files
 ├── styles/               # Additional styling
@@ -94,6 +106,14 @@ Provides export functionality:
 
 Uses the helper functions in `lib/export-helpers.ts`.
 
+### Language Switcher (`components/language-switcher.tsx`)
+
+This component:
+
+- Allows users to switch between English and Vietnamese languages
+- Displays SVG flag icons for each language option
+- Persists language selection in localStorage
+
 ## Data Flow
 
 1. User inputs data into `QuoteForm` (or pastes data)
@@ -139,11 +159,57 @@ The application is designed to be fully responsive:
 
 ### Currency Formatting
 
-All monetary values in the application use proper thousands separators:
+All monetary values in the application use proper thousands separators and appropriate currency symbols:
 
-- Input fields for prices automatically format values with Vietnamese format (e.g., ₫2,000,000)
-- Formatting is handled in the `handleChange` function of the QuoteForm component
-- Helper functions ensure proper currency display in the quote preview
+- Monetary values are displayed with language-specific formatting
+- English: values displayed with comma separators and VND suffix (e.g., 2,000,000 VND)
+- Vietnamese: values displayed with period separators and VNĐ suffix (e.g., 2.000.000 VNĐ)
+- Formatting logic in the `QuoteForm` component adapts based on the current language setting
+
+## Internationalization
+
+The application supports both English and Vietnamese languages via a custom translation system.
+
+### Translation Structure
+
+- **Context Provider**: `lib/translation-context.tsx` provides translation context
+- **Translation Files**:
+  - `lib/translations/en.ts`: English translations
+  - `lib/translations/vi.ts`: Vietnamese translations
+  - `lib/translations/index.ts`: Exports type definitions and translation objects
+
+### How to Add New Translations
+
+1. Identify new text that needs translation
+2. Add the translation key and text to both `en.ts` and `vi.ts` files
+3. Organize translations in appropriate nested objects by feature/component
+4. Use the translation function in components: `const { t } = useTranslation()` and `{t("key.nestedKey")}`
+
+### Language Switching
+
+The `LanguageSwitcher` component in `components/language-switcher.tsx` handles language switching:
+
+- Displays the current language with its flag icon
+- Offers a dropdown to select a different language
+- Saves selection to localStorage for persistence between sessions
+
+### SVG Flag Icons
+
+The application uses custom hand-crafted SVG files for flag icons:
+
+- Located in `public/flags/` directory
+- Benefits over bitmap images:
+  - Smaller file size
+  - Perfect scaling at any resolution
+  - CSS styling capabilities
+  - Better accessibility
+
+To add a new language:
+
+1. Create a new SVG flag file in `public/flags/` (e.g., `fr.svg` for French)
+2. Add the language to the `languages` array in `lib/translation-context.tsx`
+3. Create a new translation file in `lib/translations/` (e.g., `fr.ts`)
+4. Import and export the new translation in `lib/translations/index.ts`
 
 ## Maintenance Tasks
 
@@ -153,6 +219,7 @@ All monetary values in the application use proper thousands separators:
 2. Make changes following the existing patterns and styles
 3. Test the changes in development mode (`npm run dev`)
 4. Ensure responsive design works on mobile devices
+5. Add translations for any new text in all language files
 
 ### Updating the Logo/Favicon
 
@@ -162,6 +229,14 @@ All monetary values in the application use proper thousands separators:
    npm run generate-favicon
    ```
 3. Verify the logo appears correctly in the header and as favicon
+
+### Adding a New Language
+
+1. Create a new translation file in `lib/translations/` (e.g., `fr.ts`)
+2. Copy the structure from an existing translation file and translate all strings
+3. Add the language to the array in `lib/translation-context.tsx`
+4. Create an SVG flag icon in `public/flags/` directory
+5. Update type definitions in `lib/translations/index.ts`
 
 ### Modifying Quote Layout
 
@@ -212,6 +287,15 @@ If you encounter hydration errors (server and client HTML mismatch):
 1. Ensure `suppressHydrationWarning` attribute is present on both `<html>` and `<body>` tags in `app/layout.tsx`
 2. This is particularly important for preventing errors caused by browser extensions like Grammarly that add attributes to HTML elements
 3. Be cautious with client-side only code that might render differently from server-side
+
+### Translation Issues
+
+If translations aren't working properly:
+
+1. Check that the translation key exists in all language files
+2. Verify the component is using the translation hook: `const { t } = useTranslation()`
+3. Ensure the nesting structure matches exactly in the translation call: `t("section.subsection.key")`
+4. Check that the TranslationProvider wraps the component in the component tree
 
 ## Performance Monitoring
 

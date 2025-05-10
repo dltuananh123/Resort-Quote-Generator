@@ -35,6 +35,7 @@ This application streamlines the process of creating custom booking quotes for r
 - **Performance Monitoring**: Integrated with Vercel Speed Insights for real-time performance analytics
 - **Browser Extension Compatible**: Special handling to prevent hydration errors with Grammarly and similar extensions
 - **Export Options**: Generate high-quality PNG and PDF versions of quotes
+- **Hand-crafted SVG Flags**: Custom SVG flag icons for language selection, optimized for performance and scalability
 
 ## 💻 Technologies Used
 
@@ -79,6 +80,7 @@ This application streamlines the process of creating custom booking quotes for r
 - **Custom Type Declarations**: TypeScript type safety for external libraries like dom-to-image
 - **Export Functionality**: High-quality PNG and PDF export with multiple quality settings
 - **Hydration Error Prevention**: Special handling to accommodate browser extensions like Grammarly
+- **Hand-crafted SVG Assets**: Custom SVG flags created manually to reduce file size, improve scalability, and ensure seamless CSS integration
 
 ## 📸 Screenshots
 
@@ -138,6 +140,16 @@ The application features a comprehensive translation system with support for Eng
 - Language preference is saved to localStorage for persistence between sessions
 - All UI elements including navigation, forms, and buttons are fully translated
 - Language selection is maintained when refreshing the page
+
+### SVG Flag Icons
+
+The flag icons used in the language switcher are hand-crafted SVG files that provide several advantages:
+
+- **Minimal File Size**: Optimized SVGs take up less space and load faster than bitmap images
+- **Perfect Scaling**: Vector-based icons look crisp at any size without pixelation
+- **CSS Integration**: Can be styled with CSS directly for hover effects and animations
+- **Accessibility**: Better screen reader support with appropriate alt text
+- **Customization**: Easily modifiable for adding new language options in the future
 
 ## 💡 Future Enhancements
 
