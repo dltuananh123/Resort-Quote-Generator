@@ -59,9 +59,27 @@ export function QuoteForm() {
       }
 
       // Add currency suffix and thousands separators based on language
-      const currencySuffix = currentLanguage === "en" ? "VND" : "VNĐ";
+      const currencySuffix =
+        currentLanguage === "en"
+          ? "VND"
+          : currentLanguage === "vi"
+          ? "VNĐ"
+          : "VND";
+
+      // Get locale for formatting
+      const locale =
+        currentLanguage === "en"
+          ? "en-US"
+          : currentLanguage === "vi"
+          ? "vi-VN"
+          : currentLanguage === "ru"
+          ? "ru-RU"
+          : currentLanguage === "kr"
+          ? "ko-KR"
+          : "zh-CN";
+
       const formattedValue = `${parseInt(numericValue).toLocaleString(
-        currentLanguage === "en" ? "en-US" : "vi-VN"
+        locale
       )} ${currencySuffix}`;
 
       setFormData((prev) => ({
@@ -148,10 +166,29 @@ export function QuoteForm() {
         // Remove any existing non-digit characters
         const numericValue = value.replace(/[^\d]/g, "");
         if (numericValue === "") return "";
+
         // Format with appropriate currency suffix and thousands separators
-        const currencySuffix = currentLanguage === "en" ? "VND" : "VNĐ";
+        const currencySuffix =
+          currentLanguage === "en"
+            ? "VND"
+            : currentLanguage === "vi"
+            ? "VNĐ"
+            : "VND";
+
+        // Get locale for formatting
+        const locale =
+          currentLanguage === "en"
+            ? "en-US"
+            : currentLanguage === "vi"
+            ? "vi-VN"
+            : currentLanguage === "ru"
+            ? "ru-RU"
+            : currentLanguage === "kr"
+            ? "ko-KR"
+            : "zh-CN";
+
         return `${parseInt(numericValue).toLocaleString(
-          currentLanguage === "en" ? "en-US" : "vi-VN"
+          locale
         )} ${currencySuffix}`;
       };
 
@@ -243,10 +280,26 @@ export function QuoteForm() {
 
     // Format currency values
     const formatCurrency = (value: number) => {
-      const currencySuffix = currentLanguage === "en" ? "VND" : "VNĐ";
-      return `${value.toLocaleString(
-        currentLanguage === "en" ? "en-US" : "vi-VN"
-      )} ${currencySuffix}`;
+      const currencySuffix =
+        currentLanguage === "en"
+          ? "VND"
+          : currentLanguage === "vi"
+          ? "VNĐ"
+          : "VND";
+
+      // Get locale for formatting
+      const locale =
+        currentLanguage === "en"
+          ? "en-US"
+          : currentLanguage === "vi"
+          ? "vi-VN"
+          : currentLanguage === "ru"
+          ? "ru-RU"
+          : currentLanguage === "kr"
+          ? "ko-KR"
+          : "zh-CN";
+
+      return `${value.toLocaleString(locale)} ${currencySuffix}`;
     };
 
     // Helper to extract numeric value from formatted currency
@@ -307,18 +360,18 @@ export function QuoteForm() {
           type="button"
           onClick={handlePasteData}
           variant="outline"
-          className="w-full bg-sky-50 hover:bg-sky-100 text-sky-800 border-sky-200"
+          className="w-full bg-sky-50 hover:bg-sky-100 text-sky-800 border-sky-200 text-xs sm:text-sm px-1 sm:px-2"
         >
-          <Clipboard className="mr-2 h-4 w-4" />
+          <Clipboard className="mr-1 h-4 w-4 flex-shrink-0" />
           {t("form.paste")}
         </Button>
         <Button
           type="button"
           onClick={handleUseSampleData}
           variant="outline"
-          className="w-full bg-sky-50 hover:bg-sky-100 text-sky-800 border-sky-200"
+          className="w-full bg-sky-50 hover:bg-sky-100 text-sky-800 border-sky-200 text-xs sm:text-sm px-1 sm:px-2"
         >
-          <FileText className="mr-2 h-4 w-4" />
+          <FileText className="mr-1 h-4 w-4 flex-shrink-0" />
           {t("form.sample")}
         </Button>
       </div>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <rect width="900" height="600" fill="#fff"/>
+  <!-- Taeguk (Yin-Yang) -->
+  <g transform="translate(450, 300)">
+    <!-- Red half (Yang) -->
+    <path d="M-150,0 a150,150 0 0,1 150,-150 a150,150 0 0,0 150,150 a150,150 0 0,1 -150,150 a150,150 0 0,0 -150,-150" fill="#C60C30"/>
+    <!-- Blue half (Yin) -->
+    <path d="M-150,0 a150,150 0 0,0 150,150 a150,150 0 0,1 150,-150 a150,150 0 0,0 -150,-150 a150,150 0 0,1 -150,150" fill="#003478"/>
+    <!-- Small circles -->
+    <circle cx="75" cy="0" r="25" fill="#C60C30"/>
+    <circle cx="-75" cy="0" r="25" fill="#003478"/>
+  </g>
+  
+  <!-- Trigrams -->
+  <!-- Heaven/Sky (Geon) - ☰ - Upper left -->
+  <g transform="translate(180, 120)">
+    <line x1="-50" y1="-24" x2="50" y2="-24" stroke="#000" stroke-width="12"/>
+    <line x1="-50" y1="0" x2="50" y2="0" stroke="#000" stroke-width="12"/>
+    <line x1="-50" y1="24" x2="50" y2="24" stroke="#000" stroke-width="12"/>
+  </g>
+  <!-- Earth (Gon) - ☷ - Lower right -->
+  <g transform="translate(720, 480)">
+    <line x1="-50" y1="-24" x2="-26" y2="-24" stroke="#000" stroke-width="12"/>
+    <line x1="26" y1="-24" x2="50" y2="-24" stroke="#000" stroke-width="12"/>
+    <line x1="-50" y1="0" x2="-26" y2="0" stroke="#000" stroke-width="12"/>
+    <line x1="26" y1="0" x2="50" y2="0" stroke="#000" stroke-width="12"/>
+    <line x1="-50" y1="24" x2="-26" y2="24" stroke="#000" stroke-width="12"/>
+    <line x1="26" y1="24" x2="50" y2="24" stroke="#000" stroke-width="12"/>
+  </g>
+  <!-- Water (Gam) - ☵ - Lower left -->
+  <g transform="translate(180, 480)">
+    <line x1="-50" y1="-24" x2="50" y2="-24" stroke="#000" stroke-width="12"/>
+    <line x1="-50" y1="0" x2="-26" y2="0" stroke="#000" stroke-width="12"/>
+    <line x1="26" y1="0" x2="50" y2="0" stroke="#000" stroke-width="12"/>
+    <line x1="-50" y1="24" x2="50" y2="24" stroke="#000" stroke-width="12"/>
+  </g>
+  <!-- Fire (Ri) - ☲ - Upper right -->
+  <g transform="translate(720, 120)">
+    <line x1="-50" y1="-24" x2="-26" y2="-24" stroke="#000" stroke-width="12"/>
+    <line x1="26" y1="-24" x2="50" y2="-24" stroke="#000" stroke-width="12"/>
+    <line x1="-50" y1="0" x2="50" y2="0" stroke="#000" stroke-width="12"/>
+    <line x1="-50" y1="24" x2="-26" y2="24" stroke="#000" stroke-width="12"/>
+    <line x1="26" y1="24" x2="50" y2="24" stroke="#000" stroke-width="12"/>
+  </g>
+</svg> 

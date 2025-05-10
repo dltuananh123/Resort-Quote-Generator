@@ -7,13 +7,20 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { translations, Language, TranslationKeys } from "./translations";
+import { translations, Language } from "./translations";
+import {
+  LanguageInfo,
+  supportedLanguages,
+  getInitialLanguage,
+  getLanguageInfo,
+} from "./translation-utils";
 
 type TranslationContextType = {
   t: (key: string) => string;
   currentLanguage: Language;
   changeLanguage: (lang: Language) => void;
-  languages: { code: Language; name: string }[];
+  languages: LanguageInfo[];
+  languageInfo: LanguageInfo;
 };
 
 const TranslationContext = createContext<TranslationContextType | undefined>(
@@ -24,34 +31,27 @@ type NestedObject = {
   [key: string]: string | NestedObject;
 };
 
-// Function to get the initial language from localStorage with a fallback to "vi"
-const getInitialLanguage = (): Language => {
-  if (typeof window !== "undefined") {
-    const savedLanguage = localStorage.getItem("language");
-    if (savedLanguage === "en" || savedLanguage === "vi") {
-      return savedLanguage;
-    }
-  }
-  return "vi"; // Default fallback
-};
-
 export const TranslationProvider = ({ children }: { children: ReactNode }) => {
   // Initialize with a function to prevent unnecessary re-renders
   const [currentLanguage, setCurrentLanguage] = useState<Language>(() =>
     getInitialLanguage()
   );
 
+  // Get current language information
+  const languageInfo = getLanguageInfo(currentLanguage);
+
   useEffect(() => {
     // Make sure the language is saved in localStorage on initial load
     if (typeof window !== "undefined") {
       localStorage.setItem("language", currentLanguage);
-    }
-  }, [currentLanguage]);
 
-  const languages = [
-    { code: "en" as const, name: "English" },
-    { code: "vi" as const, name: "Tiếng Việt" },
-  ];
+      // Set HTML lang attribute for accessibility
+      document.documentElement.lang = currentLanguage;
+
+      // Set text direction (for future RTL language support)
+      document.documentElement.dir = languageInfo.direction;
+    }
+  }, [currentLanguage, languageInfo]);
 
   const changeLanguage = (lang: Language) => {
     setCurrentLanguage(lang);
@@ -94,7 +94,13 @@ export const TranslationProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <TranslationContext.Provider
-      value={{ t, currentLanguage, changeLanguage, languages }}
+      value={{
+        t,
+        currentLanguage,
+        changeLanguage,
+        languages: supportedLanguages,
+        languageInfo,
+      }}
     >
       {children}
     </TranslationContext.Provider>

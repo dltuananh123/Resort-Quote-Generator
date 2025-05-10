@@ -28,7 +28,7 @@ The Resort Quote Generator is a web application built for Asteria Mũi Né Resor
 - **Export Functionality**: DOM-to-image and jsPDF
 - **Date Handling**: date-fns with Vietnamese locale
 - **Performance Monitoring**: Vercel Speed Insights
-- **Internationalization**: Custom translation context with English and Vietnamese support
+- **Internationalization**: Custom translation context with English, Vietnamese, Chinese, Russian, and Korean support
 - **Icons and Graphics**: Lucide React icons and hand-crafted SVG assets
 
 ## Directory Structure
@@ -50,16 +50,23 @@ resort-quote/
 ├── lib/                  # Utility functions
 │   ├── export-helpers.ts # Helper functions for export
 │   ├── translation-context.tsx # Translation context provider
+│   ├── translation-utils.ts    # Translation utility functions
 │   └── translations/     # Translation files
 │       ├── index.ts      # Translation exports
 │       ├── en.ts         # English translations
-│       └── vi.ts         # Vietnamese translations
+│       ├── vi.ts         # Vietnamese translations
+│       ├── cn.ts         # Chinese translations
+│       ├── ru.ts         # Russian translations
+│       └── kr.ts         # Korean translations
 ├── public/               # Static assets
 │   ├── favicon.svg       # Favicon vector image
 │   ├── logo.svg          # Resort logo
 │   └── flags/            # SVG flag icons for language switcher
 │       ├── en.svg        # English flag (UK)
-│       └── vi.svg        # Vietnamese flag
+│       ├── vi.svg        # Vietnamese flag
+│       ├── cn.svg        # Chinese flag
+│       ├── ru.svg        # Russian flag
+│       └── kr.svg        # Korean flag
 ├── scripts/              # Utility scripts
 │   └── generate-favicon.js # Script to generate favicon files
 ├── styles/               # Additional styling
@@ -110,7 +117,7 @@ Uses the helper functions in `lib/export-helpers.ts`.
 
 This component:
 
-- Allows users to switch between English and Vietnamese languages
+- Allows users to switch between English, Vietnamese, and Chinese languages
 - Displays SVG flag icons for each language option
 - Persists language selection in localStorage
 
@@ -164,11 +171,14 @@ All monetary values in the application use proper thousands separators and appro
 - Monetary values are displayed with language-specific formatting
 - English: values displayed with comma separators and VND suffix (e.g., 2,000,000 VND)
 - Vietnamese: values displayed with period separators and VNĐ suffix (e.g., 2.000.000 VNĐ)
+- Chinese: values displayed with comma separators and VND suffix (e.g., 2,000,000 VND)
+- Russian: values displayed with comma separators and VND suffix (e.g., 2,000,000 VND)
+- Korean: values displayed with comma separators and VND suffix (e.g., 2,000,000 VND)
 - Formatting logic in the `QuoteForm` component adapts based on the current language setting
 
 ## Internationalization
 
-The application supports both English and Vietnamese languages via a custom translation system.
+The application supports English, Vietnamese, Chinese, Russian, and Korean languages via a custom translation system.
 
 ### Translation Structure
 
@@ -176,12 +186,17 @@ The application supports both English and Vietnamese languages via a custom tran
 - **Translation Files**:
   - `lib/translations/en.ts`: English translations
   - `lib/translations/vi.ts`: Vietnamese translations
+  - `lib/translations/cn.ts`: Chinese translations
+  - `lib/translations/ru.ts`: Russian translations
+  - `lib/translations/kr.ts`: Korean translations
   - `lib/translations/index.ts`: Exports type definitions and translation objects
+- **Utility Functions**:
+  - `lib/translation-utils.ts`: Contains language information and helper functions
 
 ### How to Add New Translations
 
 1. Identify new text that needs translation
-2. Add the translation key and text to both `en.ts` and `vi.ts` files
+2. Add the translation key and text to all language files
 3. Organize translations in appropriate nested objects by feature/component
 4. Use the translation function in components: `const { t } = useTranslation()` and `{t("key.nestedKey")}`
 
@@ -207,9 +222,10 @@ The application uses custom hand-crafted SVG files for flag icons:
 To add a new language:
 
 1. Create a new SVG flag file in `public/flags/` (e.g., `fr.svg` for French)
-2. Add the language to the `languages` array in `lib/translation-context.tsx`
+2. Add the language to the `supportedLanguages` array in `lib/translation-utils.ts`
 3. Create a new translation file in `lib/translations/` (e.g., `fr.ts`)
 4. Import and export the new translation in `lib/translations/index.ts`
+5. Update the Language type in `lib/translations/index.ts` to include the new language code
 
 ## Maintenance Tasks
 

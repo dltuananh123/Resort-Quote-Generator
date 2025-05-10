@@ -4,11 +4,15 @@ A modern, elegant web application for generating professional resort booking quo
 
 ## 📋 Version
 
-**Current Version:** 1.4.0  
+**Current Version:** 1.7.1  
 **Last Updated:** May 2025
 
 ### Changelog
 
+- **v1.7.1** - Optimized Russian translations with shorter phrases to improve UI button sizing and prevent text overflow
+- **v1.7.0** - Added Korean language support with appropriate flag icon and translations
+- **v1.6.0** - Added Russian language support with appropriate flag icon and translations
+- **v1.5.0** - Added Chinese language support, enhanced language switcher with country flags, updated currency formatting
 - **v1.4.0** - Enhanced responsive design with mobile-friendly hamburger menu, fixed navigation internationalization, updated Lucide icons for a consistent UI
 - **v1.3.0** - Added multi-language support with English and Vietnamese translations, Language switcher in the header
 - **v1.2.0** - Added mobile-optimized layout, currency formatting with thousands separators, fixed type declarations, improved export functionality
@@ -29,9 +33,9 @@ This application streamlines the process of creating custom booking quotes for r
 - **Mobile-Optimized Layout**: Input form displays above quote preview on mobile devices for better usability
 - **Mobile Navigation**: Hamburger menu with smooth animations for better mobile experience
 - **Modern Icon System**: Integrated Lucide icons for consistent visual language
-- **Localized for Vietnamese**: Full support for Vietnamese language and currency formatting
+- **Localized for Multiple Languages**: Full support for English, Vietnamese, Chinese, Russian, and Korean translations
 - **Thousands Separators**: Automatic formatting of price fields for better readability
-- **Multi-language Support**: Switch between English and Vietnamese with a simple language selector
+- **Multi-language Support**: Switch between languages with a simple selector featuring country flags
 - **Performance Monitoring**: Integrated with Vercel Speed Insights for real-time performance analytics
 - **Browser Extension Compatible**: Special handling to prevent hydration errors with Grammarly and similar extensions
 - **Export Options**: Generate high-quality PNG and PDF versions of quotes
@@ -134,12 +138,23 @@ The `suppressHydrationWarning` attribute helps prevent errors when browser exten
 
 ### Internationalization
 
-The application features a comprehensive translation system with support for English and Vietnamese:
+The application features a comprehensive translation system with support for English, Vietnamese, Chinese, Russian, and Korean:
 
-- Translation context provides language switching capabilities
+- Translation context provides language switching capabilities with country flag indicators
 - Language preference is saved to localStorage for persistence between sessions
 - All UI elements including navigation, forms, and buttons are fully translated
 - Language selection is maintained when refreshing the page
+- Currency formats are adapted based on language selection
+- Optimized text length for Russian language to prevent UI elements from overflowing, especially in buttons and form labels
+
+### UI Text Optimization
+
+The application includes language-specific text optimizations:
+
+- **Russian language**: Shortened phrases for better fit in UI elements without overflow
+- **Button text**: Condensed labels for better appearance across all screen sizes
+- **Form labels**: Optimized for compact display while maintaining clarity
+- **Error messages**: Streamlined for clear presentation in modals and notifications
 
 ### SVG Flag Icons
 
