@@ -14,6 +14,8 @@ This application streamlines the process of creating custom booking quotes for r
 - **Real-time Preview**: See the quote update as you enter information
 - **Responsive Design**: Works seamlessly on both desktop and mobile devices
 - **Localized for Vietnamese**: Full support for Vietnamese language and currency formatting
+- **Performance Monitoring**: Integrated with Vercel Speed Insights for real-time performance analytics
+- **Browser Extension Compatible**: Special handling to prevent hydration errors with Grammarly and similar extensions
 
 ## 💻 Technologies Used
 
@@ -23,6 +25,7 @@ This application streamlines the process of creating custom booking quotes for r
 - **Shadcn UI**: Modern UI component library
 - **date-fns**: For date manipulation and formatting
 - **Lucide React**: For beautiful icons
+- **Vercel Speed Insights**: For performance monitoring
 
 ## 👨‍💻 Developers
 
@@ -53,6 +56,7 @@ This application streamlines the process of creating custom booking quotes for r
 - **Currency Formatting**: Automatic thousands separators for price inputs
 - **Date Processing**: Calculation of stay duration and cost based on check-in/check-out dates
 - **Advanced State Management**: Efficient form data handling with React hooks
+- **Hydration Error Prevention**: Special handling to accommodate browser extensions like Grammarly
 
 ## 📸 Screenshots
 
@@ -105,6 +109,30 @@ npm run generate-favicon
 ```
 
 If you don't have ImageMagick installed, you can manually create the favicon files using online tools like [RealFaviconGenerator](https://realfavicongenerator.net/) or [Favicon.io](https://favicon.io/).
+
+## 📊 Performance Monitoring
+
+The application is integrated with Vercel Speed Insights for performance monitoring:
+
+1. Performance metrics are automatically collected during user sessions
+2. Data is available in the Vercel dashboard for analysis
+3. No additional configuration is required - it works out of the box
+
+## 🛠️ Technical Notes
+
+### Hydration Error Prevention
+
+The application includes special handling to prevent React hydration errors that can occur when browser extensions like Grammarly modify the DOM:
+
+```tsx
+// In app/layout.tsx
+<html lang="vi" suppressHydrationWarning>
+  <head />
+  <body suppressHydrationWarning>{/* Content */}</body>
+</html>
+```
+
+The `suppressHydrationWarning` attribute helps prevent errors when browser extensions add attributes to HTML elements.
 
 ## 💡 Future Enhancements
 

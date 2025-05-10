@@ -13,6 +13,7 @@ This document provides comprehensive information for maintaining and updating th
 7. [Styling Guidelines](#styling-guidelines)
 8. [Maintenance Tasks](#maintenance-tasks)
 9. [Common Issues and Solutions](#common-issues-and-solutions)
+10. [Performance Monitoring](#performance-monitoring)
 
 ## Project Overview
 
@@ -25,6 +26,7 @@ The Resort Quote Generator is a web application built for Asteria Mũi Né Resor
 - **Styling**: Tailwind CSS with Shadcn UI components
 - **Export Functionality**: DOM-to-image and jsPDF
 - **Date Handling**: date-fns with Vietnamese locale
+- **Performance Monitoring**: Vercel Speed Insights
 
 ## Directory Structure
 
@@ -103,16 +105,17 @@ Uses the helper functions in `lib/export-helpers.ts`.
 
 Main dependencies and their purposes:
 
-| Dependency   | Version  | Purpose                  |
-| ------------ | -------- | ------------------------ |
-| Next.js      | 15.2.4   | React framework          |
-| React        | ^19      | UI library               |
-| TypeScript   | ^5       | Type checking            |
-| Tailwind CSS | ^3.4.17  | Styling                  |
-| date-fns     | latest   | Date formatting          |
-| dom-to-image | ^2.6.0   | Converting DOM to images |
-| jspdf        | latest   | PDF generation           |
-| lucide-react | ^0.454.0 | Icon set                 |
+| Dependency             | Version  | Purpose                  |
+| ---------------------- | -------- | ------------------------ |
+| Next.js                | 15.2.4   | React framework          |
+| React                  | ^19      | UI library               |
+| TypeScript             | ^5       | Type checking            |
+| Tailwind CSS           | ^3.4.17  | Styling                  |
+| date-fns               | latest   | Date formatting          |
+| dom-to-image           | ^2.6.0   | Converting DOM to images |
+| jspdf                  | latest   | PDF generation           |
+| lucide-react           | ^0.454.0 | Icon set                 |
+| @vercel/speed-insights | latest   | Performance monitoring   |
 
 ## Styling Guidelines
 
@@ -177,6 +180,22 @@ If styles appear inconsistent:
 1. Ensure Tailwind classes are applied correctly
 2. Check for conflicting styles in global CSS
 3. Verify the component inherits the correct theme settings
+
+### React Hydration Errors
+
+If you encounter hydration errors (server and client HTML mismatch):
+
+1. Ensure `suppressHydrationWarning` attribute is present on both `<html>` and `<body>` tags in `app/layout.tsx`
+2. This is particularly important for preventing errors caused by browser extensions like Grammarly that add attributes to HTML elements
+3. Be cautious with client-side only code that might render differently from server-side
+
+## Performance Monitoring
+
+The application uses Vercel Speed Insights to monitor and analyze performance:
+
+1. The integration is set up in `app/layout.tsx` with the `<SpeedInsights />` component
+2. Performance metrics are automatically collected and available in the Vercel dashboard
+3. Use these insights to identify potential performance bottlenecks and optimize accordingly
 
 ---
 
