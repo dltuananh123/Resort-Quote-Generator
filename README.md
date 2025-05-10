@@ -2,6 +2,17 @@
 
 A modern, elegant web application for generating professional resort booking quotes for Asteria Mũi Né Resort.
 
+## 📋 Version
+
+**Current Version:** 1.2.0  
+**Last Updated:** May 2025
+
+### Changelog
+
+- **v1.2.0** - Added mobile-optimized layout, currency formatting with thousands separators, fixed type declarations, improved export functionality
+- **v1.1.0** - Initial public release with basic quote generation functionality
+- **v1.0.0** - Initial development version
+
 ## 🌟 Project Overview
 
 This application streamlines the process of creating custom booking quotes for resort guests. It features a clean, user-friendly interface that allows staff to quickly generate professionally formatted quotes based on guest details and booking information.
