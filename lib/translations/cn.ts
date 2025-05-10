@@ -47,7 +47,7 @@ export const cn = {
     quoteCreatedWithInfo: "已使用您的信息创建报价。",
     placeholder: {
       bookingId: "例: BKK-001",
-      phone: "例: 0933223322",
+      phone: "例: 0123456789",
       guestName: "例: 张伟",
       roomType: "例: 豪华双人床房",
       adults: "例: 2",

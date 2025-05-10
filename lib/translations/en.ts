@@ -48,7 +48,7 @@ export const en = {
     quoteCreatedWithInfo: "Quote has been created with your information.",
     placeholder: {
       bookingId: "Ex: BKK-001",
-      phone: "Ex: 0933223322",
+      phone: "Ex: 0123456789",
       guestName: "Ex: Jane Smith",
       roomType: "Ex: Deluxe Double Room",
       adults: "Ex: 2",

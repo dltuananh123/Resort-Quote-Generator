@@ -48,7 +48,7 @@ export const vi = {
     quoteCreatedWithInfo: "Báo giá đã được tạo theo thông tin bạn nhập.",
     placeholder: {
       bookingId: "VD: BKK-001",
-      phone: "VD: 0933223322",
+      phone: "VD: 0123456789",
       guestName: "VD: Nguyễn Văn A",
       roomType: "VD: Phòng Senior Deluxe Giường Đôi",
       adults: "VD: 2",

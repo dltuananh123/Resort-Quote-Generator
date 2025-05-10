@@ -47,7 +47,7 @@ export const ru = {
     quoteCreatedWithInfo: "Расчет создан с вашей информацией.",
     placeholder: {
       bookingId: "Пример: BKK-001",
-      phone: "Пример: 0933223322",
+      phone: "Пример: 0123456789",
       guestName: "Пример: Иван Иванов",
       roomType: "Пример: Делюкс с двуспальной кроватью",
       adults: "Пример: 2",

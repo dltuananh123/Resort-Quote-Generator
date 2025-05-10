@@ -48,7 +48,7 @@ export const kr = {
     quoteCreatedWithInfo: "귀하의 정보로 견적이 생성되었습니다.",
     placeholder: {
       bookingId: "예: BKK-001",
-      phone: "예: 0933223322",
+      phone: "예: 0123456789",
       guestName: "예: 김철수",
       roomType: "예: 디럭스 더블룸",
       adults: "예: 2",
