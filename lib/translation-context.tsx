@@ -24,18 +24,29 @@ type NestedObject = {
   [key: string]: string | NestedObject;
 };
 
+// Function to get the initial language from localStorage with a fallback to "vi"
+const getInitialLanguage = (): Language => {
+  if (typeof window !== "undefined") {
+    const savedLanguage = localStorage.getItem("language");
+    if (savedLanguage === "en" || savedLanguage === "vi") {
+      return savedLanguage;
+    }
+  }
+  return "vi"; // Default fallback
+};
+
 export const TranslationProvider = ({ children }: { children: ReactNode }) => {
-  const [currentLanguage, setCurrentLanguage] = useState<Language>("vi");
+  // Initialize with a function to prevent unnecessary re-renders
+  const [currentLanguage, setCurrentLanguage] = useState<Language>(() =>
+    getInitialLanguage()
+  );
 
   useEffect(() => {
-    // Try to get the language from localStorage on client-side
+    // Make sure the language is saved in localStorage on initial load
     if (typeof window !== "undefined") {
-      const savedLanguage = localStorage.getItem("language");
-      if (savedLanguage && (savedLanguage === "en" || savedLanguage === "vi")) {
-        setCurrentLanguage(savedLanguage);
-      }
+      localStorage.setItem("language", currentLanguage);
     }
-  }, []);
+  }, [currentLanguage]);
 
   const languages = [
     { code: "en" as const, name: "English" },
