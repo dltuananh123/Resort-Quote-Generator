@@ -2,20 +2,19 @@
 
 import { Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
+import { useTranslation } from "@/lib/translation-context";
 
 export function ResortFooter() {
+  const { t } = useTranslation();
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="bg-sky-900 text-white pt-10 pb-6">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4">
-              Asteria Mũi Né Resort
-            </h3>
-            <p className="text-sky-200 mb-4">
-              Khu nghỉ dưỡng hiện đại nằm trên bờ biển đẹp nhất Việt Nam, trải
-              dài bãi biển cát trắng dài 200m.
-            </p>
+            <h3 className="text-xl font-semibold mb-4">{t("footer.resort")}</h3>
+            <p className="text-sky-200 mb-4">{t("footer.description")}</p>
             <div className="flex items-center gap-2 text-sky-200 mb-2">
               <MapPin size={16} />
               <span>Mũi Né, Phan Thiết, Bình Thuận</span>
@@ -31,26 +30,30 @@ export function ResortFooter() {
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold mb-4">Tiện Nghi</h3>
+            <h3 className="text-xl font-semibold mb-4">
+              {t("footer.amenities")}
+            </h3>
             <ul className="space-y-2 text-sky-200">
-              <li>Hồ bơi rộng</li>
-              <li>Sân khấu hoạt náo A'rena</li>
-              <li>Nhà hàng Parosa</li>
-              <li>Shoreline Snack</li>
-              <li>Stellar Spa</li>
-              <li>Trung tâm thể dục Fit Sphere</li>
+              <li>{t("footer.largePool")}</li>
+              <li>{t("footer.arena")}</li>
+              <li>{t("footer.restaurant")}</li>
+              <li>{t("footer.snackBar")}</li>
+              <li>{t("footer.spa")}</li>
+              <li>{t("footer.fitnessCenter")}</li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold mb-4">Liên Kết Nhanh</h3>
+            <h3 className="text-xl font-semibold mb-4">
+              {t("footer.quickLinks")}
+            </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="#"
                   className="text-sky-200 hover:text-white transition-colors"
                 >
-                  Đặt Phòng
+                  {t("footer.booking")}
                 </Link>
               </li>
               <li>
@@ -58,7 +61,7 @@ export function ResortFooter() {
                   href="#"
                   className="text-sky-200 hover:text-white transition-colors"
                 >
-                  Khuyến Mãi
+                  {t("footer.promotions")}
                 </Link>
               </li>
               <li>
@@ -66,7 +69,7 @@ export function ResortFooter() {
                   href="#"
                   className="text-sky-200 hover:text-white transition-colors"
                 >
-                  Phòng & Giá
+                  {t("footer.roomsAndRates")}
                 </Link>
               </li>
               <li>
@@ -74,7 +77,7 @@ export function ResortFooter() {
                   href="#"
                   className="text-sky-200 hover:text-white transition-colors"
                 >
-                  Dịch Vụ Spa
+                  {t("footer.spaServices")}
                 </Link>
               </li>
               <li>
@@ -82,7 +85,7 @@ export function ResortFooter() {
                   href="#"
                   className="text-sky-200 hover:text-white transition-colors"
                 >
-                  Nhà Hàng
+                  {t("footer.restaurants")}
                 </Link>
               </li>
               <li>
@@ -90,7 +93,7 @@ export function ResortFooter() {
                   href="#"
                   className="text-sky-200 hover:text-white transition-colors"
                 >
-                  Liên Hệ
+                  {t("footer.contact")}
                 </Link>
               </li>
             </ul>
@@ -99,7 +102,7 @@ export function ResortFooter() {
 
         <div className="border-t border-sky-800 mt-8 pt-6 text-center text-sky-300 text-sm">
           <p>
-            © {new Date().getFullYear()} Made by{" "}
+            {t("footer.copyright").replace("{year}", currentYear.toString())}{" "}
             <a
               href="https://github.com/dltuananh123"
               className="underline hover:text-white transition-colors"

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { LanguageSwitcher } from "./language-switcher";
 import { useTranslation } from "@/lib/translation-context";
 import { Home, BedDouble, CirclePlus, Mail, Menu, X } from "lucide-react";
+import { AuthButton } from "./auth-button";
 
 export function ResortHeader() {
   const { t } = useTranslation();
@@ -112,8 +113,9 @@ export function ResortHeader() {
                   {t("nav.contact")}
                 </span>
               </Link>
-              <div className="pl-6">
+              <div className="px-6 flex items-center space-x-4">
                 <LanguageSwitcher />
+                <AuthButton />
               </div>
             </nav>
 
@@ -121,6 +123,9 @@ export function ResortHeader() {
             <div className="flex items-center md:hidden">
               <div className="mr-2">
                 <LanguageSwitcher />
+              </div>
+              <div className="mr-2">
+                <AuthButton />
               </div>
               <button
                 className="p-1 rounded-full hover:bg-sky-800 transition-colors"

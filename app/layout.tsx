@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/toaster";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { TranslationProvider } from "@/lib/translation-context";
+import { Providers } from "./providers";
 
 export const metadata = {
   title: "Asteria Mũi Né Resort - Báo Giá Đặt Phòng",
@@ -30,17 +31,19 @@ export default function RootLayout({
     <html lang="vi" suppressHydrationWarning>
       <head />
       <body suppressHydrationWarning>
-        <TranslationProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-            <Toaster />
-          </ThemeProvider>
-        </TranslationProvider>
+        <Providers>
+          <TranslationProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+              <Toaster />
+            </ThemeProvider>
+          </TranslationProvider>
+        </Providers>
         <SpeedInsights />
       </body>
     </html>

@@ -12,17 +12,19 @@ This document provides comprehensive information for maintaining and updating th
 6. [Dependencies](#dependencies)
 7. [Styling Guidelines](#styling-guidelines)
 8. [Internationalization](#internationalization)
-9. [Maintenance Tasks](#maintenance-tasks)
-10. [Common Issues and Solutions](#common-issues-and-solutions)
-11. [Performance Monitoring](#performance-monitoring)
+9. [Authentication and Security](#authentication-and-security)
+10. [Maintenance Tasks](#maintenance-tasks)
+11. [Common Issues and Solutions](#common-issues-and-solutions)
+12. [Performance Monitoring](#performance-monitoring)
 
 ## Project Overview
 
-The Resort Quote Generator is a web application built for Asteria Mũi Né Resort to streamline the process of creating custom booking quotes. It allows staff to input guest information and instantly generate professional quotes that can be exported as images or PDFs.
+The Resort Quote Generator is a web application built for Asteria Mũi Né Resort to streamline the process of creating custom booking quotes. It allows staff to input guest information and instantly generate professional quotes that can be exported as images or PDFs. The application includes secure authentication to ensure only authorized staff can access the system.
 
 ## Technical Architecture
 
 - **Frontend Framework**: Next.js (React)
+- **Authentication**: NextAuth.js with credential provider
 - **Type Checking**: TypeScript
 - **Styling**: Tailwind CSS with Shadcn UI components
 - **Export Functionality**: DOM-to-image and jsPDF
@@ -36,10 +38,17 @@ The Resort Quote Generator is a web application built for Asteria Mũi Né Resor
 ```
 resort-quote/
 ├── app/                  # Next.js app directory
+│   ├── api/              # API routes including authentication
+│   │   ├── auth/         # NextAuth.js authentication API routes
+│   │   │   └── [...nextauth]/ # NextAuth.js configuration
+│   ├── auth/             # Authentication-related pages
+│   │   ├── login/        # Login page
+│   │   └── profile/      # User profile page
 │   ├── globals.css       # Global styles
 │   ├── layout.tsx        # Root layout component
 │   └── page.tsx          # Main application page
 ├── components/           # React components
+│   ├── auth/             # Authentication-related components
 │   ├── quote-form.tsx    # Input form component
 │   ├── quote-display.tsx # Quote preview component
 │   ├── simple-quote-export.tsx # Export functionality
@@ -49,6 +58,7 @@ resort-quote/
 │   ├── ui/               # UI components from shadcn/ui
 ├── lib/                  # Utility functions
 │   ├── export-helpers.ts # Helper functions for export
+│   ├── auth.ts           # Authentication helper functions
 │   ├── translation-context.tsx # Translation context provider
 │   ├── translation-utils.ts    # Translation utility functions
 │   └── translations/     # Translation files
@@ -58,6 +68,7 @@ resort-quote/
 │       ├── cn.ts         # Chinese translations
 │       ├── ru.ts         # Russian translations
 │       └── kr.ts         # Korean translations
+├── middleware.ts         # NextAuth.js middleware for route protection
 ├── public/               # Static assets
 │   ├── favicon.svg       # Favicon vector image
 │   ├── logo.svg          # Resort logo
@@ -71,161 +82,240 @@ resort-quote/
 │   └── generate-favicon.js # Script to generate favicon files
 ├── styles/               # Additional styling
 ├── types/                # TypeScript type definitions
+│   ├── next-auth.d.ts    # NextAuth.js type extensions
 │   └── dom-to-image.d.ts # Type declarations for dom-to-image
 ```
 
-## Key Components
+## Authentication and Security
 
-### Quote Form (`components/quote-form.tsx`)
+The application uses NextAuth.js for authentication, which provides a secure and flexible solution for handling user authentication.
 
-The form component allows users to:
+### NextAuth.js Implementation
 
-- Manually input guest information
-- Import data from clipboard (tab-separated format)
-- Use sample data for testing
-- Submit form to generate quote
+The authentication system is configured in `app/api/auth/[...nextauth]/route.ts` with the following features:
 
-Key functions:
+1. **Credential Provider**: Custom implementation that verifies username and password against a predefined list of users (in a production environment, this would connect to a secure database):
 
-- `handleChange`: Updates form state when inputs change
-- `handlePasteData`: Processes clipboard data
-- `handleUseSampleData`: Loads sample data
-- `processClipboardData`: Parses tab-separated data
-- `handleSubmit`: Processes form data and creates quote
+```typescript
+// Example configuration
+export const authOptions: NextAuthOptions = {
+  providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        // In production, this would validate against a secure database
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
 
-### Quote Display (`components/quote-display.tsx`)
+        // Demo users for testing
+        const users = [
+          {
+            id: "1",
+            email: "admin@example.com",
+            name: "Admin User",
+            password: "password123",
+            role: "admin",
+          },
+          {
+            id: "2",
+            email: "staff@example.com",
+            name: "Staff User",
+            password: "password123",
+            role: "staff",
+          },
+        ];
 
-This component:
+        const user = users.find((user) => user.email === credentials.email);
 
-- Displays the quote in a visually appealing format
-- Shows customer information, booking details, and pricing
-- Updates in real-time as form data changes
+        if (!user || user.password !== credentials.password) {
+          return null;
+        }
 
-It listens for the `updateQuote` custom event from the form component.
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        };
+      },
+    }),
+  ],
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.role = user.role;
+        token.id = user.id;
+      }
+      return token;
+    },
+    session: async ({ session, token }) => {
+      if (session.user) {
+        session.user.role = token.role;
+        session.user.id = token.id;
+      }
+      return session;
+    },
+  },
+  pages: {
+    signIn: "/auth/login",
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+};
+```
 
-### Export Component (`components/simple-quote-export.tsx`)
+2. **Custom Login Page**: Located at `app/auth/login/page.tsx` with:
 
-Provides export functionality:
+   - Email and password form fields
+   - Error handling for invalid credentials
+   - Multilingual support
+   - Responsive design
 
-- PNG image export in different quality levels
-- PDF export
-- Quality settings adjustment
+3. **User Profile Page**: At `app/auth/profile/page.tsx` showing:
 
-Uses the helper functions in `lib/export-helpers.ts`.
+   - User information (name, email, role)
+   - Account statistics (demo implementation)
+   - Protected by middleware to ensure only authenticated users can access
 
-### Language Switcher (`components/language-switcher.tsx`)
+4. **Route Protection Middleware**: Configured in `middleware.ts` to protect routes:
 
-This component:
+```typescript
+// Example middleware implementation
+export function middleware(request: NextRequest) {
+  const path = request.nextUrl.pathname;
 
-- Allows users to switch between English, Vietnamese, and Chinese languages
-- Displays SVG flag icons for each language option
-- Persists language selection in localStorage
+  // Define public paths that don't require authentication
+  const isPublicPath =
+    path === "/auth/login" ||
+    path === "/" ||
+    path.startsWith("/_next") ||
+    path.startsWith("/api/auth") ||
+    path.includes(".");
 
-## Data Flow
+  // Get the token from the NextAuth.js session
+  const token =
+    request.cookies.get("next-auth.session-token")?.value ||
+    request.cookies.get("__Secure-next-auth.session-token")?.value;
 
-1. User inputs data into `QuoteForm` (or pastes data)
-2. On submit or paste, form dispatches `updateQuote` custom event
-3. `QuoteDisplay` listens for event and updates display
-4. `SimpleQuoteExport` allows exporting the rendered quote
+  // Redirect logic
+  if (isPublicPath && token) {
+    // If user is logged in and tries to access login page, redirect to profile
+    if (path === "/auth/login") {
+      return NextResponse.redirect(new URL("/auth/profile", request.url));
+    }
+    return NextResponse.next();
+  }
 
-## Dependencies
+  if (!isPublicPath && !token) {
+    // If user is not logged in and tries to access protected route, redirect to login
+    return NextResponse.redirect(new URL("/auth/login", request.url));
+  }
 
-Main dependencies and their purposes:
+  return NextResponse.next();
+}
 
-| Dependency             | Version  | Purpose                  |
-| ---------------------- | -------- | ------------------------ |
-| Next.js                | 15.2.4   | React framework          |
-| React                  | ^19      | UI library               |
-| TypeScript             | ^5       | Type checking            |
-| Tailwind CSS           | ^3.4.17  | Styling                  |
-| date-fns               | latest   | Date formatting          |
-| dom-to-image           | ^2.6.0   | Converting DOM to images |
-| jspdf                  | latest   | PDF generation           |
-| lucide-react           | ^0.454.0 | Icon set                 |
-| @vercel/speed-insights | latest   | Performance monitoring   |
+// Configure the middleware to run on specific paths
+export const config = {
+  matcher: ["/((?!api/health|_next/static|_next/image|favicon.ico).*)"],
+};
+```
 
-## Styling Guidelines
+5. **Authentication UI Components**:
+   - Login form component with validation
+   - Authentication status indicator in header
+   - User profile display
+   - All with full multilingual support
 
-The application uses Tailwind CSS with the following color scheme:
+### Security Considerations
 
-- Primary color: Sky blue (`sky-800`, `sky-900`)
-- Secondary accents: Sky lighter shades (`sky-50`, `sky-200`)
-- Text: Dark on light backgrounds, white on dark backgrounds
-- Rounded corners for cards and buttons
+1. **JWT Secret**: Store in environment variables, never in the code:
 
-Components follow the shadcn/ui styling conventions.
+   ```
+   NEXTAUTH_SECRET=your-secret-here
+   NEXTAUTH_URL=http://localhost:3000
+   ```
 
-### Mobile Responsiveness
+2. **Password Storage**: In a production environment, passwords should be:
 
-The application is designed to be fully responsive:
+   - Stored with secure hashing (bcrypt, Argon2)
+   - Never stored in plain text
+   - Validated securely with timing-safe comparisons
 
-- On mobile devices, the input form appears above the quote display for better user experience
-- This is achieved using a flex column layout that stacks the components vertically on mobile
-- On desktop devices, the layout switches to a side-by-side grid view
-- The implementation uses `flex flex-col md:grid md:grid-cols-2` in the main container
+3. **Session Handling**:
 
-### Currency Formatting
+   - JWT-based sessions for stateless operation
+   - Proper expiration times set
+   - Secure cookie settings enabled
 
-All monetary values in the application use proper thousands separators and appropriate currency symbols:
+4. **Role-Based Access Control**:
+   - Different permissions for admin vs. staff roles
+   - Access control checks in protected routes
+   - Front-end UI adapts based on user role
 
-- Monetary values are displayed with language-specific formatting
-- English: values displayed with comma separators and VND suffix (e.g., 2,000,000 VND)
-- Vietnamese: values displayed with period separators and VNĐ suffix (e.g., 2.000.000 VNĐ)
-- Chinese: values displayed with comma separators and VND suffix (e.g., 2,000,000 VND)
-- Russian: values displayed with comma separators and VND suffix (e.g., 2,000,000 VND)
-- Korean: values displayed with comma separators and VND suffix (e.g., 2,000,000 VND)
-- Formatting logic in the `QuoteForm` component adapts based on the current language setting
+### Modifying the Authentication System
 
-## Internationalization
+When modifying the authentication system, follow these guidelines:
 
-The application supports English, Vietnamese, Chinese, Russian, and Korean languages via a custom translation system.
+1. **Adding Users**: In a production environment, create a secure database connector:
 
-### Translation Structure
+   ```typescript
+   async function validateUser(email: string, password: string) {
+     // Connect to your database
+     const user = await db.users.findUnique({ where: { email } });
 
-- **Context Provider**: `lib/translation-context.tsx` provides translation context
-- **Translation Files**:
-  - `lib/translations/en.ts`: English translations
-  - `lib/translations/vi.ts`: Vietnamese translations
-  - `lib/translations/cn.ts`: Chinese translations
-  - `lib/translations/ru.ts`: Russian translations
-  - `lib/translations/kr.ts`: Korean translations
-  - `lib/translations/index.ts`: Exports type definitions and translation objects
-- **Utility Functions**:
-  - `lib/translation-utils.ts`: Contains language information and helper functions
+     // Verify password with secure comparison
+     if (user && (await bcrypt.compare(password, user.passwordHash))) {
+       return {
+         id: user.id,
+         name: user.name,
+         email: user.email,
+         role: user.role,
+       };
+     }
 
-### How to Add New Translations
+     return null;
+   }
+   ```
 
-1. Identify new text that needs translation
-2. Add the translation key and text to all language files
-3. Organize translations in appropriate nested objects by feature/component
-4. Use the translation function in components: `const { t } = useTranslation()` and `{t("key.nestedKey")}`
+2. **Adding New Roles**: Extend the role system by:
 
-### Language Switching
+   - Adding new role types to the NextAuth.js type declarations
+   - Creating appropriate permission checks in middleware
+   - Updating UI to reflect different role capabilities
 
-The `LanguageSwitcher` component in `components/language-switcher.tsx` handles language switching:
+3. **Authentication Debugging**:
+   - Check session status with the NextAuth.js session hooks
+   - Verify cookie storage in browser developer tools
+   - Test protected routes with both authenticated and unauthenticated users
 
-- Displays the current language with its flag icon
-- Offers a dropdown to select a different language
-- Saves selection to localStorage for persistence between sessions
+### Common Authentication Issues
 
-### SVG Flag Icons
+If you encounter authentication problems:
 
-The application uses custom hand-crafted SVG files for flag icons:
+1. **Session Not Persisting**:
 
-- Located in `public/flags/` directory
-- Benefits over bitmap images:
-  - Smaller file size
-  - Perfect scaling at any resolution
-  - CSS styling capabilities
-  - Better accessibility
+   - Verify the NEXTAUTH_SECRET is correctly set
+   - Check that cookies are being stored properly
+   - Ensure the session strategy is set to "jwt"
 
-To add a new language:
+2. **Middleware Not Working**:
 
-1. Create a new SVG flag file in `public/flags/` (e.g., `fr.svg` for French)
-2. Add the language to the `supportedLanguages` array in `lib/translation-utils.ts`
-3. Create a new translation file in `lib/translations/` (e.g., `fr.ts`)
-4. Import and export the new translation in `lib/translations/index.ts`
-5. Update the Language type in `lib/translations/index.ts` to include the new language code
+   - Check matcher patterns are correctly configured
+   - Verify request paths are being correctly analyzed
+   - Test with logging statements to trace the execution flow
+
+3. **Role-Based Access Not Working**:
+   - Ensure roles are being saved to the JWT token
+   - Verify session callback is including role information
+   - Check that components are checking role information correctly
 
 ## Maintenance Tasks
 
@@ -261,66 +351,3 @@ The quote layout is defined in `components/quote-display.tsx`. Update the JSX st
 ### Changing Pricing Calculations
 
 Update the calculation logic in the `handleSubmit` function of `components/quote-form.tsx`.
-
-## Common Issues and Solutions
-
-### Type Errors for External Libraries
-
-If you encounter TypeScript errors for external libraries, check if type definitions exist:
-
-```bash
-npm i --save-dev @types/library-name
-```
-
-If not available, create declaration files in the `types/` directory, like we did for `dom-to-image`.
-
-The application includes custom type declarations for the dom-to-image library in `types/dom-to-image.d.ts` along with helper functions in `lib/export-helpers.ts` to ensure type safety.
-
-### Export Quality Issues
-
-If export quality is poor:
-
-1. Check the `qualitySettings` in `lib/export-helpers.ts`
-2. Adjust scale and quality parameters for better results
-
-The application currently supports:
-
-- PNG export with three quality levels (normal, high, ultra)
-- PDF export that maintains the formatting of the quote display
-
-### Styling Inconsistencies
-
-If styles appear inconsistent:
-
-1. Ensure Tailwind classes are applied correctly
-2. Check for conflicting styles in global CSS
-3. Verify the component inherits the correct theme settings
-
-### React Hydration Errors
-
-If you encounter hydration errors (server and client HTML mismatch):
-
-1. Ensure `suppressHydrationWarning` attribute is present on both `<html>` and `<body>` tags in `app/layout.tsx`
-2. This is particularly important for preventing errors caused by browser extensions like Grammarly that add attributes to HTML elements
-3. Be cautious with client-side only code that might render differently from server-side
-
-### Translation Issues
-
-If translations aren't working properly:
-
-1. Check that the translation key exists in all language files
-2. Verify the component is using the translation hook: `const { t } = useTranslation()`
-3. Ensure the nesting structure matches exactly in the translation call: `t("section.subsection.key")`
-4. Check that the TranslationProvider wraps the component in the component tree
-
-## Performance Monitoring
-
-The application uses Vercel Speed Insights to monitor and analyze performance:
-
-1. The integration is set up in `app/layout.tsx` with the `<SpeedInsights />` component
-2. Performance metrics are automatically collected and available in the Vercel dashboard
-3. Use these insights to identify potential performance bottlenecks and optimize accordingly
-
----
-
-For any further assistance, contact the development team or refer to the source code which contains detailed comments.

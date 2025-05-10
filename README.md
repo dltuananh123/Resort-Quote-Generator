@@ -4,11 +4,14 @@ A modern, elegant web application for generating professional resort booking quo
 
 ## 📋 Version
 
-**Current Version:** 1.7.1  
+**Current Version:** 2.0.0  
 **Last Updated:** May 2025
 
 ### Changelog
 
+- **v2.0.0** - Major security update with NextAuth.js integration for secure authentication, added user roles (admin/staff), implemented protected routes and secure session management
+- **v1.7.3** - Added multilingual footer with translations for all five supported languages
+- **v1.7.2** - Enhanced translations for Chinese, Korean, and Russian languages with improved terminology, natural phrasing, and cultural appropriateness
 - **v1.7.1** - Optimized Russian translations with shorter phrases to improve UI button sizing and prevent text overflow
 - **v1.7.0** - Added Korean language support with appropriate flag icon and translations
 - **v1.6.0** - Added Russian language support with appropriate flag icon and translations
@@ -21,10 +24,14 @@ A modern, elegant web application for generating professional resort booking quo
 
 ## 🌟 Project Overview
 
-This application streamlines the process of creating custom booking quotes for resort guests. It features a clean, user-friendly interface that allows staff to quickly generate professionally formatted quotes based on guest details and booking information.
+This application streamlines the process of creating custom booking quotes for resort guests. It features a clean, user-friendly interface that allows staff to quickly generate professionally formatted quotes based on guest details and booking information. With secure authentication, it ensures that only authorized staff members can access the system.
 
 ## ✨ Features
 
+- **Secure Authentication**: NextAuth.js integration with credential provider for secure staff login
+- **Role-Based Access**: Different access levels for admin and staff users
+- **Protected Routes**: Middleware-based protection of sensitive application areas
+- **Session Management**: Secure JWT-based sessions with proper expiration handling
 - **Dynamic Quote Generation**: Create professional resort booking quotes in real-time
 - **Dual Input Methods**: Enter data manually or paste formatted data from clipboard
 - **Sample Data Option**: Quick testing and demonstration using pre-populated data
@@ -44,6 +51,7 @@ This application streamlines the process of creating custom booking quotes for r
 ## 💻 Technologies Used
 
 - **Next.js**: React framework for building the UI
+- **NextAuth.js**: Authentication framework for secure login and session management
 - **TypeScript**: For type-safe code
 - **Tailwind CSS**: For styling and responsive design
 - **Shadcn UI**: Modern UI component library
@@ -62,6 +70,7 @@ This application streamlines the process of creating custom booking quotes for r
 - TypeScript integration
 - Form state management and validation
 - Internationalization for Vietnamese language
+- Authentication system implementation
 
 ### 🔢bechovang
 
@@ -72,9 +81,12 @@ This application streamlines the process of creating custom booking quotes for r
 - Event-based state management
 - Custom formatting for currency and dates
 - Responsive layout implementation
+- Security enhancement and middleware configuration
 
 ## 🚀 Key Technical Achievements
 
+- **Secure Authentication System**: Implementation of NextAuth.js with credential provider and role-based access control
+- **Protected Route Middleware**: Server-side route protection to prevent unauthorized access
 - **Custom Event System**: Using CustomEvent for communication between components
 - **Intelligent Data Parsing**: Automatic extraction and formatting of pasted tab-separated data
 - **Currency Formatting**: Automatic thousands separators for price inputs
@@ -122,6 +134,17 @@ The application is integrated with Vercel Speed Insights for performance monitor
 
 ## 🛠️ Technical Notes
 
+### Authentication System
+
+The application uses NextAuth.js for secure authentication:
+
+- **Credential Provider**: Custom implementation with username/password verification
+- **JWT Session Handling**: Secure token-based sessions with proper encryption
+- **Role-Based Access**: Different permissions for admin and staff roles
+- **Protected Routes**: Middleware that redirects unauthenticated users to login
+- **User Profiles**: Personalized profile pages showing account information
+- **Multilingual Support**: Login system fully translated in all supported languages
+
 ### Hydration Error Prevention
 
 The application includes special handling to prevent React hydration errors that can occur when browser extensions like Grammarly modify the DOM:
@@ -142,19 +165,25 @@ The application features a comprehensive translation system with support for Eng
 
 - Translation context provides language switching capabilities with country flag indicators
 - Language preference is saved to localStorage for persistence between sessions
-- All UI elements including navigation, forms, and buttons are fully translated
+- All UI elements including navigation, forms, buttons, and footer are fully translated
 - Language selection is maintained when refreshing the page
 - Currency formats are adapted based on language selection
 - Optimized text length for Russian language to prevent UI elements from overflowing, especially in buttons and form labels
+- Culturally appropriate translations with native-language examples and naming conventions
+- Standardized language codes (cn for Chinese, kr for Korean) for consistent implementation
+- Complete multilingual footer with resort description, amenities, and quick links in all five languages
 
 ### UI Text Optimization
 
 The application includes language-specific text optimizations:
 
 - **Russian language**: Shortened phrases for better fit in UI elements without overflow
+- **Chinese language**: Improved terminology for better clarity and cultural appropriateness
+- **Korean language**: Enhanced natural phrasing for better user experience
 - **Button text**: Condensed labels for better appearance across all screen sizes
 - **Form labels**: Optimized for compact display while maintaining clarity
 - **Error messages**: Streamlined for clear presentation in modals and notifications
+- **Footer**: Culturally appropriate translations with consistent terminology across all site sections
 
 ### SVG Flag Icons
 
@@ -168,8 +197,8 @@ The flag icons used in the language switcher are hand-crafted SVG files that pro
 
 ## 💡 Future Enhancements
 
+- Advanced user management system
 - Integration with booking systems
-- Guest account system
 - Quote history and management
 - Additional language support
 - Analytics dashboard
