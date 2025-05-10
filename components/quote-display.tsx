@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { SimpleQuoteExport } from "@/components/simple-quote-export";
 import { useTranslation } from "@/lib/translation-context";
+import { FileText } from "lucide-react";
 
 interface QuoteData {
   bookingId: string;
@@ -46,9 +47,14 @@ export function QuoteDisplay() {
 
   if (!quoteData) {
     return (
-      <div className="border border-dashed border-sky-300 rounded-lg p-8 text-center bg-sky-50">
-        <p className="text-sky-800 mb-2">{t("quote.noData")}</p>
-        <p className="text-sm text-sky-600">{t("quote.pleaseEnterData")}</p>
+      <div className="border border-dashed border-sky-300 rounded-lg p-8 text-center bg-sky-50 min-h-[400px] flex flex-col items-center justify-center">
+        <FileText className="w-16 h-16 text-sky-300 mb-4" />
+        <p className="text-sky-800 text-lg font-medium mb-2">
+          {t("quote.noData")}
+        </p>
+        <p className="text-sm text-sky-600 max-w-xs mx-auto">
+          {t("quote.pleaseEnterData")}
+        </p>
       </div>
     );
   }

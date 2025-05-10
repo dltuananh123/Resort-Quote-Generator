@@ -17,7 +17,7 @@ export default function Home() {
           <h1 className="text-3xl md:text-4xl font-bold text-center text-sky-900 mb-8">
             {t("quote.title")}
           </h1>
-          <div className="flex flex-col md:grid md:grid-cols-2 gap-8">
+          <div className="flex flex-col md:grid md:grid-cols-2 gap-8 mb-8">
             <div className="bg-white rounded-xl shadow-lg p-6">
               <h2 className="text-xl font-semibold text-sky-800 mb-4">
                 {t("form.submit")}
