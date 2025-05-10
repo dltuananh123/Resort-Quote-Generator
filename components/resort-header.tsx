@@ -22,16 +22,32 @@ export function ResortHeader() {
             </div>
           </Link>
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="#" className="hover:text-sky-200 transition-colors">
+            <Link
+              href="https://asteriamuineresort.com/vi/"
+              className="hover:text-sky-200 transition-colors"
+              target="_blank"
+            >
               Trang Chủ
             </Link>
-            <Link href="#" className="hover:text-sky-200 transition-colors">
+            <Link
+              href="https://asteriamuineresort.com/vi/phong-nghi/"
+              className="hover:text-sky-200 transition-colors"
+              target="_blank"
+            >
               Phòng Nghỉ
             </Link>
-            <Link href="#" className="hover:text-sky-200 transition-colors">
-              Dịch Vụ
+            <Link
+              href="https://asteriamuineresort.com/vi/tien-ich/"
+              className="hover:text-sky-200 transition-colors"
+              target="_blank"
+            >
+              Tiện Ích
             </Link>
-            <Link href="#" className="hover:text-sky-200 transition-colors">
+            <Link
+              href="https://asteriamuineresort.com/vi/lien-he/"
+              className="hover:text-sky-200 transition-colors"
+              target="_blank"
+            >
               Liên Hệ
             </Link>
           </nav>
