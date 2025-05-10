@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Printer, Download, ImageIcon, Loader2, Settings } from "lucide-react";
+import { Download, ImageIcon, Loader2, Settings } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,10 +32,6 @@ export function SimpleQuoteExport({
     normal: { scale: 2, quality: 0.9 },
     high: { scale: 3, quality: 0.95 },
     ultra: { scale: 4, quality: 1.0 },
-  };
-
-  const handlePrint = () => {
-    window.print();
   };
 
   const handleSaveAsPng = async () => {
@@ -221,15 +217,6 @@ export function SimpleQuoteExport({
             Lưu PNG
           </>
         )}
-      </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        className="flex items-center gap-1"
-        onClick={handlePrint}
-      >
-        <Printer className="h-4 w-4" />
-        In
       </Button>
       <Button
         variant="outline"
