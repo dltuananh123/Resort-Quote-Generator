@@ -10,10 +10,10 @@ export default function Home() {
   const { t } = useTranslation();
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-sky-50 to-white">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-sky-50 to-white">
       <ResortHeader />
-      <main className="flex-1 container mx-auto px-4 py-8">
-        <div className="max-w-5xl mx-auto">
+      <main className="flex-grow container mx-auto px-4 py-8 flex flex-col">
+        <div className="max-w-5xl mx-auto w-full">
           <h1 className="text-3xl md:text-4xl font-bold text-center text-sky-900 mb-8">
             {t("quote.title")}
           </h1>
