@@ -12,10 +12,13 @@ This application streamlines the process of creating custom booking quotes for r
 - **Dual Input Methods**: Enter data manually or paste formatted data from clipboard
 - **Sample Data Option**: Quick testing and demonstration using pre-populated data
 - **Real-time Preview**: See the quote update as you enter information
-- **Responsive Design**: Works seamlessly on both desktop and mobile devices
+- **Responsive Design**: Works seamlessly on both desktop and mobile devices with optimized layout
+- **Mobile-Optimized Layout**: Input form displays above quote preview on mobile devices for better usability
 - **Localized for Vietnamese**: Full support for Vietnamese language and currency formatting
+- **Thousands Separators**: Automatic formatting of price fields for better readability
 - **Performance Monitoring**: Integrated with Vercel Speed Insights for real-time performance analytics
 - **Browser Extension Compatible**: Special handling to prevent hydration errors with Grammarly and similar extensions
+- **Export Options**: Generate high-quality PNG and PDF versions of quotes
 
 ## 💻 Technologies Used
 
@@ -56,6 +59,9 @@ This application streamlines the process of creating custom booking quotes for r
 - **Currency Formatting**: Automatic thousands separators for price inputs
 - **Date Processing**: Calculation of stay duration and cost based on check-in/check-out dates
 - **Advanced State Management**: Efficient form data handling with React hooks
+- **Responsive Layout Design**: Optimized user experience on both mobile and desktop devices
+- **Custom Type Declarations**: TypeScript type safety for external libraries like dom-to-image
+- **Export Functionality**: High-quality PNG and PDF export with multiple quality settings
 - **Hydration Error Prevention**: Special handling to accommodate browser extensions like Grammarly
 
 ## 📸 Screenshots
@@ -83,7 +89,6 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
 
 ## 📊 Performance Monitoring
 

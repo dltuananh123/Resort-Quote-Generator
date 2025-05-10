@@ -128,6 +128,23 @@ The application uses Tailwind CSS with the following color scheme:
 
 Components follow the shadcn/ui styling conventions.
 
+### Mobile Responsiveness
+
+The application is designed to be fully responsive:
+
+- On mobile devices, the input form appears above the quote display for better user experience
+- This is achieved using a flex column layout that stacks the components vertically on mobile
+- On desktop devices, the layout switches to a side-by-side grid view
+- The implementation uses `flex flex-col md:grid md:grid-cols-2` in the main container
+
+### Currency Formatting
+
+All monetary values in the application use proper thousands separators:
+
+- Input fields for prices automatically format values with Vietnamese format (e.g., ₫2,000,000)
+- Formatting is handled in the `handleChange` function of the QuoteForm component
+- Helper functions ensure proper currency display in the quote preview
+
 ## Maintenance Tasks
 
 ### Adding a New Feature
@@ -166,12 +183,19 @@ npm i --save-dev @types/library-name
 
 If not available, create declaration files in the `types/` directory, like we did for `dom-to-image`.
 
+The application includes custom type declarations for the dom-to-image library in `types/dom-to-image.d.ts` along with helper functions in `lib/export-helpers.ts` to ensure type safety.
+
 ### Export Quality Issues
 
 If export quality is poor:
 
 1. Check the `qualitySettings` in `lib/export-helpers.ts`
 2. Adjust scale and quality parameters for better results
+
+The application currently supports:
+
+- PNG export with three quality levels (normal, high, ultra)
+- PDF export that maintains the formatting of the quote display
 
 ### Styling Inconsistencies
 
