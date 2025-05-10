@@ -12,14 +12,14 @@ export default function Home() {
           <h1 className="text-3xl md:text-4xl font-bold text-center text-sky-900 mb-8">
             Báo Giá Đặt Phòng
           </h1>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white rounded-xl shadow-lg p-6 order-1 md:order-1">
+          <div className="flex flex-col md:grid md:grid-cols-2 gap-8">
+            <div className="bg-white rounded-xl shadow-lg p-6">
               <h2 className="text-xl font-semibold text-sky-800 mb-4">
                 Nhập Thông Tin Đặt Phòng
               </h2>
               <QuoteForm />
             </div>
-            <div className="bg-white rounded-xl shadow-lg p-6 order-2 md:order-2">
+            <div className="bg-white rounded-xl shadow-lg p-6">
               <h2 className="text-xl font-semibold text-sky-800 mb-4">
                 Xem Trước Báo Giá
               </h2>
