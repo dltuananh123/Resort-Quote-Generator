@@ -16,6 +16,7 @@ import {
   elementToPngDataUrl,
   qualitySettings,
 } from "@/lib/export-helpers";
+import { useTranslation } from "@/lib/translation-context";
 
 interface SimpleQuoteExportProps {
   quoteElementId: string;
@@ -26,6 +27,7 @@ export function SimpleQuoteExport({
   quoteElementId,
   bookingId = "Asteria",
 }: SimpleQuoteExportProps) {
+  const { t, currentLanguage } = useTranslation();
   const [downloading, setDownloading] = useState(false);
   const [pdfDownloading, setPdfDownloading] = useState(false);
   const [imageQuality, setImageQuality] = useState<"normal" | "high" | "ultra">(
@@ -35,7 +37,7 @@ export function SimpleQuoteExport({
   const handleSaveAsPng = async () => {
     const quoteElement = document.getElementById(quoteElementId);
     if (!quoteElement) {
-      alert("Không tìm thấy phần tử báo giá để xuất");
+      alert(t("export.elementNotFound"));
       return;
     }
 
@@ -51,7 +53,8 @@ export function SimpleQuoteExport({
       // Create download link
       const link = document.createElement("a");
       link.href = url;
-      link.download = `Bao-Gia-${bookingId}-${
+      const filePrefix = currentLanguage === "en" ? "Quote" : "Bao-Gia";
+      link.download = `${filePrefix}-${bookingId}-${
         new Date().toISOString().split("T")[0]
       }-${imageQuality}.png`;
 
@@ -68,8 +71,8 @@ export function SimpleQuoteExport({
         setDownloading(false);
       }, 100);
     } catch (error) {
-      console.error("Lỗi khi tạo hình ảnh:", error);
-      alert("Không thể tạo hình ảnh. Vui lòng thử lại.");
+      console.error(t("export.imageError"), error);
+      alert(t("export.cannotCreateImage"));
       setDownloading(false);
     }
   };
@@ -77,7 +80,7 @@ export function SimpleQuoteExport({
   const handleDownloadPdf = async () => {
     const quoteElement = document.getElementById(quoteElementId);
     if (!quoteElement) {
-      alert("Không tìm thấy phần tử báo giá để xuất");
+      alert(t("export.elementNotFound"));
       return;
     }
 
@@ -115,17 +118,32 @@ export function SimpleQuoteExport({
       pdf.addImage(dataUrl, "PNG", x, y, imgWidth, imgHeight);
 
       // Save PDF
+      const filePrefix = currentLanguage === "en" ? "Quote" : "Bao-Gia";
       pdf.save(
-        `Bao-Gia-${bookingId}-${
+        `${filePrefix}-${bookingId}-${
           new Date().toISOString().split("T")[0]
         }-${imageQuality}.pdf`
       );
 
       setPdfDownloading(false);
     } catch (error) {
-      console.error("Lỗi khi tạo PDF:", error);
-      alert("Không thể tạo PDF. Vui lòng thử lại.");
+      console.error(t("export.pdfError"), error);
+      alert(t("export.cannotCreatePDF"));
       setPdfDownloading(false);
+    }
+  };
+
+  // Translate quality levels
+  const getQualityLabel = (quality: "normal" | "high" | "ultra") => {
+    switch (quality) {
+      case "normal":
+        return t("export.qualityNormal");
+      case "high":
+        return t("export.qualityHigh");
+      case "ultra":
+        return t("export.qualityUltra");
+      default:
+        return "";
     }
   };
 
@@ -139,25 +157,20 @@ export function SimpleQuoteExport({
             className="flex items-center gap-1"
           >
             <Settings className="h-4 w-4" />
-            Chất lượng:{" "}
-            {imageQuality === "normal"
-              ? "Thường"
-              : imageQuality === "high"
-              ? "Cao"
-              : "Rất cao"}
+            {t("export.quality")}: {getQualityLabel(imageQuality)}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel>Chọn chất lượng hình ảnh</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("export.selectQuality")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setImageQuality("normal")}>
-            Thường (Nhanh, kích thước nhỏ)
+            {t("export.qualityNormalFull")}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setImageQuality("high")}>
-            Cao (Khuyến nghị)
+            {t("export.qualityHighFull")}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setImageQuality("ultra")}>
-            Rất cao (Chậm, kích thước lớn)
+            {t("export.qualityUltraFull")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -172,12 +185,12 @@ export function SimpleQuoteExport({
         {downloading ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin" />
-            Đang lưu...
+            {t("export.saving")}
           </>
         ) : (
           <>
             <ImageIcon className="h-4 w-4" />
-            Lưu PNG
+            {t("form.exportPng")}
           </>
         )}
       </Button>
@@ -191,12 +204,12 @@ export function SimpleQuoteExport({
         {pdfDownloading ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin" />
-            Đang tạo PDF...
+            {t("export.creatingPDF")}
           </>
         ) : (
           <>
             <Download className="h-4 w-4" />
-            Tải PDF
+            {t("form.exportPdf")}
           </>
         )}
       </Button>

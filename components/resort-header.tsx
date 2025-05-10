@@ -1,7 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { LanguageSwitcher } from "./language-switcher";
+import { useTranslation } from "@/lib/translation-context";
 
 export function ResortHeader() {
+  const { t } = useTranslation();
+
   return (
     <header className="bg-sky-900 text-white">
       <div className="container mx-auto px-4 py-4">
@@ -21,36 +27,41 @@ export function ResortHeader() {
               <p className="text-xs md:text-sm text-sky-200">Mũi Né Resort</p>
             </div>
           </Link>
-          <nav className="hidden md:flex items-center gap-6">
-            <Link
-              href="https://asteriamuineresort.com/vi/"
-              className="hover:text-sky-200 transition-colors"
-              target="_blank"
-            >
-              Trang Chủ
-            </Link>
-            <Link
-              href="https://asteriamuineresort.com/vi/phong-nghi/"
-              className="hover:text-sky-200 transition-colors"
-              target="_blank"
-            >
-              Phòng Nghỉ
-            </Link>
-            <Link
-              href="https://asteriamuineresort.com/vi/tien-ich/"
-              className="hover:text-sky-200 transition-colors"
-              target="_blank"
-            >
-              Tiện Ích
-            </Link>
-            <Link
-              href="https://asteriamuineresort.com/vi/lien-he/"
-              className="hover:text-sky-200 transition-colors"
-              target="_blank"
-            >
-              Liên Hệ
-            </Link>
-          </nav>
+          <div className="flex items-center gap-4">
+            <nav className="hidden md:flex items-center gap-6">
+              <Link
+                href="https://asteriamuineresort.com/vi/"
+                className="hover:text-sky-200 transition-colors"
+                target="_blank"
+              >
+                Trang Chủ
+              </Link>
+              <Link
+                href="https://asteriamuineresort.com/vi/phong-nghi/"
+                className="hover:text-sky-200 transition-colors"
+                target="_blank"
+              >
+                Phòng Nghỉ
+              </Link>
+              <Link
+                href="https://asteriamuineresort.com/vi/tien-ich/"
+                className="hover:text-sky-200 transition-colors"
+                target="_blank"
+              >
+                Tiện Ích
+              </Link>
+              <Link
+                href="https://asteriamuineresort.com/vi/lien-he/"
+                className="hover:text-sky-200 transition-colors"
+                target="_blank"
+              >
+                Liên Hệ
+              </Link>
+            </nav>
+            <div className="ml-2 flex items-center justify-center">
+              <LanguageSwitcher />
+            </div>
+          </div>
         </div>
       </div>
     </header>

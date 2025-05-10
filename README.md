@@ -4,11 +4,12 @@ A modern, elegant web application for generating professional resort booking quo
 
 ## 📋 Version
 
-**Current Version:** 1.2.0  
+**Current Version:** 1.3.0  
 **Last Updated:** May 2025
 
 ### Changelog
 
+- **v1.3.0** - Added multi-language support with English and Vietnamese translations, Language switcher in the header
 - **v1.2.0** - Added mobile-optimized layout, currency formatting with thousands separators, fixed type declarations, improved export functionality
 - **v1.1.0** - Initial public release with basic quote generation functionality
 - **v1.0.0** - Initial development version
@@ -27,6 +28,7 @@ This application streamlines the process of creating custom booking quotes for r
 - **Mobile-Optimized Layout**: Input form displays above quote preview on mobile devices for better usability
 - **Localized for Vietnamese**: Full support for Vietnamese language and currency formatting
 - **Thousands Separators**: Automatic formatting of price fields for better readability
+- **Multi-language Support**: Switch between English and Vietnamese with a simple language selector
 - **Performance Monitoring**: Integrated with Vercel Speed Insights for real-time performance analytics
 - **Browser Extension Compatible**: Special handling to prevent hydration errors with Grammarly and similar extensions
 - **Export Options**: Generate high-quality PNG and PDF versions of quotes

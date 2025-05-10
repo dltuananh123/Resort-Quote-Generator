@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { SimpleQuoteExport } from "@/components/simple-quote-export";
+import { useTranslation } from "@/lib/translation-context";
 
 interface QuoteData {
   bookingId: string;
@@ -24,6 +25,7 @@ interface QuoteData {
 }
 
 export function QuoteDisplay() {
+  const { t, currentLanguage } = useTranslation();
   const [quoteData, setQuoteData] = useState<QuoteData | null>(null);
 
   useEffect(() => {
@@ -45,13 +47,28 @@ export function QuoteDisplay() {
   if (!quoteData) {
     return (
       <div className="border border-dashed border-sky-300 rounded-lg p-8 text-center bg-sky-50">
-        <p className="text-sky-800 mb-2">Chưa có dữ liệu báo giá</p>
-        <p className="text-sm text-sky-600">
-          Vui lòng nhập thông tin hoặc dán dữ liệu mẫu để xem báo giá
-        </p>
+        <p className="text-sky-800 mb-2">{t("quote.noData")}</p>
+        <p className="text-sm text-sky-600">{t("quote.pleaseEnterData")}</p>
       </div>
     );
   }
+
+  // Format translation strings with variables
+  const totalRoomCostText = t("quote.totalRoomCost").replace(
+    "{nights}",
+    quoteData.nights.toString()
+  );
+  const additionalServicesText = quoteData.additionalServices
+    ? t("quote.additionalServices").replace(
+        "{services}",
+        quoteData.additionalServices
+      )
+    : "";
+
+  // Format the current date based on selected language
+  const currentDateFormatted = new Date().toLocaleDateString(
+    currentLanguage === "en" ? "en-US" : "vi-VN"
+  );
 
   return (
     <div className="space-y-4">
@@ -63,37 +80,41 @@ export function QuoteDisplay() {
       <Card className="overflow-hidden" id="quote-card">
         <div className="bg-sky-800 text-white p-4 text-center">
           <h3 className="text-xl font-bold">Asteria Mũi Né Resort</h3>
-          <p className="text-sky-200 text-sm">Báo Giá Đặt Phòng</p>
+          <p className="text-sky-200 text-sm">{t("quote.title")}</p>
         </div>
 
         <div className="p-6 space-y-6">
           <div className="flex justify-between items-center pb-4 border-b">
             <div>
-              <p className="text-sm text-muted-foreground">Mã Đặt Phòng</p>
+              <p className="text-sm text-muted-foreground">
+                {t("quote.bookingId")}
+              </p>
               <p className="font-semibold">{quoteData.bookingId}</p>
             </div>
             <div className="text-right">
-              <p className="text-sm text-muted-foreground">Ngày Tạo</p>
-              <p className="font-semibold">
-                {new Date().toLocaleDateString("vi-VN")}
+              <p className="text-sm text-muted-foreground">
+                {t("quote.createdAt")}
               </p>
+              <p className="font-semibold">{currentDateFormatted}</p>
             </div>
           </div>
 
           <div className="space-y-4">
             <div>
               <h4 className="font-semibold text-sky-800 mb-2">
-                Thông Tin Khách Hàng
+                {t("quote.guestInfo")}
               </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-muted-foreground">
-                    Tên Khách Hàng
+                    {t("form.guestName")}
                   </p>
                   <p>{quoteData.customerName}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Số Điện Thoại</p>
+                  <p className="text-sm text-muted-foreground">
+                    {t("form.phone")}
+                  </p>
                   <p>{quoteData.phone}</p>
                 </div>
               </div>
@@ -101,35 +122,43 @@ export function QuoteDisplay() {
 
             <div>
               <h4 className="font-semibold text-sky-800 mb-2">
-                Chi Tiết Đặt Phòng
+                {t("quote.bookingDetails")}
               </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-muted-foreground">
-                    Ngày Nhận Phòng
+                    {t("form.checkIn")}
                   </p>
                   <p>{quoteData.checkInDate}</p>
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">
-                    Ngày Trả Phòng
+                    {t("form.checkOut")}
                   </p>
                   <p>{quoteData.checkOutDate}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Số Đêm</p>
+                  <p className="text-sm text-muted-foreground">
+                    {t("form.nights")}
+                  </p>
                   <p>{quoteData.nights}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Loại Phòng</p>
+                  <p className="text-sm text-muted-foreground">
+                    {t("form.roomType")}
+                  </p>
                   <p>{quoteData.roomType}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Số Người Lớn</p>
+                  <p className="text-sm text-muted-foreground">
+                    {t("form.adults")}
+                  </p>
                   <p>{quoteData.adults}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Số Trẻ Em</p>
+                  <p className="text-sm text-muted-foreground">
+                    {t("form.children")}
+                  </p>
                   <p>
                     {quoteData.children} ({quoteData.childrenDetails})
                   </p>
@@ -140,7 +169,7 @@ export function QuoteDisplay() {
             {quoteData.specialRequests && (
               <div>
                 <h4 className="font-semibold text-sky-800 mb-2">
-                  Yêu Cầu Đặc Biệt
+                  {t("form.specialRequests")}
                 </h4>
                 <p className="bg-sky-50 p-3 rounded-md text-sky-900">
                   {quoteData.specialRequests}
@@ -150,27 +179,25 @@ export function QuoteDisplay() {
 
             <div>
               <h4 className="font-semibold text-sky-800 mb-2">
-                Chi Tiết Thanh Toán
+                {t("quote.pricing")}
               </h4>
               <div className="space-y-2 border-t pt-2">
                 <div className="flex justify-between">
-                  <span>Giá phòng mỗi đêm</span>
+                  <span>{t("form.pricePerNight")}</span>
                   <span>{quoteData.pricePerNight}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Tổng tiền phòng ({quoteData.nights} đêm)</span>
+                  <span>{totalRoomCostText}</span>
                   <span>{quoteData.totalRoomCost}</span>
                 </div>
                 {quoteData.additionalServices && (
                   <div className="flex justify-between">
-                    <span>
-                      Dịch vụ bổ sung ({quoteData.additionalServices})
-                    </span>
+                    <span>{additionalServicesText}</span>
                     <span>{quoteData.additionalFees}</span>
                   </div>
                 )}
                 <div className="flex justify-between font-bold text-lg pt-2 border-t">
-                  <span>Tổng Cộng</span>
+                  <span>{t("quote.totalPrice")}</span>
                   <span className="text-sky-800">{quoteData.grandTotal}</span>
                 </div>
               </div>
@@ -179,31 +206,21 @@ export function QuoteDisplay() {
 
           <div className="bg-sky-50 p-4 rounded-md mt-6">
             <h4 className="font-semibold text-sky-800 mb-2">
-              Điều Khoản & Lưu Ý
+              {t("quote.termsAndNotes")}
             </h4>
             <ul className="text-sm space-y-1 text-sky-900">
-              <li>• Giá trên đã bao gồm thuế và phí dịch vụ.</li>
-              <li>
-                • Báo giá có hiệu lực trong vòng 24 giờ kể từ thời điểm tạo.
-              </li>
-              <li>• Vui lòng thanh toán đặt cọc 50% để xác nhận đặt phòng.</li>
-              <li>
-                • Chính sách hủy: Miễn phí hủy trước 7 ngày, sau đó phí 50% tổng
-                giá trị đặt phòng.
-              </li>
-              <li>• Giờ nhận phòng: 14:00, giờ trả phòng: 12:00.</li>
+              <li>• {t("quote.vatIncluded")}</li>
+              <li>• {t("quote.validFor24Hours")}</li>
+              <li>• {t("quote.depositRequired")}</li>
+              <li>• {t("quote.cancellationPolicy")}</li>
+              <li>• {t("quote.checkInOutTimes")}</li>
             </ul>
           </div>
         </div>
 
         <div className="bg-sky-50 p-4 text-center border-t">
-          <p className="text-sm text-sky-800">
-            Cảm ơn quý khách đã lựa chọn Asteria Mũi Né Resort!
-          </p>
-          <p className="text-xs text-sky-600 mt-1">
-            Mọi thắc mắc vui lòng liên hệ: 0123 456 789 |
-            info@asteriamuineresort.com
-          </p>
+          <p className="text-sm text-sky-800">{t("quote.thankYou")}</p>
+          <p className="text-xs text-sky-600 mt-1">{t("quote.contactInfo")}</p>
         </div>
       </Card>
     </div>

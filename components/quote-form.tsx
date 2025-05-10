@@ -18,8 +18,10 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 import { useToast } from "@/components/ui/use-toast";
+import { useTranslation } from "@/lib/translation-context";
 
 export function QuoteForm() {
+  const { t, currentLanguage } = useTranslation();
   const [checkIn, setCheckIn] = useState<Date>();
   const [checkOut, setCheckOut] = useState<Date>();
   const { toast } = useToast();
@@ -81,8 +83,8 @@ export function QuoteForm() {
 
       if (!clipboardText) {
         toast({
-          title: "Clipboard trống",
-          description: "Không tìm thấy dữ liệu trong clipboard!",
+          title: t("form.clipboardEmpty"),
+          description: t("form.noDataInClipboard"),
           variant: "destructive",
         });
         return;
@@ -93,8 +95,8 @@ export function QuoteForm() {
 
       // Thông báo thành công
       toast({
-        title: "Đã dán dữ liệu thành công",
-        description: "Dữ liệu từ clipboard đã được xử lý.",
+        title: t("form.pasteSuccess"),
+        description: t("form.dataProcessed"),
         variant: "default",
       });
     } catch (error) {
@@ -102,9 +104,8 @@ export function QuoteForm() {
 
       // Hiển thị thông báo lỗi
       toast({
-        title: "Không thể truy cập clipboard",
-        description:
-          "Vui lòng kiểm tra quyền truy cập clipboard hoặc sử dụng nút 'Dùng Dữ Liệu Mẫu'.",
+        title: t("form.clipboardError"),
+        description: t("form.checkPermissions"),
         variant: "destructive",
       });
     }
@@ -118,8 +119,8 @@ export function QuoteForm() {
 
     // Thông báo thành công
     toast({
-      title: "Đã sử dụng dữ liệu mẫu",
-      description: "Báo giá đã được tạo với dữ liệu mẫu.",
+      title: t("form.sampleDataUsed"),
+      description: t("form.quoteCreatedWithSample"),
       variant: "default",
     });
   };
@@ -283,11 +284,14 @@ export function QuoteForm() {
     window.dispatchEvent(event);
 
     toast({
-      title: "Đã tạo báo giá",
-      description: "Báo giá đã được tạo theo thông tin bạn nhập.",
+      title: t("form.quoteCreated"),
+      description: t("form.quoteCreatedWithInfo"),
       variant: "default",
     });
   };
+
+  // The dateFns locale based on currentLanguage
+  const dateLocale = currentLanguage === "en" ? undefined : vi;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -299,7 +303,7 @@ export function QuoteForm() {
           className="w-full bg-sky-50 hover:bg-sky-100 text-sky-800 border-sky-200"
         >
           <Clipboard className="mr-2 h-4 w-4" />
-          Dán Dữ Liệu Từ Clipboard
+          {t("form.paste")}
         </Button>
         <Button
           type="button"
@@ -308,13 +312,13 @@ export function QuoteForm() {
           className="w-full bg-sky-50 hover:bg-sky-100 text-sky-800 border-sky-200"
         >
           <FileText className="mr-2 h-4 w-4" />
-          Dùng Dữ Liệu Mẫu
+          {t("form.sample")}
         </Button>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="bookingId">Mã Đặt Phòng</Label>
+          <Label htmlFor="bookingId">{t("form.bookingId")}</Label>
           <Input
             id="bookingId"
             placeholder="VD: BKK-001"
@@ -323,7 +327,7 @@ export function QuoteForm() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="phone">Số Điện Thoại</Label>
+          <Label htmlFor="phone">{t("form.phone")}</Label>
           <Input
             id="phone"
             placeholder="VD: 0933223322"
@@ -334,7 +338,7 @@ export function QuoteForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="customerName">Tên Khách Hàng</Label>
+        <Label htmlFor="customerName">{t("form.guestName")}</Label>
         <Input
           id="customerName"
           placeholder="VD: Trần Thị Hồng"
@@ -345,7 +349,7 @@ export function QuoteForm() {
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="checkIn">Ngày Nhận Phòng</Label>
+          <Label htmlFor="checkIn">{t("form.checkIn")}</Label>
           <Popover>
             <PopoverTrigger asChild>
               <Button
@@ -358,9 +362,9 @@ export function QuoteForm() {
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {checkIn ? (
-                  format(checkIn, "dd/MM/yyyy", { locale: vi })
+                  format(checkIn, "dd/MM/yyyy", { locale: dateLocale })
                 ) : (
-                  <span>Chọn ngày</span>
+                  <span>{t("form.selectDate")}</span>
                 )}
               </Button>
             </PopoverTrigger>
@@ -375,7 +379,7 @@ export function QuoteForm() {
           </Popover>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="checkOut">Ngày Trả Phòng</Label>
+          <Label htmlFor="checkOut">{t("form.checkOut")}</Label>
           <Popover>
             <PopoverTrigger asChild>
               <Button
@@ -388,9 +392,9 @@ export function QuoteForm() {
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {checkOut ? (
-                  format(checkOut, "dd/MM/yyyy", { locale: vi })
+                  format(checkOut, "dd/MM/yyyy", { locale: dateLocale })
                 ) : (
-                  <span>Chọn ngày</span>
+                  <span>{t("form.selectDate")}</span>
                 )}
               </Button>
             </PopoverTrigger>
@@ -407,7 +411,7 @@ export function QuoteForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="roomType">Loại Phòng</Label>
+        <Label htmlFor="roomType">{t("form.roomType")}</Label>
         <Input
           id="roomType"
           placeholder="VD: Phòng Senior Deluxe Giường Đôi"
@@ -418,7 +422,7 @@ export function QuoteForm() {
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="adults">Số Người Lớn</Label>
+          <Label htmlFor="adults">{t("form.adults")}</Label>
           <Input
             id="adults"
             type="number"
@@ -429,7 +433,7 @@ export function QuoteForm() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="children">Số Trẻ Em</Label>
+          <Label htmlFor="children">{t("form.children")}</Label>
           <Input
             id="children"
             type="number"
@@ -442,7 +446,7 @@ export function QuoteForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="childrenDetails">Chi Tiết Trẻ Em</Label>
+        <Label htmlFor="childrenDetails">{t("form.childrenDetails")}</Label>
         <Input
           id="childrenDetails"
           placeholder="VD: 2 bé (3t, 5t)"
@@ -452,7 +456,7 @@ export function QuoteForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="specialRequests">Yêu Cầu Đặc Biệt</Label>
+        <Label htmlFor="specialRequests">{t("form.specialRequests")}</Label>
         <Textarea
           id="specialRequests"
           placeholder="VD: Nhờ khu nghỉ xếp phòng cạnh nhau do đi cùng đoàn."
@@ -464,7 +468,7 @@ export function QuoteForm() {
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="pricePerNight">Giá Mỗi Đêm</Label>
+          <Label htmlFor="pricePerNight">{t("form.pricePerNight")}</Label>
           <Input
             id="pricePerNight"
             placeholder="VD: ₫2,200,000"
@@ -473,7 +477,7 @@ export function QuoteForm() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="additionalFees">Phí Bổ Sung</Label>
+          <Label htmlFor="additionalFees">{t("form.additionalFees")}</Label>
           <Input
             id="additionalFees"
             placeholder="VD: ₫100,000"
@@ -484,7 +488,9 @@ export function QuoteForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="additionalServices">Dịch Vụ Bổ Sung</Label>
+        <Label htmlFor="additionalServices">
+          {t("form.additionalServices")}
+        </Label>
         <Input
           id="additionalServices"
           placeholder="VD: 1 vé buffet trẻ em"
@@ -497,7 +503,7 @@ export function QuoteForm() {
         type="submit"
         className="w-full bg-sky-700 hover:bg-sky-800 text-white"
       >
-        Tạo Báo Giá
+        {t("form.submit")}
       </Button>
     </form>
   );
