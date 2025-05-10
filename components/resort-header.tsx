@@ -35,12 +35,12 @@ export function ResortHeader() {
               <p className="text-xs md:text-sm text-sky-200">Mũi Né Resort</p>
             </div>
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center">
             {/* Desktop navigation */}
-            <nav className="hidden md:flex items-center gap-12">
+            <nav className="hidden md:flex items-center">
               <Link
                 href="https://asteriamuineresort.com/vi/"
-                className="group relative hover:text-sky-200 transition-colors"
+                className="group relative hover:text-sky-200 transition-colors px-6"
                 target="_blank"
               >
                 <div className="transform group-hover:-translate-y-2 transition-transform">
@@ -65,7 +65,7 @@ export function ResortHeader() {
               </Link>
               <Link
                 href="https://asteriamuineresort.com/vi/phong-nghi/"
-                className="group relative hover:text-sky-200 transition-colors"
+                className="group relative hover:text-sky-200 transition-colors px-6"
                 target="_blank"
               >
                 <div className="transform group-hover:-translate-y-2 transition-transform">
@@ -77,7 +77,7 @@ export function ResortHeader() {
               </Link>
               <Link
                 href="https://asteriamuineresort.com/vi/tien-ich/"
-                className="group relative hover:text-sky-200 transition-colors"
+                className="group relative hover:text-sky-200 transition-colors px-6"
                 target="_blank"
               >
                 <div className="transform group-hover:-translate-y-2 transition-transform">
@@ -89,7 +89,7 @@ export function ResortHeader() {
               </Link>
               <Link
                 href="https://asteriamuineresort.com/vi/lien-he/"
-                className="group relative hover:text-sky-200 transition-colors"
+                className="group relative hover:text-sky-200 transition-colors px-6"
                 target="_blank"
               >
                 <div className="transform group-hover:-translate-y-2 transition-transform">
@@ -112,15 +112,18 @@ export function ResortHeader() {
                   {t("nav.contact")}
                 </span>
               </Link>
+              <div className="pl-6">
+                <LanguageSwitcher />
+              </div>
             </nav>
 
             {/* Language switcher & mobile menu button */}
-            <div className="flex items-center gap-2">
-              <div className="flex items-center justify-center">
+            <div className="flex items-center md:hidden">
+              <div className="mr-2">
                 <LanguageSwitcher />
               </div>
               <button
-                className="md:hidden p-1 rounded-full hover:bg-sky-800 transition-colors"
+                className="p-1 rounded-full hover:bg-sky-800 transition-colors"
                 onClick={toggleMobileMenu}
                 aria-label={t("nav.toggleMenu")}
               >
