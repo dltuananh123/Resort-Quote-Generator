@@ -15,7 +15,6 @@ interface QuoteData {
   nights: number;
   roomType: string;
   adults: number;
-  children: number;
   childrenDetails: string;
   specialRequests: string;
   pricePerNight: string;
@@ -161,14 +160,14 @@ export function QuoteDisplay() {
                   </p>
                   <p>{quoteData.adults}</p>
                 </div>
+                {quoteData.childrenDetails && (
                 <div>
                   <p className="text-sm text-muted-foreground">
-                    {t("form.children")}
+                    {t("form.childrenDetails")}
                   </p>
-                  <p>
-                    {quoteData.children} ({quoteData.childrenDetails})
-                  </p>
+                  <p>{quoteData.childrenDetails}</p>
                 </div>
+                )}
               </div>
             </div>
 

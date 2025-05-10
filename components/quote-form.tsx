@@ -32,7 +32,6 @@ export function QuoteForm() {
     phone: "",
     roomType: "",
     adults: "1",
-    children: "0",
     childrenDetails: "",
     specialRequests: "",
     pricePerNight: "",
@@ -162,7 +161,6 @@ export function QuoteForm() {
         phone: parts[2] || "",
         roomType: parts[6] || "",
         adults: parts[8] || "1",
-        children: parts[9] || "0",
         childrenDetails: parts[10] || "",
         specialRequests: parts[11] || "",
         pricePerNight: formatCurrency(parts[12] || ""),
@@ -206,7 +204,6 @@ export function QuoteForm() {
           nights: Number.parseInt(parts[5]) || 1,
           roomType: parts[6] || "",
           adults: Number.parseInt(parts[8]) || 1,
-          children: Number.parseInt(parts[9]) || 0,
           childrenDetails: parts[10] || "",
           specialRequests: parts[11] || "",
           pricePerNight: parts[12] || "",
@@ -277,7 +274,6 @@ export function QuoteForm() {
         nights: nights,
         roomType: formData.roomType,
         adults: parseInt(formData.adults) || 1,
-        children: parseInt(formData.children) || 0,
         childrenDetails: formData.childrenDetails,
         specialRequests: formData.specialRequests,
         pricePerNight: formData.pricePerNight || formatCurrency(0),
@@ -440,26 +436,14 @@ export function QuoteForm() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="children">{t("form.children")}</Label>
+          <Label htmlFor="childrenDetails">{t("form.childrenDetails")}</Label>
           <Input
-            id="children"
-            type="number"
-            min="0"
-            placeholder={t("form.placeholder.children")}
-            value={formData.children}
+            id="childrenDetails"
+            placeholder={t("form.placeholder.childrenDetails")}
+            value={formData.childrenDetails}
             onChange={handleChange}
           />
         </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="childrenDetails">{t("form.childrenDetails")}</Label>
-        <Input
-          id="childrenDetails"
-          placeholder={t("form.placeholder.childrenDetails")}
-          value={formData.childrenDetails}
-          onChange={handleChange}
-        />
       </div>
 
       <div className="space-y-2">
