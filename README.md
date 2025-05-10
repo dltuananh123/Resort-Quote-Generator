@@ -119,4 +119,4 @@ The `suppressHydrationWarning` attribute helps prevent errors when browser exten
 
 ---
 
-_Developed with ❤️ by dltuananh123 and bechovang_
+_Developed with ❤️ by [dltuananh123](https://github.com/dltuananh123) and [bechovang](https://github.com/bechovang)_
