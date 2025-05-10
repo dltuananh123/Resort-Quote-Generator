@@ -46,6 +46,20 @@ export const en = {
     quoteCreatedWithSample: "Quote has been created with sample data.",
     quoteCreated: "Quote Created",
     quoteCreatedWithInfo: "Quote has been created with your information.",
+    placeholder: {
+      bookingId: "Ex: BKK-001",
+      phone: "Ex: 0933223322",
+      guestName: "Ex: Jane Smith",
+      roomType: "Ex: Deluxe Double Room",
+      adults: "Ex: 2",
+      children: "Ex: 1",
+      childrenDetails: "Ex: 1 child (5 years old)",
+      specialRequests:
+        "Ex: Would like rooms to be next to each other as we are traveling in a group.",
+      pricePerNight: "Ex: 2,200,000 VND",
+      additionalFees: "Ex: 100,000 VND",
+      additionalServices: "Ex: 1 children's buffet ticket",
+    },
   },
   quote: {
     title: "BOOKING QUOTE",

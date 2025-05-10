@@ -58,10 +58,11 @@ export function QuoteForm() {
         return;
       }
 
-      // Add ₫ prefix and thousands separators
-      const formattedValue = `₫${parseInt(numericValue).toLocaleString(
-        "vi-VN"
-      )}`;
+      // Add currency suffix and thousands separators based on language
+      const currencySuffix = currentLanguage === "en" ? "VND" : "VNĐ";
+      const formattedValue = `${parseInt(numericValue).toLocaleString(
+        currentLanguage === "en" ? "en-US" : "vi-VN"
+      )} ${currencySuffix}`;
 
       setFormData((prev) => ({
         ...prev,
@@ -147,8 +148,11 @@ export function QuoteForm() {
         // Remove any existing non-digit characters
         const numericValue = value.replace(/[^\d]/g, "");
         if (numericValue === "") return "";
-        // Format with ₫ prefix and thousands separators
-        return `₫${parseInt(numericValue).toLocaleString("vi-VN")}`;
+        // Format with appropriate currency suffix and thousands separators
+        const currencySuffix = currentLanguage === "en" ? "VND" : "VNĐ";
+        return `${parseInt(numericValue).toLocaleString(
+          currentLanguage === "en" ? "en-US" : "vi-VN"
+        )} ${currencySuffix}`;
       };
 
       // Cập nhật trạng thái form với dữ liệu từ clipboard
@@ -239,7 +243,10 @@ export function QuoteForm() {
 
     // Format currency values
     const formatCurrency = (value: number) => {
-      return `₫${value.toLocaleString("vi-VN")}`;
+      const currencySuffix = currentLanguage === "en" ? "VND" : "VNĐ";
+      return `${value.toLocaleString(
+        currentLanguage === "en" ? "en-US" : "vi-VN"
+      )} ${currencySuffix}`;
     };
 
     // Helper to extract numeric value from formatted currency
@@ -321,7 +328,7 @@ export function QuoteForm() {
           <Label htmlFor="bookingId">{t("form.bookingId")}</Label>
           <Input
             id="bookingId"
-            placeholder="VD: BKK-001"
+            placeholder={t("form.placeholder.bookingId")}
             value={formData.bookingId}
             onChange={handleChange}
           />
@@ -330,7 +337,7 @@ export function QuoteForm() {
           <Label htmlFor="phone">{t("form.phone")}</Label>
           <Input
             id="phone"
-            placeholder="VD: 0933223322"
+            placeholder={t("form.placeholder.phone")}
             value={formData.phone}
             onChange={handleChange}
           />
@@ -341,7 +348,7 @@ export function QuoteForm() {
         <Label htmlFor="customerName">{t("form.guestName")}</Label>
         <Input
           id="customerName"
-          placeholder="VD: Trần Thị Hồng"
+          placeholder={t("form.placeholder.guestName")}
           value={formData.customerName}
           onChange={handleChange}
         />
@@ -414,7 +421,7 @@ export function QuoteForm() {
         <Label htmlFor="roomType">{t("form.roomType")}</Label>
         <Input
           id="roomType"
-          placeholder="VD: Phòng Senior Deluxe Giường Đôi"
+          placeholder={t("form.placeholder.roomType")}
           value={formData.roomType}
           onChange={handleChange}
         />
@@ -427,7 +434,7 @@ export function QuoteForm() {
             id="adults"
             type="number"
             min="1"
-            placeholder="VD: 3"
+            placeholder={t("form.placeholder.adults")}
             value={formData.adults}
             onChange={handleChange}
           />
@@ -438,7 +445,7 @@ export function QuoteForm() {
             id="children"
             type="number"
             min="0"
-            placeholder="VD: 5"
+            placeholder={t("form.placeholder.children")}
             value={formData.children}
             onChange={handleChange}
           />
@@ -449,7 +456,7 @@ export function QuoteForm() {
         <Label htmlFor="childrenDetails">{t("form.childrenDetails")}</Label>
         <Input
           id="childrenDetails"
-          placeholder="VD: 2 bé (3t, 5t)"
+          placeholder={t("form.placeholder.childrenDetails")}
           value={formData.childrenDetails}
           onChange={handleChange}
         />
@@ -459,7 +466,7 @@ export function QuoteForm() {
         <Label htmlFor="specialRequests">{t("form.specialRequests")}</Label>
         <Textarea
           id="specialRequests"
-          placeholder="VD: Nhờ khu nghỉ xếp phòng cạnh nhau do đi cùng đoàn."
+          placeholder={t("form.placeholder.specialRequests")}
           rows={3}
           value={formData.specialRequests}
           onChange={handleChange}
@@ -471,7 +478,7 @@ export function QuoteForm() {
           <Label htmlFor="pricePerNight">{t("form.pricePerNight")}</Label>
           <Input
             id="pricePerNight"
-            placeholder="VD: ₫2,200,000"
+            placeholder={t("form.placeholder.pricePerNight")}
             value={formData.pricePerNight}
             onChange={handleChange}
           />
@@ -480,7 +487,7 @@ export function QuoteForm() {
           <Label htmlFor="additionalFees">{t("form.additionalFees")}</Label>
           <Input
             id="additionalFees"
-            placeholder="VD: ₫100,000"
+            placeholder={t("form.placeholder.additionalFees")}
             value={formData.additionalFees}
             onChange={handleChange}
           />
@@ -493,7 +500,7 @@ export function QuoteForm() {
         </Label>
         <Input
           id="additionalServices"
-          placeholder="VD: 1 vé buffet trẻ em"
+          placeholder={t("form.placeholder.additionalServices")}
           value={formData.additionalServices}
           onChange={handleChange}
         />

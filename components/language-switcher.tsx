@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { useTranslation } from "@/lib/translation-context";
 import { Button } from "@/components/ui/button";
-import { Globe } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,7 +22,13 @@ export function LanguageSwitcher() {
           size="sm"
           className="flex items-center gap-1 h-9 text-white hover:bg-sky-800 hover:text-white border border-sky-700"
         >
-          <Globe className="h-4 w-4 mr-1" />
+          <Image
+            src={`/flags/${currentLanguage}.svg`}
+            alt={currentLanguage === "vi" ? "Tiếng Việt" : "English"}
+            width={20}
+            height={12}
+            className="mr-1.5"
+          />
           <span>{currentLanguage === "vi" ? "VI" : "EN"}</span>
         </Button>
       </DropdownMenuTrigger>
@@ -40,7 +46,16 @@ export function LanguageSwitcher() {
                 : "text-gray-800 hover:bg-sky-50"
             }
           >
-            {language.name}
+            <div className="flex items-center">
+              <Image
+                src={`/flags/${language.code}.svg`}
+                alt={language.name}
+                width={24}
+                height={14}
+                className="mr-2"
+              />
+              <span>{language.name}</span>
+            </div>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
