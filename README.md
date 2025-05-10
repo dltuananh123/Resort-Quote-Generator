@@ -84,31 +84,6 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## 📐 Favicon Setup
-
-The application is configured to use a custom favicon:
-
-1. The main favicon file is `public/favicon.svg`
-2. The application is set up to support multiple favicon formats:
-   - SVG: `/favicon.svg` (vector format, best for modern browsers)
-   - ICO: `/favicon.ico` (traditional format, for older browsers)
-   - PNG: Various sizes in `/favicon-*x*.png` (for different devices)
-
-### Generating Favicon Files
-
-The project includes a script to generate all required favicon formats from your SVG:
-
-```bash
-# Install ImageMagick first (required for conversion)
-# - Windows: https://imagemagick.org/script/download.php
-# - Mac: brew install imagemagick
-# - Ubuntu/Debian: sudo apt-get install imagemagick
-
-# Then run the generation script
-npm run generate-favicon
-```
-
-If you don't have ImageMagick installed, you can manually create the favicon files using online tools like [RealFaviconGenerator](https://realfavicongenerator.net/) or [Favicon.io](https://favicon.io/).
 
 ## 📊 Performance Monitoring
 
