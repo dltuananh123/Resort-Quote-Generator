@@ -11,6 +11,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  elementToPngBlob,
+  elementToPngDataUrl,
+  qualitySettings,
+} from "@/lib/export-helpers";
 
 interface SimpleQuoteExportProps {
   quoteElementId: string;
@@ -27,13 +32,6 @@ export function SimpleQuoteExport({
     "high"
   );
 
-  // Cấu hình chất lượng hình ảnh
-  const qualitySettings = {
-    normal: { scale: 2, quality: 0.9 },
-    high: { scale: 3, quality: 0.95 },
-    ultra: { scale: 4, quality: 1.0 },
-  };
-
   const handleSaveAsPng = async () => {
     const quoteElement = document.getElementById(quoteElementId);
     if (!quoteElement) {
@@ -44,41 +42,24 @@ export function SimpleQuoteExport({
     try {
       setDownloading(true);
 
-      // Sử dụng thư viện domtoimage thay vì html2canvas
-      const domtoimage = await import("dom-to-image");
+      // Using our helper function to create the blob
+      const blob = await elementToPngBlob(quoteElement, imageQuality);
 
-      // Lấy cấu hình chất lượng
-      const { scale, quality } = qualitySettings[imageQuality];
-
-      // Tạo blob từ DOM với chất lượng cao hơn
-      const blob = await domtoimage.toBlob(quoteElement, {
-        quality: quality,
-        bgcolor: "#ffffff",
-        height: quoteElement.offsetHeight * scale,
-        width: quoteElement.offsetWidth * scale,
-        style: {
-          transform: `scale(${scale})`,
-          transformOrigin: "top left",
-          width: `${quoteElement.offsetWidth}px`,
-          height: `${quoteElement.offsetHeight}px`,
-        },
-      });
-
-      // Tạo URL từ blob
+      // Create URL from blob
       const url = URL.createObjectURL(blob);
 
-      // Tạo liên kết tải xuống
+      // Create download link
       const link = document.createElement("a");
       link.href = url;
       link.download = `Bao-Gia-${bookingId}-${
         new Date().toISOString().split("T")[0]
       }-${imageQuality}.png`;
 
-      // Kích hoạt tải xuống
+      // Trigger download
       document.body.appendChild(link);
       link.click();
 
-      // Dọn dẹp
+      // Cleanup
       setTimeout(() => {
         if (link.parentNode === document.body) {
           document.body.removeChild(link);
@@ -103,32 +84,14 @@ export function SimpleQuoteExport({
     try {
       setPdfDownloading(true);
 
-      // Sử dụng thư viện domtoimage và jspdf
-      const [domtoimage, jspdfModule] = await Promise.all([
-        import("dom-to-image"),
-        import("jspdf"),
-      ]);
-
+      // Import jspdf module
+      const jspdfModule = await import("jspdf");
       const jsPDF = jspdfModule.default;
 
-      // Lấy cấu hình chất lượng
-      const { scale, quality } = qualitySettings[imageQuality];
+      // Get data URL using our helper function
+      const dataUrl = await elementToPngDataUrl(quoteElement, imageQuality);
 
-      // Tạo dataUrl từ DOM với chất lượng cao hơn
-      const dataUrl = await domtoimage.toPng(quoteElement, {
-        quality: quality,
-        bgcolor: "#ffffff",
-        height: quoteElement.offsetHeight * scale,
-        width: quoteElement.offsetWidth * scale,
-        style: {
-          transform: `scale(${scale})`,
-          transformOrigin: "top left",
-          width: `${quoteElement.offsetWidth}px`,
-          height: `${quoteElement.offsetHeight}px`,
-        },
-      });
-
-      // Tạo image từ dataUrl
+      // Create image from dataUrl
       const img = new Image();
       img.src = dataUrl;
 
@@ -136,22 +99,22 @@ export function SimpleQuoteExport({
         img.onload = resolve;
       });
 
-      // Tạo PDF với kích thước A4
+      // Create PDF with A4 size
       const pdf = new jsPDF("p", "mm", "a4");
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
 
-      // Tính toán tỷ lệ
+      // Calculate ratio
       const ratio = Math.min(pdfWidth / img.width, pdfHeight / img.height);
       const imgWidth = img.width * ratio;
       const imgHeight = img.height * ratio;
       const x = (pdfWidth - imgWidth) / 2;
       const y = 10;
 
-      // Thêm hình ảnh vào PDF
+      // Add image to PDF
       pdf.addImage(dataUrl, "PNG", x, y, imgWidth, imgHeight);
 
-      // Lưu PDF
+      // Save PDF
       pdf.save(
         `Bao-Gia-${bookingId}-${
           new Date().toISOString().split("T")[0]
