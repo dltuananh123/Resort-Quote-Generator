@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="vi" suppressHydrationWarning>
       <head />
-      <body>
+      <body suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
