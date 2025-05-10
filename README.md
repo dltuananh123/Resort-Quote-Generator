@@ -26,7 +26,7 @@ This application streamlines the process of creating custom booking quotes for r
 
 ## 👨‍💻 Developers
 
-### dltuananh123
+### 💻dltuananh123
 
 **Skills & Contributions:**
 
@@ -36,7 +36,7 @@ This application streamlines the process of creating custom booking quotes for r
 - Form state management and validation
 - Internationalization for Vietnamese language
 
-### bechovang
+### 🔢bechovang
 
 **Skills & Contributions:**
 
