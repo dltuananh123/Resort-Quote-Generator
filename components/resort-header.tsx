@@ -1,5 +1,5 @@
-import Image from "next/image"
-import Link from "next/link"
+import Image from "next/image";
+import Link from "next/link";
 
 export function ResortHeader() {
   return (
@@ -9,10 +9,10 @@ export function ResortHeader() {
           <Link href="/" className="flex items-center gap-2">
             <div className="relative w-12 h-12 md:w-16 md:h-16">
               <Image
-                src="/placeholder.svg?height=64&width=64"
+                src="/logo.svg"
                 alt="Asteria Mũi Né Resort Logo"
                 fill
-                className="object-contain"
+                className="object-contain bg-white rounded"
                 priority
               />
             </div>
@@ -38,5 +38,5 @@ export function ResortHeader() {
         </div>
       </div>
     </header>
-  )
+  );
 }
