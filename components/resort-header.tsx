@@ -7,12 +7,12 @@ export function ResortHeader() {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="relative w-12 h-12 md:w-16 md:h-16">
+            <div className="relative w-12 h-12 md:w-16 md:h-16 bg-white rounded overflow-hidden">
               <Image
                 src="/logo.svg"
                 alt="Asteria Mũi Né Resort Logo"
                 fill
-                className="object-contain bg-white rounded"
+                className="object-contain"
                 priority
               />
             </div>
