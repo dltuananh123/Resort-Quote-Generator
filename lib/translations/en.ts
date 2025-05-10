@@ -4,6 +4,13 @@ export const en = {
     description: "Booking quote system for Asteria Mũi Né Resort",
     language: "English",
   },
+  nav: {
+    home: "Home",
+    rooms: "Rooms",
+    amenities: "Amenities",
+    contact: "Contact",
+    toggleMenu: "Toggle Menu",
+  },
   form: {
     guestName: "Guest Name",
     email: "Email",

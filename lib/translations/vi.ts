@@ -4,6 +4,13 @@ export const vi = {
     description: "Hệ thống tạo báo giá đặt phòng cho Asteria Mũi Né Resort",
     language: "Tiếng Việt",
   },
+  nav: {
+    home: "Trang Chủ",
+    rooms: "Phòng Nghỉ",
+    amenities: "Tiện Ích",
+    contact: "Liên Hệ",
+    toggleMenu: "Mở Menu",
+  },
   form: {
     guestName: "Tên Khách Hàng",
     email: "Email",
