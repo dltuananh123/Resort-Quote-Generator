@@ -9,6 +9,7 @@ A modern, elegant web application for generating professional resort booking quo
 
 ### Changelog
 
+- **v2.0.1** - Fixed React dependency conflict by downgrading to React 18.3.1 for compatibility with react-day-picker
 - **v2.0.0** - Major security update with NextAuth.js integration for secure authentication, added user roles (admin/user), implemented protected routes and secure session management
 - **v1.7.4** - Enhanced footer with multilingual address support for English, Vietnamese, Chinese, Russian, and Korean
 - **v1.7.3** - Added multilingual footer with translations for all five supported languages
