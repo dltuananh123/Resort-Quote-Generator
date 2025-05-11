@@ -36,17 +36,17 @@ export function ResortFooter() {
   const getLocalizedAddress = () => {
     switch (currentLanguage) {
       case "en":
-        return "08 Xuan Thuy Street, Ward 5, Mui Ne Ward, Phan Thiet City, Binh Thuan Province, Vietnam";
+        return "KM 11 Hon Rom Road, Ham Tien Ward, Phan Thiet City, Binh Thuan Province, Vietnam";
       case "ru":
-        return "08 ул. Суан Туи, Район 5, район Муй Не, город Фантьет, провинция Бинь Туан, Вьетнам";
+        return "Дорога Хон Ром, КМ 11, район Хам Тьен, город Фантьет, провинция Бинь Туан, Вьетнам";
       case "kr":
-        return "베트남 빈투언성 판티엣시 무이네구 5지구 쑤안투이 거리 08번지";
+        return "베트남 빈투언성 판티엣시 함티엔구 혼롬 로드 11km";
       case "cn":
-        return "越南平顺省潘切市美奈坊第5坊春水街08号";
+        return "越南平顺省潘切市含仙坊洪仑路11公里处";
       case "vi":
-        return "08 đường Xuân Thủy, phường 5, phường Mũi Né, thành phố Phan Thiết, tỉnh Bình Thuận, Việt Nam";
+        return "Km 11 Đường Hòn Rơm, Phường Hàm Tiến, Thành phố Phan Thiết, Tỉnh Bình Thuận, Việt Nam";
       default:
-        return "08 Xuan Thuy Street, Ward 5, Mui Ne Ward, Phan Thiet City, Binh Thuan Province, Vietnam";
+        return "KM 11 Hon Rom Road, Ham Tien Ward, Phan Thiet City, Binh Thuan Province, Vietnam";
     }
   };
 
@@ -177,15 +177,21 @@ export function ResortFooter() {
             </h3>
             <div className="h-64 w-full">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3906.3455765507595!2d108.28973!3d11.721775000000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31768df3eb3c3d89%3A0x24b5350f13b0afb2!2sAsteria%20Mui%20Ne%20Resort!5e0!3m2!1sen!2s!4v1718687850656!5m2!1sen!2s"
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d501397.39235783456!2d108.301872!3d10.950745!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31768f95b37e2767%3A0xcbd91168ae062f06!2sAsteria%20Mui%20Ne%20Resort!5e0!3m2!1sen!2sus!4v1746951252110!5m2!1sen!2sus"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
+                title="Asteria Mui Ne Resort Location"
+                aria-label="Map showing location of Asteria Mui Ne Resort"
               ></iframe>
             </div>
+            <p className="text-xs mt-2 text-gray-300">
+              {t("footer.mapDirectionsHint") ||
+                "Click on the map to get directions"}
+            </p>
           </div>
         </div>
       </div>

@@ -160,6 +160,7 @@ export const ru = {
     subscribe: "ПОДПИСАТЬСЯ",
     followUs: "СЛЕДИТЕ ЗА НАМИ",
     resortLocation: "РАСПОЛОЖЕНИЕ КУРОРТА",
-    subscriptionThanks: "Спасибо за подписку с email",
+    subscriptionThanks: "Спасибо за подписку с электронной почтой",
+    mapDirectionsHint: "Нажмите на карту, чтобы получить маршрут",
   },
 };

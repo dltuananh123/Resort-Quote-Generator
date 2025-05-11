@@ -162,16 +162,33 @@ const getLocalizedAddress = () => {
    - Update the email in the `href="mailto:info@asteriamuineresort.com"` attribute
    - These changes only need to be made once as they are not language-specific
 
-3. **Updating Map**: If the resort location changes:
+3. **Updating Map**:
 
-   - Update the Google Maps embed URL in the iframe src attribute
-   - Ensure the map is centered correctly on the new location
-   - Consider adjusting the zoom level if needed
+   - Replace the Google Maps iframe URL with a new embed link
+   - The current map uses a wider area view with coordinates 10.950745, 108.301872 for Asteria Mũi Né Resort
+   - The resort is located at KM 11 Hon Rom Road, Ham Tien Ward, Phan Thiet City
+   - The map includes accessibility attributes (title and aria-label) for better screen reader support
+   - A directions hint is displayed below the map with translations for all languages
+   - To change the map location or zoom level, generate a new embed code from Google Maps:
+     1. Go to Google Maps and search for "Asteria Mui Ne Resort"
+     2. Click "Share" and select "Embed a map"
+     3. Choose your preferred size and zoom level
+     4. Copy the iframe code and update the src attribute in the component
+   - The current map uses a wider zoom level to show surrounding area and provide better context
+   - Always preserve the responsive attributes (width="100%", height="100%") for proper display on all devices
 
 4. **Social Media Updates**: To add or change social media links:
+
    - Update the `href` attributes with the correct URLs
    - Ensure SVG icons are correctly sized (currently 28x28)
    - Maintain the hover effect styling (`hover:text-yellow-400 transition`)
+
+5. **Updating footer colors**:
+   - Modify the Tailwind CSS classes in the component
+   - Main footer: `bg-sky-900`
+   - Bottom bar: `bg-sky-950`
+   - Accent colors: `text-[#c5965a]` (gold)
+   - Hover effects: `hover:text-yellow-400`, `hover:bg-[#c5965a]`
 
 ## Internationalization
 
@@ -673,6 +690,17 @@ The footer layout is defined in `components/resort-footer.tsx`.
 4. **Updating map**:
 
    - Replace the Google Maps iframe URL with a new embed link
+   - The current map uses a wider area view with coordinates 10.950745, 108.301872 for Asteria Mũi Né Resort
+   - The resort is located at KM 11 Hon Rom Road, Ham Tien Ward, Phan Thiet City
+   - The map includes accessibility attributes (title and aria-label) for better screen reader support
+   - A directions hint is displayed below the map with translations for all languages
+   - To change the map location or zoom level, generate a new embed code from Google Maps:
+     1. Go to Google Maps and search for "Asteria Mui Ne Resort"
+     2. Click "Share" and select "Embed a map"
+     3. Choose your preferred size and zoom level
+     4. Copy the iframe code and update the src attribute in the component
+   - The current map uses a wider zoom level to show surrounding area and provide better context
+   - Always preserve the responsive attributes (width="100%", height="100%") for proper display on all devices
 
 5. **Changing footer colors**:
    - Modify the Tailwind CSS classes in the component

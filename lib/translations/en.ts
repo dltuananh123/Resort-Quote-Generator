@@ -163,5 +163,6 @@ export const en = {
     followUs: "FOLLOW US",
     resortLocation: "RESORT LOCATION",
     subscriptionThanks: "Thank you for subscribing with email",
+    mapDirectionsHint: "Click on the map to get directions",
   },
 };

@@ -162,6 +162,7 @@ export const kr = {
     subscribe: "구독하기",
     followUs: "팔로우하기",
     resortLocation: "리조트 위치",
-    subscriptionThanks: "구독해 주셔서 감사합니다",
+    subscriptionThanks: "구독해 주셔서 감사합니다. 이메일",
+    mapDirectionsHint: "지도를 클릭하여 길 안내를 받으세요",
   },
 };

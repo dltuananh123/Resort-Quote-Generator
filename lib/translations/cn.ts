@@ -157,5 +157,6 @@ export const cn = {
     followUs: "关注我们",
     resortLocation: "度假村位置",
     subscriptionThanks: "感谢您使用电子邮件订阅",
+    mapDirectionsHint: "点击地图获取路线",
   },
 };

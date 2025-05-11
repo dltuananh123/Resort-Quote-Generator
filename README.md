@@ -4,11 +4,13 @@ A modern, elegant web application for generating professional resort booking quo
 
 ## 📋 Version
 
-**Current Version:** 2.0.0  
+**Current Version:** 2.0.3  
 **Last Updated:** May 2025
 
 ### Changelog
 
+- **v2.0.3** - Updated resort location to KM 11 Hon Rom Road with wider area view map and enhanced documentation for map embedding
+- **v2.0.2** - Enhanced Google Maps integration with improved pin location, accessibility features, and multilingual directions hint
 - **v2.0.1** - Fixed React dependency conflict by downgrading to React 18.3.1 for compatibility with react-day-picker
 - **v2.0.0** - Major security update with NextAuth.js integration for secure authentication, added user roles (admin/user), implemented protected routes and secure session management
 - **v1.7.4** - Enhanced footer with multilingual address support for English, Vietnamese, Chinese, Russian, and Korean

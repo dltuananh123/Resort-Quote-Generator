@@ -162,7 +162,8 @@ export const vi = {
     enterEmail: "nhập email của bạn...",
     subscribe: "ĐĂNG KÝ",
     followUs: "THEO DÕI CHÚNG TÔI",
-    resortLocation: "ĐỊNH VỊ KHU NGHỈ",
+    resortLocation: "VỊ TRÍ KHU NGHỈ DƯỠNG",
     subscriptionThanks: "Cảm ơn bạn đã đăng ký với email",
+    mapDirectionsHint: "Nhấp vào bản đồ để nhận chỉ đường",
   },
 };
