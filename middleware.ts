@@ -1,13 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
+// Định nghĩa cấu trúc đường dẫn và quyền truy cập
+interface RouteConfig {
+  path: string;
+  roles: string[];
+}
+
+// Danh sách đường dẫn và quyền truy cập tương ứng
+const protectedRoutes: RouteConfig[] = [
+  { path: "/admin", roles: ["admin"] },
+  { path: "/admin/dashboard", roles: ["admin"] },
+  { path: "/admin/users", roles: ["admin"] },
+  { path: "/profile", roles: ["admin", "user"] },
+];
+
+// Danh sách đường dẫn công khai không cần xác thực
+const publicPaths = ["/login", "/", "/about"];
+
 export async function middleware(request: NextRequest) {
   // Đường dẫn của trang hiện tại
   const path = request.nextUrl.pathname;
 
-  // Các đường dẫn được coi là công khai, không cần xác thực
-  const publicPaths = ["/login"];
-  const isPublicPath = publicPaths.includes(path);
+  // Kiểm tra xem đường dẫn hiện tại có phải là công khai không
+  const isPublicPath = publicPaths.some(
+    (publicPath) => path === publicPath || path.startsWith(publicPath + "/")
+  );
 
   // Kiểm tra xem người dùng đã đăng nhập chưa
   const token = await getToken({
@@ -24,9 +42,25 @@ export async function middleware(request: NextRequest) {
   }
 
   // Người dùng đã đăng nhập và đang cố truy cập trang đăng nhập
-  if (token && isPublicPath) {
+  if (token && path === "/login") {
     // Nếu đã đăng nhập rồi thì điều hướng đến trang chủ
     return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  // Kiểm tra quyền truy cập cho các trang được bảo vệ
+  if (token) {
+    const userRole = token.role as string;
+
+    // Kiểm tra từng đường dẫn được bảo vệ
+    for (const route of protectedRoutes) {
+      if (path === route.path || path.startsWith(route.path + "/")) {
+        // Nếu người dùng không có quyền truy cập, chuyển hướng đến trang chủ
+        if (!route.roles.includes(userRole)) {
+          return NextResponse.redirect(new URL("/", request.url));
+        }
+        break;
+      }
+    }
   }
 
   // Cho phép truy cập trang trong các trường hợp còn lại

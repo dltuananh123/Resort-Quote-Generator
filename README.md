@@ -9,7 +9,8 @@ A modern, elegant web application for generating professional resort booking quo
 
 ### Changelog
 
-- **v2.0.0** - Major security update with NextAuth.js integration for secure authentication, added user roles (admin/staff), implemented protected routes and secure session management
+- **v2.0.0** - Major security update with NextAuth.js integration for secure authentication, added user roles (admin/user), implemented protected routes and secure session management
+- **v1.7.4** - Enhanced footer with multilingual address support for English, Vietnamese, Chinese, Russian, and Korean
 - **v1.7.3** - Added multilingual footer with translations for all five supported languages
 - **v1.7.2** - Enhanced translations for Chinese, Korean, and Russian languages with improved terminology, natural phrasing, and cultural appropriateness
 - **v1.7.1** - Optimized Russian translations with shorter phrases to improve UI button sizing and prevent text overflow
@@ -47,6 +48,7 @@ This application streamlines the process of creating custom booking quotes for r
 - **Browser Extension Compatible**: Special handling to prevent hydration errors with Grammarly and similar extensions
 - **Export Options**: Generate high-quality PNG and PDF versions of quotes
 - **Hand-crafted SVG Flags**: Custom SVG flag icons for language selection, optimized for performance and scalability
+- **Fully Localized Footer**: Resort information, address, and contact details translated in all supported languages
 
 ## 💻 Technologies Used
 
@@ -97,6 +99,7 @@ This application streamlines the process of creating custom booking quotes for r
 - **Export Functionality**: High-quality PNG and PDF export with multiple quality settings
 - **Hydration Error Prevention**: Special handling to accommodate browser extensions like Grammarly
 - **Hand-crafted SVG Assets**: Custom SVG flags created manually to reduce file size, improve scalability, and ensure seamless CSS integration
+- **Comprehensive Internationalization**: Complete multilingual experience with localized content, including address formatting in native formats
 
 ## 📸 Screenshots
 
@@ -172,6 +175,8 @@ The application features a comprehensive translation system with support for Eng
 - Culturally appropriate translations with native-language examples and naming conventions
 - Standardized language codes (cn for Chinese, kr for Korean) for consistent implementation
 - Complete multilingual footer with resort description, amenities, and quick links in all five languages
+- Localized addresses displayed in culturally appropriate formats for each supported language
+- Dynamically rendered text content that automatically adjusts based on the selected language
 
 ### UI Text Optimization
 
@@ -184,6 +189,7 @@ The application includes language-specific text optimizations:
 - **Form labels**: Optimized for compact display while maintaining clarity
 - **Error messages**: Streamlined for clear presentation in modals and notifications
 - **Footer**: Culturally appropriate translations with consistent terminology across all site sections
+- **Addresses**: Formatted according to local conventions for each language for better readability
 
 ### SVG Flag Icons
 

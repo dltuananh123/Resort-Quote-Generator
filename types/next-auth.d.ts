@@ -6,7 +6,10 @@ declare module "next-auth" {
    * Mở rộng kiểu dữ liệu User để bao gồm trường role
    */
   interface User {
-    role?: string;
+    id: string;
+    role: "admin" | "user";
+    email: string;
+    name?: string;
   }
 
   /**
@@ -14,9 +17,10 @@ declare module "next-auth" {
    */
   interface Session {
     user: {
-      id?: string;
-      role?: string;
+      id: string;
+      role: "admin" | "user";
     } & DefaultSession["user"];
+    token: string;
   }
 }
 
@@ -25,6 +29,9 @@ declare module "next-auth/jwt" {
    * Mở rộng kiểu dữ liệu JWT để bao gồm trường role
    */
   interface JWT {
-    role?: string;
+    id: string;
+    role: "admin" | "user";
+    email: string;
+    name?: string;
   }
 }
