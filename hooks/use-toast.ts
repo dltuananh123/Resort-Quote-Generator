@@ -6,14 +6,16 @@ import * as React from "react";
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 
 const TOAST_LIMIT = 3;
-const TOAST_REMOVE_DELAY = 3000; // Shorter time for mobile
+const TOAST_REMOVE_DELAY = 3000; // Shorter time for standard desktop
 const TOAST_REMOVE_DELAY_MOBILE = 4000; // Slightly longer for mobile to give users time to read
+const TOAST_SWIPE_THRESHOLD = 20; // Pixels to swipe before dismissing
 
 type ToasterToast = ToastProps & {
   id: string;
   title?: React.ReactNode;
   description?: React.ReactNode;
   action?: ToastActionElement;
+  swipeDirection?: "right" | "left" | "up" | "down"; // Added swipe direction
 };
 
 const actionTypes = {
@@ -148,6 +150,12 @@ type Toast = Omit<ToasterToast, "id">;
 function toast({ ...props }: Toast) {
   const id = genId();
 
+  // Detect if on mobile
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+  // Set swipe direction based on device type
+  const defaultSwipeDirection = isMobile ? "right" : "down";
+
   const update = (props: ToasterToast) =>
     dispatch({
       type: "UPDATE_TOAST",
@@ -161,8 +169,19 @@ function toast({ ...props }: Toast) {
       ...props,
       id,
       open: true,
+      swipeDirection: props.swipeDirection || defaultSwipeDirection,
       onOpenChange: (open) => {
         if (!open) dismiss();
+      },
+      // Pass through event handlers from props
+      onSwipeStart: (event) => {
+        props.onSwipeStart?.(event);
+      },
+      onSwipeMove: (event) => {
+        props.onSwipeMove?.(event);
+      },
+      onSwipeEnd: (event) => {
+        props.onSwipeEnd?.(event);
       },
     },
   });

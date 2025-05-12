@@ -11,6 +11,16 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  /* Hide scrollbars but keep functionality */
+  .hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
 }
 
 @layer base {
@@ -91,5 +101,37 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Hide scrollbars across the entire site */
+  html,
+  body {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+
+  /* Hide scrollbars in all scrollable containers */
+  div,
+  section,
+  article,
+  aside,
+  nav,
+  main {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  div::-webkit-scrollbar,
+  section::-webkit-scrollbar,
+  article::-webkit-scrollbar,
+  aside::-webkit-scrollbar,
+  nav::-webkit-scrollbar,
+  main::-webkit-scrollbar {
+    display: none;
   }
 }

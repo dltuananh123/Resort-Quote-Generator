@@ -23,15 +23,19 @@ const ToastViewport = React.forwardRef<
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
 const toastVariants = cva(
-  "group pointer-events-auto relative flex w-full items-center justify-between overflow-hidden rounded-lg border p-4 pr-7 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-90 data-[state=open]:slide-in-from-bottom-full sm:data-[state=open]:slide-in-from-right-full data-[state=closed]:slide-out-to-bottom-full sm:data-[state=closed]:slide-out-to-right-full touch-manipulation",
+  "group pointer-events-auto relative flex w-full items-center justify-between overflow-hidden rounded-lg border p-4 pr-7 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-90 data-[state=open]:slide-in-from-bottom-full sm:data-[state=open]:slide-in-from-right-full data-[state=closed]:slide-out-to-right-full md:data-[state=closed]:slide-out-to-bottom-full touch-none md:touch-auto",
   {
     variants: {
       variant: {
-        default: "border-sky-200 bg-sky-50 text-sky-900",
-        destructive: "destructive group border-red-200 bg-red-50 text-red-900",
-        success: "border-green-200 bg-green-50 text-green-900",
-        warning: "border-yellow-200 bg-yellow-50 text-yellow-900",
-        info: "border-blue-200 bg-blue-50 text-blue-900",
+        default:
+          "border-sky-200 bg-sky-50 text-sky-900 data-[swipe=move]:bg-sky-100",
+        destructive:
+          "destructive group border-red-200 bg-red-50 text-red-900 data-[swipe=move]:bg-red-100",
+        success:
+          "border-green-200 bg-green-50 text-green-900 data-[swipe=move]:bg-green-100",
+        warning:
+          "border-yellow-200 bg-yellow-50 text-yellow-900 data-[swipe=move]:bg-yellow-100",
+        info: "border-blue-200 bg-blue-50 text-blue-900 data-[swipe=move]:bg-blue-100",
       },
     },
     defaultVariants: {
