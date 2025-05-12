@@ -8,7 +8,7 @@ import React, {
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-// Định nghĩa kiểu dữ liệu cho context
+// Define data types for context
 interface AuthContextType {
   userRole: string | null;
   isAdmin: boolean;
@@ -17,7 +17,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
 }
 
-// Tạo context với giá trị mặc định
+// Create context with default values
 const AuthContext = createContext<AuthContextType>({
   userRole: null,
   isAdmin: false,
@@ -26,10 +26,10 @@ const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
 });
 
-// Hook để sử dụng AuthContext
+// Hook to use AuthContext
 export const useAuth = () => useContext(AuthContext);
 
-// Provider component cho AuthContext
+// Provider component for AuthContext
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { data: session, status } = useSession();
   const [authState, setAuthState] = useState<AuthContextType>({
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Hàm bảo vệ component chỉ cho phép admin truy cập
+// Function to protect components, allowing only admin access
 export function withAdminOnly<P extends object>(
   Component: React.ComponentType<P>
 ) {
@@ -92,7 +92,7 @@ export function withAdminOnly<P extends object>(
   };
 }
 
-// Hàm bảo vệ component yêu cầu đăng nhập
+// Function to protect components requiring authentication
 export function withAuth<P extends object>(Component: React.ComponentType<P>) {
   return function ProtectedComponent(props: P) {
     const { isAuthenticated, isLoading } = useAuth();

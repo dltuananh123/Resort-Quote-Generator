@@ -1,85 +1,83 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { jwtDecode } from "jwt-decode";
 
-// Định nghĩa cấu trúc đường dẫn và quyền truy cập
-interface RouteConfig {
-  path: string;
-  roles: string[];
-}
+// Define path structures and access permissions
+export const config = {
+  matcher: [
+    "/((?!api/auth|_next/static|_next/image|favicon.ico|access-denied|.*.svg).*)",
+  ],
+};
 
-// Danh sách đường dẫn và quyền truy cập tương ứng
-const protectedRoutes: RouteConfig[] = [
-  { path: "/admin", roles: ["admin"] },
-  { path: "/admin/dashboard", roles: ["admin"] },
-  { path: "/admin/users", roles: ["admin"] },
-  { path: "/profile", roles: ["admin", "user"] },
+// List of paths and corresponding access permissions
+const protectedPaths = [
+  { path: "/admin", role: "admin" },
+  { path: "/users", role: "admin" },
+  { path: "/api/users", role: "admin" },
 ];
 
-// Danh sách đường dẫn công khai không cần xác thực
-const publicPaths = ["/login", "/about", "/access-denied"];
+// List of public paths that don't require authentication
+const publicPaths = ["/", "/auth/login", "/access-denied"];
 
-export async function middleware(request: NextRequest) {
-  // Đường dẫn của trang hiện tại
+export function middleware(request: NextRequest) {
+  // Current page path
   const path = request.nextUrl.pathname;
 
-  // Kiểm tra xem đường dẫn hiện tại có phải là công khai không
-  const isPublicPath = publicPaths.some(
-    (publicPath) => path === publicPath || path.startsWith(publicPath + "/")
+  // Check if current path is public
+  const isPublicPath = publicPaths.some((publicPath) =>
+    path.startsWith(publicPath)
   );
 
-  // Kiểm tra xem người dùng đã đăng nhập chưa
-  const token = await getToken({
-    req: request,
-    secret: process.env.NEXTAUTH_SECRET || "asteria-mui-ne-resort-secret-key",
-  });
+  // Check if user is authenticated
+  const token = request.cookies.get("auth-token")?.value;
+  const isAuthenticated = !!token;
 
-  // Người dùng chưa đăng nhập và đang cố truy cập trang yêu cầu xác thực
-  if (!token && !isPublicPath) {
-    // Nếu chưa đăng nhập thì điều hướng đến trang đăng nhập
-    const url = new URL("/login", request.url);
-    url.searchParams.set("callbackUrl", encodeURI(request.url));
-    return NextResponse.redirect(url);
+  // Ensure token is valid and not expired
+  const isValidToken = token ? !isTokenExpired(token) : false;
+  const isAuthValid = isAuthenticated && isValidToken;
+
+  // User is not authenticated and trying to access a protected page
+  if (!isAuthValid && !isPublicPath) {
+    // Redirect to login page if not authenticated
+    return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 
-  // Người dùng đã đăng nhập và đang cố truy cập trang đăng nhập
-  if (token && path === "/login") {
-    // Nếu đã đăng nhập rồi thì điều hướng đến trang chủ
+  // User is authenticated and trying to access the login page
+  if (isAuthValid && path === "/auth/login") {
+    // Redirect to home page if already logged in
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // Nếu người dùng là admin và đang cố truy cập trang hồ sơ, chuyển hướng đến trang quản trị
-  if (token && token.role === "admin" && path === "/profile") {
-    return NextResponse.redirect(new URL("/admin", request.url));
+  // If user is admin and accessing profile page, redirect to admin page
+  if (isAuthValid && path === "/auth/profile") {
+    const userData = token ? jwtDecode<any>(token) : null;
+    if (userData?.role === "admin") {
+      return NextResponse.redirect(new URL("/admin", request.url));
+    }
   }
 
-  // Kiểm tra quyền truy cập cho các trang được bảo vệ
-  if (token) {
-    const userRole = token.role as string;
+  // Check access permissions for protected paths
+  if (isAuthValid) {
+    const userData = jwtDecode<any>(token);
 
-    // Kiểm tra từng đường dẫn được bảo vệ
-    for (const route of protectedRoutes) {
-      if (path === route.path || path.startsWith(route.path + "/")) {
-        // Nếu người dùng không có quyền truy cập, chuyển hướng đến trang Access Denied
-        if (!route.roles.includes(userRole)) {
-          return NextResponse.redirect(new URL("/access-denied", request.url));
-        }
-        break;
+    // Check each protected path
+    for (const { path: protectedPath, role } of protectedPaths) {
+      if (path.startsWith(protectedPath) && userData.role !== role) {
+        // Redirect to access denied page if user doesn't have access
+        return NextResponse.redirect(new URL("/access-denied", request.url));
       }
     }
   }
 
-  // Cho phép truy cập trang trong các trường hợp còn lại
+  // Allow access in all other cases
   return NextResponse.next();
 }
 
-export const config = {
-  // Áp dụng middleware cho các đường dẫn sau
-  matcher: [
-    /*
-     * Khớp với tất cả các đường dẫn ngoại trừ:
-     * 1. Các đường dẫn tĩnh (css, js, images, favicon, v.v.)
-     * 2. API routes (/api/*)
-     */
-    "/((?!api|_next/static|_next/image|favicon|flags|logo).*)",
-  ],
-};
+// Apply middleware to the following paths
+function isTokenExpired(token: string): boolean {
+  try {
+    const decoded = jwtDecode<{ exp: number }>(token);
+    return decoded.exp < Date.now() / 1000;
+  } catch (e) {
+    return true;
+  }
+}

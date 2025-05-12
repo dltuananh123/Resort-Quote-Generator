@@ -1,48 +1,48 @@
-# Hướng dẫn thiết lập Database Supabase
+# Supabase Database Setup Guide
 
-Thư mục này chứa các tệp SQL để thiết lập cơ sở dữ liệu cho ứng dụng Resort Quote Generator.
+This directory contains SQL files for setting up the database for the Resort Quote Generator application.
 
-## Thiết lập cơ sở dữ liệu
+## Database Setup
 
-### 1. Tạo bảng Users
+### 1. Create Users Table
 
-Sử dụng file `create_users_table_final.sql` để tạo bảng users. File này sẽ:
+Use the `create_users_table_final.sql` file to create the users table. This file will:
 
-- Tạo bảng users với cấu trúc phù hợp
-- Tạo các chỉ mục để tối ưu hóa truy vấn
-- Thêm hai người dùng mẫu (admin và staff)
+- Create the users table with the appropriate structure
+- Create indexes to optimize queries
+- Add two sample users (admin and staff)
 
-### 2. Tạo bảng Quotes
+### 2. Create Quotes Table
 
-Sử dụng file `create_quotes_table.sql` để tạo bảng quotes. File này sẽ:
+Use the `create_quotes_table.sql` file to create the quotes table. This file will:
 
-- Tạo bảng quotes với cấu trúc đầy đủ
-- Thiết lập các chính sách bảo mật Row Level Security (RLS)
+- Create the quotes table with a complete structure
+- Set up Row Level Security (RLS) policies
 
-### 3. Thêm dữ liệu mẫu
+### 3. Add Sample Data
 
-Sau khi đã tạo các bảng, sử dụng file `insert_sample_quotes.sql` để thêm dữ liệu mẫu vào bảng quotes.
+After creating the tables, use the `insert_sample_quotes.sql` file to add sample data to the quotes table.
 
-## Cách thực hiện
+## Implementation Steps
 
-1. Đăng nhập vào Supabase dashboard
-2. Điều hướng đến phần SQL Editor
-3. Mở từng file SQL và chạy theo thứ tự sau:
+1. Log in to the Supabase dashboard
+2. Navigate to the SQL Editor section
+3. Open each SQL file and run them in the following order:
    - `create_users_table_final.sql`
    - `create_quotes_table.sql`
    - `insert_sample_quotes.sql`
 
-## Lưu ý quan trọng
+## Important Notes
 
-- File `insert_sample_quotes.sql` tạm thời tắt Row Level Security (RLS) để dễ dàng xem dữ liệu mà không cần đăng nhập
-- Khi ứng dụng đã sẵn sàng cho môi trường production, bạn nên bật lại RLS với lệnh:
+- The `insert_sample_quotes.sql` file temporarily disables Row Level Security (RLS) to easily view data without requiring login
+- When the application is ready for production, you should re-enable RLS with the command:
   ```sql
   ALTER TABLE quotes ENABLE ROW LEVEL SECURITY;
   ```
 
-## Cấu hình môi trường
+## Environment Configuration
 
-Đảm bảo rằng file `.env.local` của bạn đã được cấu hình đúng với các biến môi trường Supabase:
+Make sure your `.env.local` file is properly configured with the Supabase environment variables:
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url_here

@@ -1,4 +1,4 @@
-// Định nghĩa kiểu User
+// Define User type
 export interface User {
   id: string;
   full_name: string;
@@ -7,8 +7,8 @@ export interface User {
   user_role: "admin" | "user";
 }
 
-// Danh sách người dùng giả lập cho mục đích demo
-// Trong ứng dụng thực tế, nên sử dụng cơ sở dữ liệu
+// List of mock users for demo purposes
+// In a real application, you should use a database
 export const users: User[] = [
   {
     id: "1",

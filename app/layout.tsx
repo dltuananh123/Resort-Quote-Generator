@@ -7,8 +7,8 @@ import { TranslationProvider } from "@/lib/translation-context";
 import { Providers } from "./providers";
 
 export const metadata = {
-  title: "Asteria Mũi Né Resort - Báo Giá Đặt Phòng",
-  description: "Hệ thống tạo báo giá đặt phòng cho Asteria Mũi Né Resort",
+  title: "Asteria Mũi Né Resort - Booking Quote",
+  description: "Booking quote system for Asteria Mũi Né Resort",
   generator: "v0.dev",
   icons: {
     icon: [
@@ -28,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head />
       <body suppressHydrationWarning>
         <Providers>

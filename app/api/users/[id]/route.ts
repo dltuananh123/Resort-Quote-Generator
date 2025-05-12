@@ -3,14 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { getUserById, updateUser, deleteUser } from "@/lib/supabase-users";
 
-// GET /api/users/[id] - Lấy thông tin người dùng cụ thể
+// GET /api/users/[id] - Get specific user information
 export async function GET(
   request: NextRequest,
   context: { params: { id: string } }
 ) {
   const { id } = context.params;
 
-  // Xác thực quyền admin
+  // Authenticate admin permissions
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET || "asteria-mui-ne-resort-secret-key",
@@ -21,7 +21,7 @@ export async function GET(
   }
 
   try {
-    // Tìm người dùng theo ID
+    // Find user by ID
     const user = await getUserById(id);
 
     if (!user) {
@@ -38,14 +38,14 @@ export async function GET(
   }
 }
 
-// PUT /api/users/[id] - Cập nhật thông tin người dùng
+// PUT /api/users/[id] - Update user information
 export async function PUT(
   request: NextRequest,
   context: { params: { id: string } }
 ) {
   const { id } = context.params;
 
-  // Xác thực quyền admin
+  // Authenticate admin permissions
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET || "asteria-mui-ne-resort-secret-key",
@@ -88,14 +88,14 @@ export async function PUT(
   }
 }
 
-// DELETE /api/users/[id] - Xóa người dùng
+// DELETE /api/users/[id] - Delete user
 export async function DELETE(
   request: NextRequest,
   context: { params: { id: string } }
 ) {
   const { id } = context.params;
 
-  // Xác thực quyền admin
+  // Authenticate admin permissions
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET || "asteria-mui-ne-resort-secret-key",

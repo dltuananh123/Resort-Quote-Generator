@@ -3,10 +3,10 @@ import { User } from "next-auth";
 
 const JWT_SECRET =
   process.env.JWT_SECRET || "asteria-mui-ne-resort-jwt-secret-key";
-const JWT_EXPIRY = "24h"; // Token hết hạn sau 24 giờ
+const JWT_EXPIRY = "24h"; // Token expires after 24 hours
 
 /**
- * Tạo JWT token cho người dùng
+ * Generate JWT token for user
  */
 export const generateToken = (user: Pick<User, "id" | "email" | "role">) => {
   return jwt.sign(
@@ -21,7 +21,7 @@ export const generateToken = (user: Pick<User, "id" | "email" | "role">) => {
 };
 
 /**
- * Xác thực JWT token
+ * Verify JWT token
  */
 export const verifyToken = (token: string) => {
   try {
@@ -32,7 +32,7 @@ export const verifyToken = (token: string) => {
 };
 
 /**
- * Giải mã JWT token mà không xác thực
+ * Decode JWT token without verification
  */
 export const decodeToken = (token: string) => {
   try {
