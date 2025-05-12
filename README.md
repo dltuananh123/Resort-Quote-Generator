@@ -4,11 +4,12 @@ A modern, elegant web application for generating professional resort booking quo
 
 ## 📋 Version
 
-**Current Version:** 2.0.3  
+**Current Version:** 2.0.4  
 **Last Updated:** May 2025
 
 ### Changelog
 
+- **v2.0.4** - Enhanced toast notifications for better mobile UX, updated social media icons with new hover effects
 - **v2.0.3** - Updated resort location to KM 11 Hon Rom Road with wider area view map and enhanced documentation for map embedding
 - **v2.0.2** - Enhanced Google Maps integration with improved pin location, accessibility features, and multilingual directions hint
 - **v2.0.1** - Fixed React dependency conflict by downgrading to React 18.3.1 for compatibility with react-day-picker
@@ -44,6 +45,7 @@ This application streamlines the process of creating custom booking quotes for r
 - **Mobile-Optimized Layout**: Input form displays above quote preview on mobile devices for better usability
 - **Mobile Navigation**: Hamburger menu with smooth animations for better mobile experience
 - **Modern Icon System**: Integrated Lucide icons for consistent visual language
+- **Enhanced Toast Notifications**: Contextual color-coded notifications with improved mobile UX and touch interaction
 - **Localized for Multiple Languages**: Full support for English, Vietnamese, Chinese, Russian, and Korean translations
 - **Thousands Separators**: Automatic formatting of price fields for better readability
 - **Multi-language Support**: Switch between languages with a simple selector featuring country flags
@@ -52,6 +54,7 @@ This application streamlines the process of creating custom booking quotes for r
 - **Export Options**: Generate high-quality PNG and PDF versions of quotes
 - **Hand-crafted SVG Flags**: Custom SVG flag icons for language selection, optimized for performance and scalability
 - **Fully Localized Footer**: Resort information, address, and contact details translated in all supported languages
+- **Social Media Integration**: Footer includes links to Instagram, X (Twitter), and Facebook with gold accent hover effects
 
 ## 💻 Technologies Used
 

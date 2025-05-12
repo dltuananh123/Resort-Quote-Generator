@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User, LogOut, LogIn } from "lucide-react";
+import { User, LogOut, LogIn, Settings } from "lucide-react";
 import { useTranslation } from "@/lib/translation-context";
 
 export function AuthButton() {
@@ -33,7 +33,11 @@ export function AuthButton() {
   };
 
   const handleProfileClick = () => {
-    router.push("/profile");
+    if (session?.user?.role === "admin") {
+      router.push("/admin");
+    } else {
+      router.push("/profile");
+    }
   };
 
   if (status === "loading") {
@@ -51,6 +55,8 @@ export function AuthButton() {
   }
 
   if (session && session.user) {
+    const isAdmin = session.user.role === "admin";
+
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -70,8 +76,17 @@ export function AuthButton() {
             className="flex items-center"
             onClick={handleProfileClick}
           >
-            <User className="mr-2 h-4 w-4" />
-            <span>{t("auth.profile")}</span>
+            {isAdmin ? (
+              <>
+                <Settings className="mr-2 h-4 w-4" />
+                <span>{t("auth.admin")}</span>
+              </>
+            ) : (
+              <>
+                <User className="mr-2 h-4 w-4" />
+                <span>{t("auth.profile")}</span>
+              </>
+            )}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

@@ -120,7 +120,7 @@ export function ResortFooter() {
                 href="https://www.instagram.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-yellow-400 transition"
+                className="hover:text-[#c5965a] transition"
                 aria-label="Instagram"
               >
                 <svg
@@ -137,7 +137,7 @@ export function ResortFooter() {
                 href="https://x.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-yellow-400 transition text-white flex items-center justify-center"
+                className="hover:text-[#c5965a] transition text-white flex items-center justify-center"
                 aria-label="X (Twitter)"
               >
                 <svg
@@ -154,7 +154,7 @@ export function ResortFooter() {
                 href="https://www.facebook.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-yellow-400 transition"
+                className="hover:text-[#c5965a] transition"
                 aria-label="Facebook"
               >
                 <svg

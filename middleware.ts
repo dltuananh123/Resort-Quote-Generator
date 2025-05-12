@@ -16,7 +16,7 @@ const protectedRoutes: RouteConfig[] = [
 ];
 
 // Danh sách đường dẫn công khai không cần xác thực
-const publicPaths = ["/login", "/", "/about"];
+const publicPaths = ["/login", "/about", "/access-denied"];
 
 export async function middleware(request: NextRequest) {
   // Đường dẫn của trang hiện tại
@@ -47,6 +47,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
+  // Nếu người dùng là admin và đang cố truy cập trang hồ sơ, chuyển hướng đến trang quản trị
+  if (token && token.role === "admin" && path === "/profile") {
+    return NextResponse.redirect(new URL("/admin", request.url));
+  }
+
   // Kiểm tra quyền truy cập cho các trang được bảo vệ
   if (token) {
     const userRole = token.role as string;
@@ -54,9 +59,9 @@ export async function middleware(request: NextRequest) {
     // Kiểm tra từng đường dẫn được bảo vệ
     for (const route of protectedRoutes) {
       if (path === route.path || path.startsWith(route.path + "/")) {
-        // Nếu người dùng không có quyền truy cập, chuyển hướng đến trang chủ
+        // Nếu người dùng không có quyền truy cập, chuyển hướng đến trang Access Denied
         if (!route.roles.includes(userRole)) {
-          return NextResponse.redirect(new URL("/", request.url));
+          return NextResponse.redirect(new URL("/access-denied", request.url));
         }
         break;
       }

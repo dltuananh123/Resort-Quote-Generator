@@ -11,6 +11,12 @@ export const vi = {
     contact: "Liên hệ",
     toggleMenu: "Menu",
   },
+  access: {
+    deniedTitle: "Truy cập bị từ chối",
+    deniedMessage:
+      "Bạn không có quyền truy cập trang này. Vui lòng liên hệ quản trị viên nếu bạn cho rằng đây là lỗi.",
+    returnHome: "Trở về trang chủ",
+  },
   auth: {
     login: "Đăng nhập",
     logout: "Đăng xuất",

@@ -11,6 +11,12 @@ export const cn = {
     contact: "联系我们",
     toggleMenu: "菜单",
   },
+  access: {
+    deniedTitle: "访问被拒绝",
+    deniedMessage:
+      "您没有权限访问此页面。如果您认为这是错误，请联系您的管理员。",
+    returnHome: "返回首页",
+  },
   auth: {
     login: "登录",
     logout: "登出",

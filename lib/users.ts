@@ -1,10 +1,10 @@
 // Định nghĩa kiểu User
 export interface User {
   id: string;
-  name: string;
+  full_name: string;
   email: string;
-  password: string;
-  role: "admin" | "user";
+  pass: string;
+  user_role: "admin" | "user";
 }
 
 // Danh sách người dùng giả lập cho mục đích demo
@@ -12,16 +12,16 @@ export interface User {
 export const users: User[] = [
   {
     id: "1",
-    name: "Admin",
+    full_name: "Admin",
     email: "admin@asteria.com",
-    password: "password123",
-    role: "admin",
+    pass: "password123",
+    user_role: "admin",
   },
   {
     id: "2",
-    name: "User",
+    full_name: "User",
     email: "user@asteria.com",
-    password: "password123",
-    role: "user",
+    pass: "password123",
+    user_role: "user",
   },
 ];

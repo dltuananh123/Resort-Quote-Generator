@@ -11,6 +11,12 @@ export const kr = {
     contact: "연락처",
     toggleMenu: "메뉴",
   },
+  access: {
+    deniedTitle: "접근 거부됨",
+    deniedMessage:
+      "이 페이지에 액세스할 권한이 없습니다. 이것이 오류라고 생각되면 관리자에게 문의하십시오.",
+    returnHome: "홈으로 돌아가기",
+  },
   auth: {
     login: "로그인",
     logout: "로그아웃",

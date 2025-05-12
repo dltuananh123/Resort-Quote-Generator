@@ -13,9 +13,10 @@ This document provides comprehensive information for maintaining and updating th
 7. [Styling Guidelines](#styling-guidelines)
 8. [Internationalization](#internationalization)
 9. [Authentication and Security](#authentication-and-security)
-10. [Maintenance Tasks](#maintenance-tasks)
-11. [Common Issues and Solutions](#common-issues-and-solutions)
-12. [Performance Monitoring](#performance-monitoring)
+10. [Toast Notification System](#toast-notification-system)
+11. [Maintenance Tasks](#maintenance-tasks)
+12. [Common Issues and Solutions](#common-issues-and-solutions)
+13. [Performance Monitoring](#performance-monitoring)
 
 ## Project Overview
 
@@ -181,14 +182,15 @@ const getLocalizedAddress = () => {
 
    - Update the `href` attributes with the correct URLs
    - Ensure SVG icons are correctly sized (currently 28x28)
-   - Maintain the hover effect styling (`hover:text-yellow-400 transition`)
+   - Social media icons use a golden brown hover effect with the color `#c5965a` (rgb(197, 150, 90))
+   - The hover effect is implemented with the class `hover:text-[#c5965a] transition`
 
 5. **Updating footer colors**:
    - Modify the Tailwind CSS classes in the component
    - Main footer: `bg-sky-900`
    - Bottom bar: `bg-sky-950`
    - Accent colors: `text-[#c5965a]` (gold)
-   - Hover effects: `hover:text-yellow-400`, `hover:bg-[#c5965a]`
+   - Hover effects: `hover:text-[#c5965a]`, `hover:bg-[#c5965a]`
 
 ## Internationalization
 
@@ -634,6 +636,121 @@ If you encounter authentication problems:
    - Verify session callback is including role information
    - Check that components are checking role information correctly
 
+## Toast Notification System
+
+The application features a comprehensive toast notification system that provides contextual feedback to users through non-intrusive popups. These notifications are optimized for both desktop and mobile devices.
+
+### Key Features
+
+1. **Contextual Variants**: Multiple notification types with distinctive colors for different message types:
+
+   - `default` (blue): For general information
+   - `success` (green): For successful operations
+   - `warning` (yellow): For caution or potential issues
+   - `destructive` (red): For errors
+   - `info` (blue): For informational content
+
+2. **Responsive Design**:
+
+   - Bottom-positioned on mobile screens for easier thumb access
+   - Right-side positioned on larger screens
+   - Automatic spacing between multiple notifications
+   - Touch-friendly close button with enlarged hit area
+
+3. **Animation Effects**:
+
+   - Slide in from bottom on mobile
+   - Slide in from right on desktop
+   - Smooth fade-out animations
+   - Swipe gestures for dismissal on touch devices
+
+4. **Accessibility Features**:
+   - Proper ARIA labels
+   - Text clamping to prevent overflow
+   - Sufficient contrast for readability
+   - Device-specific timing adjustments
+
+### Technical Implementation
+
+The toast notification system is implemented using the following components:
+
+- `components/ui/toast.tsx`: Core notification component with styling variants
+- `components/ui/toaster.tsx`: Container that displays notifications with icons
+- `hooks/use-toast.ts`: React hook for managing notification state and display
+
+### Usage
+
+To display a notification, import the `useToast` hook and call the `toast()` function:
+
+```tsx
+import { useToast } from "@/hooks/use-toast";
+
+// Within your component:
+const { toast } = useToast();
+
+// Show a success notification
+toast({
+  title: "Operation Successful",
+  description: "Your data has been saved.",
+  variant: "success",
+});
+
+// Show an error notification
+toast({
+  title: "Error",
+  description: "There was a problem processing your request.",
+  variant: "destructive",
+});
+```
+
+### Mobile Optimization
+
+The toast notifications include specific optimizations for mobile devices:
+
+1. **Touch-Target Sizing**:
+
+   - Close button is enlarged (from 4px to 5px) for easier tapping
+   - Expanded touch target area (p-2 instead of p-1.5)
+   - "touch-manipulation" class prevents zoom issues on touch
+
+2. **Positioning and Animation**:
+
+   - Positioned at bottom of screen on mobile for easier thumb access
+   - Slide-in from bottom animation feels more natural on touch devices
+   - Swipe-down gesture with low threshold (10px) for easier dismissal
+
+3. **Content Formatting**:
+
+   - Line-clamping (line-clamp-2) prevents excessive text from filling screen
+   - Responsive text sizing (smaller on mobile, larger on desktop)
+   - Optimized spacing for smaller screens
+
+4. **Timing Adjustments**:
+   - Automatic detection of device type by screen width
+   - Shorter display duration on desktop (3 seconds)
+   - Extended duration on mobile (4 seconds) for adequate reading time
+   - Maximum of 3 simultaneous notifications to prevent screen clutter
+
+### Customization
+
+To adjust the notification appearance:
+
+1. **Color Schemes**: Modify the variant definitions in `toastVariants` in `toast.tsx`
+2. **Animation**: Adjust the data attributes for animations in the same object
+3. **Position**: Change the viewport positioning in `ToastViewport` component
+4. **Icons**: Update the icon selection in the `Toaster` component
+5. **Timing**: Adjust `TOAST_REMOVE_DELAY` and `TOAST_REMOVE_DELAY_MOBILE` in `use-toast.ts`
+
+### Performance Considerations
+
+The toast notification system is designed for optimal performance:
+
+- Automatic cleanup of notifications after display
+- Limited number of simultaneous notifications (3)
+- Efficient state management to prevent unnecessary rerenders
+- Optimized for touch devices with gesture recognition
+- SVG icons for lower resource usage and better scaling
+
 ## Maintenance Tasks
 
 ### Adding a New Feature
@@ -707,4 +824,4 @@ The footer layout is defined in `components/resort-footer.tsx`.
    - Main footer: `bg-sky-900`
    - Bottom bar: `bg-sky-950`
    - Accent colors: `text-[#c5965a]` (gold)
-   - Hover effects: `hover:text-yellow-400`, `hover:bg-[#c5965a]`
+   - Hover effects: `hover:text-[#c5965a]`, `hover:bg-[#c5965a]`

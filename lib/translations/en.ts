@@ -3,6 +3,7 @@ export const en = {
     title: "Asteria Mũi Né Resort - Booking Quote",
     description: "Booking quote system for Asteria Mũi Né Resort",
     language: "English",
+    cancel: "Cancel",
   },
   nav: {
     home: "Home",
@@ -10,6 +11,12 @@ export const en = {
     amenities: "Amenities",
     contact: "Contact",
     toggleMenu: "Toggle Menu",
+  },
+  access: {
+    deniedTitle: "Access Denied",
+    deniedMessage:
+      "You don't have permission to access this page. Please contact your administrator if you believe this is an error.",
+    returnHome: "Return to Home",
   },
   auth: {
     login: "Login",
@@ -94,6 +101,10 @@ export const en = {
       additionalFees: "Ex: 100,000 VND",
       additionalServices: "Ex: 1 children's buffet ticket",
     },
+    required: "This field is required",
+    positiveNumber: "Enter a positive number",
+    updating: "Updating...",
+    updateQuote: "Update Quote",
   },
   quote: {
     title: "BOOKING QUOTE",
@@ -118,6 +129,30 @@ export const en = {
     thankYou: "Thank you for choosing Asteria Mũi Né Resort!",
     contactInfo:
       "For inquiries please contact: 0123 456 789 | info@asteriamuineresort.com",
+    saveToDatabase: "Save To Database",
+    saving: "Saving...",
+    saveSuccess: "Quote Saved",
+    saveSuccessDetail: "Your quote has been saved to the database",
+    saveError: "Error Saving Quote",
+    saveErrorDetail: "There was an error saving your quote. Please try again.",
+    delete: "Delete",
+    deleting: "Deleting...",
+    deleteSuccess: "Quote Deleted",
+    deleteSuccessDetail: "The quote has been deleted successfully",
+    deleteError: "Error Deleting Quote",
+    deleteErrorDetail:
+      "There was an error deleting the quote. Please try again.",
+    confirmDelete: "Are you sure you want to delete this quote?",
+    confirmDeleteDesc:
+      "This action cannot be undone. The quote will be permanently deleted from the database.",
+    confirmDeleteAction: "Yes, delete quote",
+    updateSuccess: "Quote Updated",
+    updateSuccessDetail: "The quote has been updated successfully",
+    updateError: "Error Updating Quote",
+    updateErrorDetail:
+      "There was an error updating the quote. Please try again.",
+    viewSavedQuotes: "View Saved Quotes",
+    savedQuotes: "Saved Quotes",
   },
   export: {
     quality: "Quality",
@@ -128,7 +163,6 @@ export const en = {
     qualityHighFull: "High (Recommended)",
     qualityUltraFull: "Ultra (Slow, large size)",
     selectQuality: "Select image quality",
-    saving: "Saving...",
     creatingPDF: "Creating PDF...",
     elementNotFound: "Quote element not found for export",
     imageError: "Error creating image:",

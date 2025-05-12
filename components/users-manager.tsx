@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { User } from "@/lib/users";
+import { User, SafeUser } from "@/lib/supabase-users";
 import {
   Pencil,
   Trash2,
@@ -14,8 +14,6 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
-type SafeUser = Omit<User, "password">;
-
 export function UsersManager() {
   const [users, setUsers] = useState<SafeUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,10 +24,10 @@ export function UsersManager() {
 
   // Form state cho thêm/sửa người dùng
   const [formData, setFormData] = useState({
-    name: "",
+    full_name: "",
     email: "",
-    password: "",
-    role: "user" as "admin" | "user",
+    pass: "",
+    user_role: "user" as "admin" | "user",
   });
 
   // Lấy danh sách người dùng
@@ -76,7 +74,7 @@ export function UsersManager() {
 
   // Thêm người dùng mới
   const handleAddUser = async () => {
-    if (!formData.name || !formData.email || !formData.password) {
+    if (!formData.full_name || !formData.email || !formData.pass) {
       toast({
         title: "Lỗi",
         description: "Vui lòng điền đầy đủ thông tin",
@@ -132,10 +130,10 @@ export function UsersManager() {
     try {
       // Chỉ gửi các trường đã được thay đổi
       const dataToUpdate: Partial<User> = {};
-      if (formData.name) dataToUpdate.name = formData.name;
+      if (formData.full_name) dataToUpdate.full_name = formData.full_name;
       if (formData.email) dataToUpdate.email = formData.email;
-      if (formData.password) dataToUpdate.password = formData.password;
-      if (formData.role) dataToUpdate.role = formData.role;
+      if (formData.pass) dataToUpdate.pass = formData.pass;
+      if (formData.user_role) dataToUpdate.user_role = formData.user_role;
 
       const response = await fetch(`/api/users/${userId}`, {
         method: "PUT",
@@ -223,10 +221,10 @@ export function UsersManager() {
   // Reset form
   const resetForm = () => {
     setFormData({
-      name: "",
+      full_name: "",
       email: "",
-      password: "",
-      role: "user",
+      pass: "",
+      user_role: "user",
     });
   };
 
@@ -234,10 +232,10 @@ export function UsersManager() {
   const startEditing = (user: SafeUser) => {
     setEditingUserId(user.id);
     setFormData({
-      name: user.name,
+      full_name: user.full_name,
       email: user.email,
-      password: "", // Không hiển thị mật khẩu
-      role: user.role,
+      pass: "", // Không hiển thị mật khẩu
+      user_role: user.user_role,
     });
   };
 
@@ -292,9 +290,9 @@ export function UsersManager() {
               <label className="block text-sm font-medium mb-1">Họ tên</label>
               <input
                 type="text"
-                value={formData.name}
+                value={formData.full_name}
                 onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
+                  setFormData({ ...formData, full_name: e.target.value })
                 }
                 className="w-full p-2 border rounded"
                 placeholder="Nhập họ tên"
@@ -316,9 +314,9 @@ export function UsersManager() {
               <label className="block text-sm font-medium mb-1">Mật khẩu</label>
               <input
                 type="password"
-                value={formData.password}
+                value={formData.pass}
                 onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
+                  setFormData({ ...formData, pass: e.target.value })
                 }
                 className="w-full p-2 border rounded"
                 placeholder="Nhập mật khẩu"
@@ -327,11 +325,11 @@ export function UsersManager() {
             <div>
               <label className="block text-sm font-medium mb-1">Vai trò</label>
               <select
-                value={formData.role}
+                value={formData.user_role}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    role: e.target.value as "admin" | "user",
+                    user_role: e.target.value as "admin" | "user",
                   })
                 }
                 className="w-full p-2 border rounded"
@@ -380,9 +378,12 @@ export function UsersManager() {
                     <td className="py-2 px-4 border">
                       <input
                         type="text"
-                        value={formData.name}
+                        value={formData.full_name}
                         onChange={(e) =>
-                          setFormData({ ...formData, name: e.target.value })
+                          setFormData({
+                            ...formData,
+                            full_name: e.target.value,
+                          })
                         }
                         className="w-full p-1 border rounded"
                       />
@@ -400,11 +401,11 @@ export function UsersManager() {
                         <div>
                           <input
                             type="password"
-                            value={formData.password}
+                            value={formData.pass}
                             onChange={(e) =>
                               setFormData({
                                 ...formData,
-                                password: e.target.value,
+                                pass: e.target.value,
                               })
                             }
                             className="w-full p-1 border rounded"
@@ -418,17 +419,18 @@ export function UsersManager() {
                     </td>
                     <td className="py-2 px-4 border">
                       <select
-                        value={formData.role}
+                        value={formData.user_role}
                         onChange={(e) =>
                           setFormData({
                             ...formData,
-                            role: e.target.value as "admin" | "user",
+                            user_role: e.target.value as "admin" | "user",
                           })
                         }
                         className="w-full p-1 border rounded"
                         disabled={
                           user.id === "1" &&
-                          users.filter((u) => u.role === "admin").length === 1
+                          users.filter((u) => u.user_role === "admin")
+                            .length === 1
                         }
                       >
                         <option value="user">Người dùng</option>
@@ -458,17 +460,17 @@ export function UsersManager() {
                   // Row hiển thị thông thường
                   <>
                     <td className="py-2 px-4 border">{user.id}</td>
-                    <td className="py-2 px-4 border">{user.name}</td>
+                    <td className="py-2 px-4 border">{user.full_name}</td>
                     <td className="py-2 px-4 border">{user.email}</td>
                     <td className="py-2 px-4 border">
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          user.role === "admin"
+                          user.user_role === "admin"
                             ? "bg-blue-100 text-blue-800"
                             : "bg-gray-100 text-gray-800"
                         }`}
                       >
-                        {user.role === "admin" ? "Admin" : "Người dùng"}
+                        {user.user_role === "admin" ? "Admin" : "Người dùng"}
                       </span>
                     </td>
                     <td className="py-2 px-4 border text-center">
@@ -483,20 +485,23 @@ export function UsersManager() {
                         <button
                           onClick={() => handleDeleteUser(user.id)}
                           className={`p-1 ${
-                            user.role === "admin" &&
-                            users.filter((u) => u.role === "admin").length === 1
+                            user.user_role === "admin" &&
+                            users.filter((u) => u.user_role === "admin")
+                              .length === 1
                               ? "text-gray-400 cursor-not-allowed"
                               : "text-red-600 hover:text-red-800"
                           }`}
                           title={
-                            user.role === "admin" &&
-                            users.filter((u) => u.role === "admin").length === 1
+                            user.user_role === "admin" &&
+                            users.filter((u) => u.user_role === "admin")
+                              .length === 1
                               ? "Không thể xóa admin duy nhất"
                               : "Xóa"
                           }
                           disabled={
-                            user.role === "admin" &&
-                            users.filter((u) => u.role === "admin").length === 1
+                            user.user_role === "admin" &&
+                            users.filter((u) => u.user_role === "admin")
+                              .length === 1
                           }
                         >
                           <Trash2 className="w-5 h-5" />

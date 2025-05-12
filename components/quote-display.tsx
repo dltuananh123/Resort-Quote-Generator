@@ -23,6 +23,7 @@ interface QuoteData {
   additionalFees: string;
   additionalServices: string;
   grandTotal: string;
+  email?: string;
 }
 
 export function QuoteDisplay() {
@@ -76,11 +77,114 @@ export function QuoteDisplay() {
     currentLanguage === "en" ? "en-US" : "vi-VN"
   );
 
+  // Prepare data for saving to database
+  const prepareExportData = () => {
+    console.log("Original quote data:", quoteData);
+
+    // Parse string dates into Date objects
+    const parseDate = (dateStr: string) => {
+      if (!dateStr) return new Date();
+      try {
+        const [day, month, year] = dateStr.split("/").map(Number);
+        const date = new Date(year, month - 1, day);
+        // Check if date is valid
+        if (isNaN(date.getTime())) {
+          console.error("Invalid date from string:", dateStr);
+          return new Date(); // Return current date as fallback
+        }
+        return date;
+      } catch (e) {
+        console.error("Error parsing date:", e, dateStr);
+        return new Date(); // Return current date as fallback
+      }
+    };
+
+    // Ensure we have valid dates
+    const checkIn = parseDate(quoteData.checkInDate);
+    // Set checkOut to be at least 1 day after checkIn if it's invalid
+    let checkOut = parseDate(quoteData.checkOutDate);
+    if (isNaN(checkOut.getTime()) || !quoteData.checkOutDate) {
+      checkOut = new Date(checkIn);
+      checkOut.setDate(checkIn.getDate() + Number(quoteData.nights || 1));
+      console.log("Created fallback checkOut date:", checkOut);
+    }
+
+    // Parse prices to remove formatting
+    const parsePrice = (priceStr: string) => {
+      if (!priceStr) return 0;
+      return parseInt(priceStr.replace(/[^\d]/g, "") || "0");
+    };
+
+    // Ensure we have valid guest name and room type
+    const guestName = quoteData.customerName || "Guest";
+    const roomType = quoteData.roomType || "Standard Room";
+
+    // Check and fix email/phone - they might be swapped
+    // Email typically contains @ symbol, phone typically has mostly digits
+    let email = quoteData.email || "";
+    let phone = quoteData.phone || "";
+
+    // If email looks more like a phone number and phone looks like an email, swap them
+    const emailLooksLikePhone =
+      email &&
+      !email.includes("@") &&
+      email.replace(/\D/g, "").length > 0.5 * email.length;
+    const phoneLooksLikeEmail = phone && phone.includes("@");
+
+    if (emailLooksLikePhone && phoneLooksLikeEmail) {
+      console.log("Email and phone appear to be swapped, fixing...");
+      const temp = email;
+      email = phone;
+      phone = temp;
+    } else if (emailLooksLikePhone && !phoneLooksLikeEmail) {
+      // If email looks like a phone and we don't have a valid phone, move it
+      if (!phone) {
+        console.log("Email looks like a phone number, moving to phone field");
+        phone = email;
+        email = "";
+      }
+    }
+
+    // Log key fields to debug
+    console.log("Processed fields:", {
+      customerName: quoteData.customerName,
+      roomType: quoteData.roomType,
+      email,
+      phone,
+      parsed: { guestName, roomType },
+    });
+
+    return {
+      guestName: guestName,
+      email: email,
+      phone: phone,
+      checkIn: checkIn,
+      checkOut: checkOut,
+      nights: Number(quoteData.nights) || 1,
+      adults: Number(quoteData.adults) || 1,
+      children: Number(quoteData.children) || 0,
+      roomType: roomType,
+      pricePerNight: parsePrice(quoteData.pricePerNight),
+      additionalFees: parsePrice(quoteData.additionalFees),
+      bookingId:
+        quoteData.bookingId ||
+        "BKK-" + new Date().getTime().toString().slice(-6),
+      notes: quoteData.specialRequests || "",
+      childrenDetails: quoteData.childrenDetails || "",
+      specialRequests: quoteData.specialRequests || "",
+      additionalServices: quoteData.additionalServices || "",
+    };
+  };
+
+  const exportData = prepareExportData();
+  console.log("Quote display prepared data for export:", exportData);
+
   return (
     <div className="space-y-4">
       <SimpleQuoteExport
         quoteElementId="quote-card"
         bookingId={quoteData.bookingId}
+        quoteData={exportData}
       />
 
       <Card className="overflow-hidden" id="quote-card">
