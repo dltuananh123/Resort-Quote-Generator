@@ -12,7 +12,7 @@ export default function AccessDeniedPage() {
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    // Display content after component is mounted
+    // Hiển thị nội dung sau khi component được mount
     setShowContent(true);
   }, []);
 

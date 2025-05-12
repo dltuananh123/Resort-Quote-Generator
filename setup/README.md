@@ -16,7 +16,7 @@ Use the `create_users_table_final.sql` file to create the users table. This file
 
 Use the `create_quotes_table.sql` file to create the quotes table. This file will:
 
-- Create the quotes table with a complete structure
+- Create the quotes table with the complete structure
 - Set up Row Level Security (RLS) policies
 
 ### 3. Add Sample Data
@@ -26,7 +26,7 @@ After creating the tables, use the `insert_sample_quotes.sql` file to add sample
 ## Implementation Steps
 
 1. Log in to the Supabase dashboard
-2. Navigate to the SQL Editor section
+2. Navigate to the SQL Editor
 3. Open each SQL file and run them in the following order:
    - `create_users_table_final.sql`
    - `create_quotes_table.sql`
@@ -34,7 +34,7 @@ After creating the tables, use the `insert_sample_quotes.sql` file to add sample
 
 ## Important Notes
 
-- The `insert_sample_quotes.sql` file temporarily disables Row Level Security (RLS) to easily view data without requiring login
+- The `insert_sample_quotes.sql` file temporarily disables Row Level Security (RLS) to easily view data without logging in
 - When the application is ready for production, you should re-enable RLS with the command:
   ```sql
   ALTER TABLE quotes ENABLE ROW LEVEL SECURITY;
@@ -42,7 +42,7 @@ After creating the tables, use the `insert_sample_quotes.sql` file to add sample
 
 ## Environment Configuration
 
-Make sure your `.env.local` file is properly configured with the Supabase environment variables:
+Make sure your `.env.local` file is correctly configured with the Supabase environment variables:
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url_here

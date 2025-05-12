@@ -99,7 +99,7 @@ export function QuoteForm() {
 
   const handlePasteData = async () => {
     try {
-      // Try using Clipboard API directly
+      // Thử sử dụng Clipboard API trực tiếp
       const clipboardText = await navigator.clipboard.readText();
 
       if (!clipboardText) {
@@ -111,19 +111,19 @@ export function QuoteForm() {
         return;
       }
 
-      // Process data from clipboard
+      // Xử lý dữ liệu từ clipboard
       processClipboardData(clipboardText);
 
-      // Success notification
+      // Thông báo thành công
       toast({
         title: t("form.pasteSuccess"),
         description: t("form.dataProcessed"),
         variant: "success",
       });
     } catch (error) {
-      console.error("Error reading clipboard:", error);
+      console.error("Lỗi khi đọc clipboard:", error);
 
-      // Display error notification
+      // Hiển thị thông báo lỗi
       toast({
         title: t("form.clipboardError"),
         description: t("form.checkPermissions"),
@@ -133,9 +133,9 @@ export function QuoteForm() {
   };
 
   const handleUseSampleData = () => {
-    // Generate random sample data
+    // Tạo dữ liệu mẫu ngẫu nhiên
     const generateRandomSampleData = () => {
-      // List of common Vietnamese names
+      // Danh sách họ và tên phổ biến Việt Nam
       const firstNames = [
         "Nguyễn",
         "Trần",
@@ -171,7 +171,7 @@ export function QuoteForm() {
         "Hiền",
       ];
 
-      // List of email domains
+      // Danh sách tên miền email
       const emailDomains = [
         "gmail.com",
         "yahoo.com",
@@ -181,7 +181,7 @@ export function QuoteForm() {
         "example.com",
       ];
 
-      // List of room types
+      // Danh sách tên phòng
       const roomTypes = [
         "Phòng Deluxe King",
         "Phòng Superior Twin",
@@ -192,7 +192,7 @@ export function QuoteForm() {
         "Phòng Junior Suite",
       ];
 
-      // List of special requests
+      // Danh sách các yêu cầu đặc biệt
       const specialRequests = [
         "Phòng tầng cao có view đẹp",
         "Đặt phòng gần nhau, đi theo nhóm",
@@ -206,7 +206,7 @@ export function QuoteForm() {
         "",
       ];
 
-      // List of additional services
+      // Danh sách dịch vụ bổ sung
       const additionalServices = [
         "Bữa buffet sáng cho 2 người",
         "Đón/tiễn sân bay",
@@ -218,13 +218,13 @@ export function QuoteForm() {
         "",
       ];
 
-      // Generate random full name
+      // Sinh họ tên ngẫu nhiên
       const firstName =
         firstNames[Math.floor(Math.random() * firstNames.length)];
       const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
       const fullName = `${firstName} Thị ${lastName}`;
 
-      // Function to remove Vietnamese accents
+      // Hàm loại bỏ dấu tiếng Việt
       const removeAccents = (str: string) => {
         return str
           .normalize("NFD")
@@ -233,12 +233,12 @@ export function QuoteForm() {
           .replace(/Đ/g, "D");
       };
 
-      // Generate email matching the name (without accents)
+      // Sinh email phù hợp với tên (không có dấu)
       const email = `${removeAccents(lastName.toLowerCase())}.${removeAccents(
         firstName.toLowerCase()
       )}@${emailDomains[Math.floor(Math.random() * emailDomains.length)]}`;
 
-      // Generate Vietnamese phone number
+      // Sinh số điện thoại Việt Nam
       const phonePrefix = [
         "090",
         "091",
@@ -266,25 +266,23 @@ export function QuoteForm() {
       const suffix = Math.floor(1000000 + Math.random() * 9000000);
       const phone = `${prefix}${suffix}`;
 
-      // Random booking ID
-      const bookingId = `BK${Math.floor(1000 + Math.random() * 9000)}`;
+      // Mã booking ngẫu nhiên
+      const bookingId = `BKK-${Math.floor(100 + Math.random() * 900)}`;
 
-      // Current date
-      const today = new Date();
+      // Ngày hiện tại
+      const now = new Date();
 
-      // Create check-in date between 10-30 days after current date
-      const checkInOffset = Math.floor(10 + Math.random() * 20); // 10-30 days
-      const checkInDate = new Date(
-        today.getTime() + checkInOffset * 24 * 60 * 60 * 1000
-      );
+      // Tạo ngày check-in trong khoảng 10-30 ngày sau ngày hiện tại
+      const checkInOffset = Math.floor(10 + Math.random() * 20); // 10-30 ngày
+      const checkInDate = new Date(now);
+      checkInDate.setDate(now.getDate() + checkInOffset);
 
-      // Create check-out date 1-7 days after check-in
-      const stayDuration = Math.floor(1 + Math.random() * 7); // 1-7 days
-      const checkOutDate = new Date(
-        checkInDate.getTime() + stayDuration * 24 * 60 * 60 * 1000
-      );
+      // Tạo ngày check-out sau ngày check-in 1-7 ngày
+      const stayDuration = Math.floor(1 + Math.random() * 7); // 1-7 ngày
+      const checkOutDate = new Date(checkInDate);
+      checkOutDate.setDate(checkInDate.getDate() + stayDuration);
 
-      // Format date as DD/MM/YYYY
+      // Format ngày theo DD/MM/YYYY
       const formatDate = (date: Date): string => {
         const day = date.getDate().toString().padStart(2, "0");
         const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -292,197 +290,218 @@ export function QuoteForm() {
         return `${day}/${month}/${year}`;
       };
 
-      // Number of adults and children
-      const adults = Math.floor(1 + Math.random() * 3); // 1-4 adults
-      const children = Math.floor(Math.random() * 3); // 0-2 children
+      // Số người lớn và trẻ em
+      const adults = Math.floor(1 + Math.random() * 3); // 1-4 người lớn
+      const children = Math.floor(Math.random() * 3); // 0-2 trẻ em
 
-      // Children details
+      // Chi tiết trẻ em
       let childrenDetails = "";
       if (children > 0) {
         const childAges = [];
         for (let i = 0; i < children; i++) {
-          childAges.push(Math.floor(1 + Math.random() * 12)); // 1-12 years old
+          childAges.push(Math.floor(1 + Math.random() * 12)); // 1-12 tuổi
         }
-        childrenDetails = `${children} trẻ em (${childAges.join(", ")} tuổi)`;
+        childrenDetails = `${children} bé (${childAges.join(" tuổi, ")} tuổi)`;
       }
 
-      // Select room type
+      // Chọn loại phòng
       const roomType = roomTypes[Math.floor(Math.random() * roomTypes.length)];
 
-      // Random room price (from 1 million to 5 million)
+      // Giá phòng ngẫu nhiên (từ 1 triệu đến 5 triệu)
       const basePriceMillions = 1 + Math.random() * 4;
       const basePrice =
-        Math.round((basePriceMillions * 1000000) / 100000) * 100000; // Round to nearest 100,000 VND
+        Math.round((basePriceMillions * 1000000) / 100000) * 100000; // Làm tròn đến 100,000 VND
 
-      // Additional fees (0 to 500 thousand)
-      const additionalFees = Math.round(Math.random() * 5) * 100000;
+      // Phí bổ sung (0 đến 500 nghìn)
+      const additionalFee = Math.round(Math.random() * 5) * 100000;
 
-      // Total room cost
+      // Tổng giá phòng
       const totalRoomCost = basePrice * stayDuration;
 
-      // Total cost
-      const totalCost = totalRoomCost + additionalFees;
+      // Tổng chi phí
+      const grandTotal = totalRoomCost + additionalFee;
 
-      // Special request
+      // Yêu cầu đặc biệt
       const specialRequest =
         specialRequests[Math.floor(Math.random() * specialRequests.length)];
 
-      // Additional service
+      // Dịch vụ bổ sung
       const additionalService =
         additionalServices[
           Math.floor(Math.random() * additionalServices.length)
         ];
 
-      // Combine all into a tab-separated sample data string
+      // Ghép tất cả thành chuỗi dữ liệu mẫu định dạng tab
       return `${bookingId}\t${fullName}\t${email}\t${phone}\t${formatDate(
         checkInDate
-      )}\t${formatDate(checkOutDate)}\t${roomType}\t${adults}\t${children}\t${
-        childrenDetails || "-"
-      }\t${specialRequest || "-"}\t${basePrice.toLocaleString(
+      )}\t${formatDate(
+        checkOutDate
+      )}\t${roomType}\t${adults}\t${children}\t${childrenDetails}\t${specialRequest}\t₫${basePrice.toLocaleString(
         "vi-VN"
-      )} VND\t${additionalFees.toLocaleString("vi-VN")} VND\t${
-        additionalService || "-"
-      }`;
+      )}\t₫${totalRoomCost.toLocaleString(
+        "vi-VN"
+      )}\t₫${additionalFee.toLocaleString(
+        "vi-VN"
+      )}\t${additionalService}\t₫${grandTotal.toLocaleString("vi-VN")}`;
     };
 
-    // Generate and use random sample data
-    processClipboardData(generateRandomSampleData());
+    // Tạo và sử dụng dữ liệu mẫu ngẫu nhiên
+    const randomSampleData = generateRandomSampleData();
+    console.log("Generated random sample data:", randomSampleData);
+    processClipboardData(randomSampleData);
 
-    // Success notification
+    // Thông báo thành công
     toast({
       title: t("form.sampleDataUsed"),
       description: t("form.quoteCreatedWithSample"),
-      variant: "success",
+      variant: "info",
     });
   };
 
-  // Function to process clipboard data
+  // Función para procesar los datos del portapapeles
   const processClipboardData = (clipboardText: string) => {
-    // Parse data from clipboard (assuming tab-separated format)
-    const formFields = clipboardText.split("\t").map((field) => field.trim());
+    try {
+      console.log("Processing clipboard data:", clipboardText);
 
-    // No data found
-    if (formFields.length <= 1) {
-      return;
-    }
+      // Phân tích dữ liệu từ clipboard (giả sử định dạng tab-separated)
+      const parts = clipboardText.split("\t");
+      console.log("Split parts:", parts);
 
-    // Map data values to correct form fields order
-    // Sample data structure: BookingID, GuestName, Email, Phone, CheckIn, CheckOut, RoomType, Adults, Children, ChildrenDetails,
-    // Special Requests, PricePerNight, AdditionalFees, AdditionalServices
-
-    const bookingId = formFields[0] || "";
-    const customerName = formFields[1] || "";
-    const email = formFields[2] || "";
-    const phone = formFields[3] || "";
-    const checkInDate = formFields[4] || "";
-    const checkOutDate = formFields[5] || "";
-    const roomType = formFields[6] || "";
-    const adults = formFields[7] || "1";
-    const children = formFields[8] || "0";
-    const childrenDetails = formFields[9] || "";
-    const specialRequests = formFields[10] || "";
-    const pricePerNight = formFields[11] || "";
-    const totalRoomCost = formFields[12] || "";
-    const additionalFees = formFields[13] || "";
-    const additionalServices = formFields[14] || "";
-    const grandTotal = formFields[15] || "";
-
-    // Format currency values with thousands separators
-    const formatCurrency = (value: string) => {
-      if (!value) return "";
-      // Remove any existing non-digit characters
-      const numericValue = value.replace(/[^\d]/g, "");
-      if (numericValue === "") return "";
-
-      // Format with appropriate currency suffix and thousands separators
-      const currencySuffix =
-        currentLanguage === "en"
-          ? "VND"
-          : currentLanguage === "vi"
-          ? "VNĐ"
-          : "VND";
-
-      // Get locale for formatting
-      const locale =
-        currentLanguage === "en"
-          ? "en-US"
-          : currentLanguage === "vi"
-          ? "vi-VN"
-          : currentLanguage === "ru"
-          ? "ru-RU"
-          : currentLanguage === "kr"
-          ? "ko-KR"
-          : "zh-CN";
-
-      return `${parseInt(numericValue).toLocaleString(
-        locale
-      )} ${currencySuffix}`;
-    };
-
-    // Update form state with clipboard data
-    setFormData({
-      bookingId,
-      customerName,
-      email,
-      phone,
-      roomType,
-      adults,
-      children,
-      childrenDetails,
-      specialRequests,
-      pricePerNight: formatCurrency(pricePerNight),
-      additionalFees: formatCurrency(additionalFees),
-      additionalServices,
-    });
-
-    // Update check-in and check-out dates if available
-    if (checkInDate) {
-      try {
-        const [day, month, year] = checkInDate.split("/").map(Number);
-        const date = new Date(year, month - 1, day);
-        if (!isNaN(date.getTime())) {
-          setCheckIn(date);
-        }
-      } catch (e) {
-        console.error("Error converting check-in date:", e);
+      if (parts.length < 15) {
+        toast({
+          title: "Định dạng dữ liệu không hợp lệ",
+          description:
+            "Dữ liệu không đúng định dạng tab-separated hoặc thiếu thông tin.",
+          variant: "warning",
+        });
+        return;
       }
-    }
 
-    if (checkOutDate) {
-      try {
-        const [day, month, year] = checkOutDate.split("/").map(Number);
-        const date = new Date(year, month - 1, day);
-        if (!isNaN(date.getTime())) {
-          setCheckOut(date);
-        }
-      } catch (e) {
-        console.error("Error converting check-out date:", e);
-      }
-    }
+      // Map chính xác thứ tự dữ liệu từ chuỗi sample data
+      // Cấu trúc sample data: BookingID, GuestName, Email, Phone, CheckIn, CheckOut, RoomType, Adults, Children, ChildrenDetails,
+      // SpecialRequests, PricePerNight, TotalCost, AdditionalFees, AdditionalServices, GrandTotal
 
-    // Update global state to display quote
-    const event = new CustomEvent("updateQuote", {
-      detail: {
+      const bookingId = parts[0] || "";
+      const customerName = parts[1] || "";
+      const email = parts[2] || "";
+      const phone = parts[3] || "";
+      const checkInDate = parts[4] || "";
+      const checkOutDate = parts[5] || "";
+      const roomType = parts[6] || "";
+      const adults = parts[7] || "1";
+      const children = parts[8] || "0";
+      const childrenDetails = parts[9] || "";
+      const specialRequests = parts[10] || "";
+      const pricePerNight = parts[11] || "";
+      const totalRoomCost = parts[12] || "";
+      const additionalFees = parts[13] || "";
+      const additionalServices = parts[14] || "";
+      const grandTotal = parts[15] || "";
+
+      // Format currency values with thousands separators
+      const formatCurrency = (value: string) => {
+        if (!value) return "";
+        // Remove any existing non-digit characters
+        const numericValue = value.replace(/[^\d]/g, "");
+        if (numericValue === "") return "";
+
+        // Format with appropriate currency suffix and thousands separators
+        const currencySuffix =
+          currentLanguage === "en"
+            ? "VND"
+            : currentLanguage === "vi"
+            ? "VNĐ"
+            : "VND";
+
+        // Get locale for formatting
+        const locale =
+          currentLanguage === "en"
+            ? "en-US"
+            : currentLanguage === "vi"
+            ? "vi-VN"
+            : currentLanguage === "ru"
+            ? "ru-RU"
+            : currentLanguage === "kr"
+            ? "ko-KR"
+            : "zh-CN";
+
+        return `${parseInt(numericValue).toLocaleString(
+          locale
+        )} ${currencySuffix}`;
+      };
+
+      // Cập nhật trạng thái form với dữ liệu từ clipboard
+      setFormData({
         bookingId,
         customerName,
         email,
         phone,
-        checkInDate,
-        checkOutDate,
-        nights: 1, // Will be calculated based on dates
         roomType,
-        adults: Number.parseInt(adults) || 1,
-        children: Number.parseInt(children) || 0,
+        adults,
+        children,
         childrenDetails,
         specialRequests,
         pricePerNight: formatCurrency(pricePerNight),
-        totalRoomCost: formatCurrency(totalRoomCost),
         additionalFees: formatCurrency(additionalFees),
         additionalServices,
-        grandTotal: formatCurrency(grandTotal),
-      },
-    });
-    window.dispatchEvent(event);
+      });
+
+      // Cập nhật ngày check-in và check-out nếu có
+      if (checkInDate) {
+        try {
+          const [day, month, year] = checkInDate.split("/").map(Number);
+          const date = new Date(year, month - 1, day);
+          if (!isNaN(date.getTime())) {
+            setCheckIn(date);
+          }
+        } catch (e) {
+          console.error("Lỗi khi chuyển đổi ngày check-in:", e);
+        }
+      }
+
+      if (checkOutDate) {
+        try {
+          const [day, month, year] = checkOutDate.split("/").map(Number);
+          const date = new Date(year, month - 1, day);
+          if (!isNaN(date.getTime())) {
+            setCheckOut(date);
+          }
+        } catch (e) {
+          console.error("Lỗi khi chuyển đổi ngày check-out:", e);
+        }
+      }
+
+      // Cập nhật trạng thái toàn cục để hiển thị báo giá
+      const event = new CustomEvent("updateQuote", {
+        detail: {
+          bookingId,
+          customerName,
+          email,
+          phone,
+          checkInDate,
+          checkOutDate,
+          nights: 1, // Tính toán sau dựa trên ngày
+          roomType,
+          adults: Number.parseInt(adults) || 1,
+          children: Number.parseInt(children) || 0,
+          childrenDetails,
+          specialRequests,
+          pricePerNight: formatCurrency(pricePerNight),
+          totalRoomCost: formatCurrency(totalRoomCost),
+          additionalFees: formatCurrency(additionalFees),
+          additionalServices,
+          grandTotal: formatCurrency(grandTotal),
+        },
+      });
+      window.dispatchEvent(event);
+    } catch (error) {
+      console.error("Lỗi khi xử lý dữ liệu clipboard:", error);
+      toast({
+        title: "Lỗi xử lý dữ liệu",
+        description: "Không thể xử lý dữ liệu. Vui lòng kiểm tra định dạng.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {

@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const email = searchParams.get("email");
 
-  // Check basic connection with Supabase
+  // Kiểm tra kết nối cơ bản với Supabase
   try {
     const { data: connectionTest, error: connectionError } = await supabase
       .from("users")
@@ -15,12 +15,12 @@ export async function GET(request: NextRequest) {
     if (connectionError) {
       return NextResponse.json({
         success: false,
-        message: "Unable to connect to Supabase",
+        message: "Không thể kết nối với Supabase",
         error: connectionError,
       });
     }
 
-    // If email is provided, try to get user information
+    // Nếu có email, thử lấy thông tin người dùng
     let userData = null;
     if (email) {
       try {
@@ -32,9 +32,9 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "Supabase connection successful",
+      message: "Kết nối Supabase thành công",
       connection: {
-        supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL || "No URL",
+        supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL || "Không có URL",
         hasAnonKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
       },
       userCount: connectionTest?.[0]?.count || 0,
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
             full_name: userData.full_name,
             email: userData.email,
             user_role: userData.user_role,
-            // Don't return password
+            // Không trả về mật khẩu
           }
         : null,
     });
@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
     console.error("Debug API error:", error);
     return NextResponse.json({
       success: false,
-      message: "Error checking connection",
+      message: "Lỗi khi kiểm tra kết nối",
       error: String(error),
     });
   }

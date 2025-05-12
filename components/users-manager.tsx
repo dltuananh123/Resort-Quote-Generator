@@ -22,7 +22,7 @@ export function UsersManager() {
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
-  // Form state for adding/editing users
+  // Form state cho thêm/sửa người dùng
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
@@ -30,52 +30,54 @@ export function UsersManager() {
     user_role: "user" as "admin" | "user",
   });
 
-  // Fetch users list
+  // Lấy danh sách người dùng
   const fetchUsers = async () => {
     setIsLoading(true);
     try {
       const response = await fetch("/api/users");
 
       if (response.status === 401) {
-        setError("Access denied. Please log in with an admin account.");
+        setError(
+          "Không có quyền truy cập. Vui lòng đăng nhập với tài khoản admin."
+        );
         return;
       }
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({
-          error: `HTTP Error: ${response.status}`,
+          error: `Lỗi HTTP: ${response.status}`,
         }));
         throw new Error(
-          errorData.error || `Error loading users: ${response.statusText}`
+          errorData.error || `Lỗi khi tải người dùng: ${response.statusText}`
         );
       }
 
       const data = await response.json();
-      // Sort users by ID
+      // Sắp xếp người dùng theo ID
       const sortedUsers = [...data].sort(
         (a, b) => parseInt(a.id) - parseInt(b.id)
       );
       setUsers(sortedUsers);
       setError(null);
     } catch (err: any) {
-      setError(err.message || "Unable to load users list");
+      setError(err.message || "Không thể tải danh sách người dùng");
       console.error(err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Load users list when component mounts
+  // Tải danh sách người dùng khi component mount
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  // Add new user
+  // Thêm người dùng mới
   const handleAddUser = async () => {
     if (!formData.full_name || !formData.email || !formData.pass) {
       toast({
-        title: "Error",
-        description: "Please fill in all required fields",
+        title: "Lỗi",
+        description: "Vui lòng điền đầy đủ thông tin",
         variant: "destructive",
       });
       return;
@@ -92,8 +94,8 @@ export function UsersManager() {
 
       if (response.status === 401) {
         toast({
-          title: "Error",
-          description: "No permission to add users",
+          title: "Lỗi",
+          description: "Không có quyền thêm người dùng",
           variant: "destructive",
         });
         return;
@@ -101,32 +103,32 @@ export function UsersManager() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || "Cannot add user");
+        throw new Error(errorData.error || "Không thể thêm người dùng");
       }
 
-      // Add to list and reset form
+      // Thêm vào danh sách và reset form
       const newUser = await response.json();
       setUsers([...users, newUser]);
       setIsAddingUser(false);
       resetForm();
 
       toast({
-        title: "Success",
-        description: "New user added",
+        title: "Thành công",
+        description: "Đã thêm người dùng mới",
       });
     } catch (err: any) {
       toast({
-        title: "Error",
-        description: err.message || "Cannot add user",
+        title: "Lỗi",
+        description: err.message || "Không thể thêm người dùng",
         variant: "destructive",
       });
     }
   };
 
-  // Update user
+  // Cập nhật người dùng
   const handleUpdateUser = async (userId: string) => {
     try {
-      // Only send fields that have been changed
+      // Chỉ gửi các trường đã được thay đổi
       const dataToUpdate: Partial<User> = {};
       if (formData.full_name) dataToUpdate.full_name = formData.full_name;
       if (formData.email) dataToUpdate.email = formData.email;
@@ -143,8 +145,8 @@ export function UsersManager() {
 
       if (response.status === 401) {
         toast({
-          title: "Error",
-          description: "No permission to update user",
+          title: "Lỗi",
+          description: "Không có quyền cập nhật người dùng",
           variant: "destructive",
         });
         return;
@@ -152,32 +154,32 @@ export function UsersManager() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || "Cannot update user");
+        throw new Error(errorData.error || "Không thể cập nhật người dùng");
       }
 
       const updatedUser = await response.json();
 
-      // Update user in the list
+      // Cập nhật người dùng trong danh sách
       setUsers(users.map((user) => (user.id === userId ? updatedUser : user)));
       setEditingUserId(null);
       resetForm();
 
       toast({
-        title: "Success",
-        description: "User information updated",
+        title: "Thành công",
+        description: "Đã cập nhật thông tin người dùng",
       });
     } catch (err: any) {
       toast({
-        title: "Error",
-        description: err.message || "Cannot update user",
+        title: "Lỗi",
+        description: err.message || "Không thể cập nhật người dùng",
         variant: "destructive",
       });
     }
   };
 
-  // Delete user
+  // Xóa người dùng
   const handleDeleteUser = async (userId: string) => {
-    if (!confirm("Are you sure you want to delete this user?")) {
+    if (!confirm("Bạn có chắc muốn xóa người dùng này?")) {
       return;
     }
 
@@ -188,8 +190,8 @@ export function UsersManager() {
 
       if (response.status === 401) {
         toast({
-          title: "Error",
-          description: "No permission to delete user",
+          title: "Lỗi",
+          description: "Không có quyền xóa người dùng",
           variant: "destructive",
         });
         return;
@@ -197,20 +199,20 @@ export function UsersManager() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || "Cannot delete user");
+        throw new Error(errorData.error || "Không thể xóa người dùng");
       }
 
-      // Remove user from list
+      // Xóa người dùng khỏi danh sách
       setUsers(users.filter((user) => user.id !== userId));
 
       toast({
-        title: "Success",
-        description: "User deleted",
+        title: "Thành công",
+        description: "Đã xóa người dùng",
       });
     } catch (err: any) {
       toast({
-        title: "Error",
-        description: err.message || "Cannot delete user",
+        title: "Lỗi",
+        description: err.message || "Không thể xóa người dùng",
         variant: "destructive",
       });
     }
@@ -226,25 +228,25 @@ export function UsersManager() {
     });
   };
 
-  // Start editing user
+  // Bắt đầu chỉnh sửa người dùng
   const startEditing = (user: SafeUser) => {
     setEditingUserId(user.id);
     setFormData({
       full_name: user.full_name,
       email: user.email,
-      pass: "", // Don't display password
+      pass: "", // Không hiển thị mật khẩu
       user_role: user.user_role,
     });
   };
 
-  // Cancel add/edit
+  // Hủy thêm/sửa
   const cancelAction = () => {
     setIsAddingUser(false);
     setEditingUserId(null);
     resetForm();
   };
 
-  // Display loading
+  // Hiển thị loading
   if (isLoading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -254,7 +256,7 @@ export function UsersManager() {
     );
   }
 
-  // Display error
+  // Hiển thị lỗi
   if (error) {
     return (
       <div className="bg-red-50 p-4 rounded-lg text-red-600 flex items-center">

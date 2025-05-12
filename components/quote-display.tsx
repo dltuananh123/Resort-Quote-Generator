@@ -31,7 +31,7 @@ export function QuoteDisplay() {
   const [quoteData, setQuoteData] = useState<QuoteData | null>(null);
 
   useEffect(() => {
-    // Listen for quote update events
+    // Lắng nghe sự kiện cập nhật báo giá
     const handleUpdateQuote = (event: CustomEvent<QuoteData>) => {
       setQuoteData(event.detail);
     };

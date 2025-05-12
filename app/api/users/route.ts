@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { getUsers, createUser } from "@/lib/supabase-users";
 
-// GET /api/users - Get list of users
+// GET /api/users - Lấy danh sách người dùng
 export async function GET(request: NextRequest) {
-  // Authenticate admin permissions
+  // Xác thực quyền admin
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET || "asteria-mui-ne-resort-secret-key",
@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Get list of users from Supabase
+    // Lấy danh sách người dùng từ Supabase
     const users = await getUsers();
     return NextResponse.json(users);
   } catch (error) {
@@ -28,9 +28,9 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/users - Add new user
+// POST /api/users - Thêm người dùng mới
 export async function POST(request: NextRequest) {
-  // Authenticate admin permissions
+  // Xác thực quyền admin
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET || "asteria-mui-ne-resort-secret-key",
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
 
-    // Validate input data
+    // Kiểm tra dữ liệu đầu vào
     if (!data.email || !data.pass || !data.full_name || !data.user_role) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create new user in Supabase
+    // Tạo người dùng mới trong Supabase
     const newUser = await createUser({
       full_name: data.full_name,
       email: data.email,

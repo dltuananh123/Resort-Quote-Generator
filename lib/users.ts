@@ -1,4 +1,4 @@
-// Define User type
+// User type definition
 export interface User {
   id: string;
   full_name: string;
@@ -7,8 +7,8 @@ export interface User {
   user_role: "admin" | "user";
 }
 
-// List of mock users for demo purposes
-// In a real application, you should use a database
+// Mock user list for demo purposes
+// In a real application, a database should be used
 export const users: User[] = [
   {
     id: "1",

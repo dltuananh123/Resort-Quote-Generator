@@ -17,7 +17,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
 }
 
-// Create context with default values
+// Create context with default value
 const AuthContext = createContext<AuthContextType>({
   userRole: null,
   isAdmin: false,
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Function to protect components, allowing only admin access
+// Function to protect components accessible only to admin
 export function withAdminOnly<P extends object>(
   Component: React.ComponentType<P>
 ) {
@@ -92,7 +92,7 @@ export function withAdminOnly<P extends object>(
   };
 }
 
-// Function to protect components requiring authentication
+// Function to protect components requiring login
 export function withAuth<P extends object>(Component: React.ComponentType<P>) {
   return function ProtectedComponent(props: P) {
     const { isAuthenticated, isLoading } = useAuth();

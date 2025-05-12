@@ -20,7 +20,7 @@ export const supportedLanguages: LanguageInfo[] = [
   { code: "kr", name: "Korean", nativeName: "한국어", direction: "ltr" },
 ];
 
-// Function to get the initial language from localStorage with a fallback to "en"
+// Function to get the initial language from localStorage with a fallback to "vi"
 export const getInitialLanguage = (): Language => {
   if (typeof window !== "undefined") {
     const savedLanguage = localStorage.getItem("language");
@@ -34,7 +34,7 @@ export const getInitialLanguage = (): Language => {
       return savedLanguage;
     }
   }
-  return "en"; // Default fallback
+  return "vi"; // Default fallback
 };
 
 // Function to get language information based on code

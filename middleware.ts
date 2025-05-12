@@ -1,69 +1,69 @@
 import { NextRequest, NextResponse } from "next/server";
-import { jwtDecode } from "jwt-decode";
+import { getToken } from "next-auth/jwt";
 
-// Define path structures and access permissions
-export const config = {
-  matcher: [
-    "/((?!api/auth|_next/static|_next/image|favicon.ico|access-denied|.*.svg).*)",
-  ],
-};
+// Define path structure and access permissions
+interface RouteConfig {
+  path: string;
+  roles: string[];
+}
 
 // List of paths and corresponding access permissions
-const protectedPaths = [
-  { path: "/admin", role: "admin" },
-  { path: "/users", role: "admin" },
-  { path: "/api/users", role: "admin" },
+const protectedRoutes: RouteConfig[] = [
+  { path: "/admin", roles: ["admin"] },
+  { path: "/admin/dashboard", roles: ["admin"] },
+  { path: "/admin/users", roles: ["admin"] },
+  { path: "/profile", roles: ["admin", "user"] },
 ];
 
 // List of public paths that don't require authentication
-const publicPaths = ["/", "/auth/login", "/access-denied"];
+const publicPaths = ["/login", "/about", "/access-denied"];
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   // Current page path
   const path = request.nextUrl.pathname;
 
-  // Check if current path is public
-  const isPublicPath = publicPaths.some((publicPath) =>
-    path.startsWith(publicPath)
+  // Check if the current path is public
+  const isPublicPath = publicPaths.some(
+    (publicPath) => path === publicPath || path.startsWith(publicPath + "/")
   );
 
-  // Check if user is authenticated
-  const token = request.cookies.get("auth-token")?.value;
-  const isAuthenticated = !!token;
+  // Check if the user is logged in
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET || "asteria-mui-ne-resort-secret-key",
+  });
 
-  // Ensure token is valid and not expired
-  const isValidToken = token ? !isTokenExpired(token) : false;
-  const isAuthValid = isAuthenticated && isValidToken;
-
-  // User is not authenticated and trying to access a protected page
-  if (!isAuthValid && !isPublicPath) {
-    // Redirect to login page if not authenticated
-    return NextResponse.redirect(new URL("/auth/login", request.url));
+  // User is not logged in and trying to access a page that requires authentication
+  if (!token && !isPublicPath) {
+    // If not logged in, redirect to the login page
+    const url = new URL("/login", request.url);
+    url.searchParams.set("callbackUrl", encodeURI(request.url));
+    return NextResponse.redirect(url);
   }
 
-  // User is authenticated and trying to access the login page
-  if (isAuthValid && path === "/auth/login") {
-    // Redirect to home page if already logged in
+  // User is logged in and trying to access the login page
+  if (token && path === "/login") {
+    // If already logged in, redirect to the home page
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // If user is admin and accessing profile page, redirect to admin page
-  if (isAuthValid && path === "/auth/profile") {
-    const userData = token ? jwtDecode<any>(token) : null;
-    if (userData?.role === "admin") {
-      return NextResponse.redirect(new URL("/admin", request.url));
-    }
+  // If the user is an admin and trying to access the profile page, redirect to the admin page
+  if (token && token.role === "admin" && path === "/profile") {
+    return NextResponse.redirect(new URL("/admin", request.url));
   }
 
-  // Check access permissions for protected paths
-  if (isAuthValid) {
-    const userData = jwtDecode<any>(token);
+  // Check access permissions for protected pages
+  if (token) {
+    const userRole = token.role as string;
 
     // Check each protected path
-    for (const { path: protectedPath, role } of protectedPaths) {
-      if (path.startsWith(protectedPath) && userData.role !== role) {
-        // Redirect to access denied page if user doesn't have access
-        return NextResponse.redirect(new URL("/access-denied", request.url));
+    for (const route of protectedRoutes) {
+      if (path === route.path || path.startsWith(route.path + "/")) {
+        // If the user doesn't have access permission, redirect to the Access Denied page
+        if (!route.roles.includes(userRole)) {
+          return NextResponse.redirect(new URL("/access-denied", request.url));
+        }
+        break;
       }
     }
   }
@@ -72,12 +72,14 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// Apply middleware to the following paths
-function isTokenExpired(token: string): boolean {
-  try {
-    const decoded = jwtDecode<{ exp: number }>(token);
-    return decoded.exp < Date.now() / 1000;
-  } catch (e) {
-    return true;
-  }
-}
+export const config = {
+  // Apply middleware to the following paths
+  matcher: [
+    /*
+     * Match all paths except:
+     * 1. Static paths (css, js, images, favicon, etc.)
+     * 2. API routes (/api/*)
+     */
+    "/((?!api|_next/static|_next/image|favicon|flags|logo).*)",
+  ],
+};
